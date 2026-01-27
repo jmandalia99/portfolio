@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Linkedin, Github, Globe, ChevronDown, Terminal, Code, Shield, Car, Brain, Award, ExternalLink, Menu, X, Sparkles, Rocket, Zap, Download, FileText, Star } from 'lucide-react';
+import { Mail, Linkedin, Github, Globe, ChevronDown, Terminal, Code, Shield, Car, Brain, Award, Menu, X, Sparkles, Rocket, Zap, Download, Star } from 'lucide-react';
 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState('home');
@@ -279,7 +279,7 @@ export default function Portfolio() {
 
   const downloadResume = () => {
   // Replace with YOUR actual Google Drive file ID
-  const GOOGLE_DRIVE_FILE_ID = '10iedRy41R3K3W9qgZ6cve1fwMceCFrb1'; // ← PUT YOUR FILE ID HERE
+  const GOOGLE_DRIVE_FILE_ID = '1Xy4iAx9SeXfFkKObfbofdM3Vm_LAazM8'; // ← PUT YOUR FILE ID HERE
   const resumeUrl = `https://drive.google.com/uc?export=download&id=${GOOGLE_DRIVE_FILE_ID}`;
   
   // Track resume download in Google Analytics
@@ -487,7 +487,7 @@ export default function Portfolio() {
               <a href="https://github.com/jmandalia99" target="_blank" rel="noopener noreferrer" className="p-3 rounded-lg bg-slate-800/50 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 transition-all duration-200 hover:scale-110">
                 <Github size={20} />
               </a>
-              <a href="#" className="p-3 rounded-lg bg-slate-800/50 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 transition-all duration-200 hover:scale-110">
+              <a href="https://jmandalia99.github.io/portfolio/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-lg bg-slate-800/50 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 transition-all duration-200 hover:scale-110">
                 <Globe size={20} />
               </a>
             </div>
