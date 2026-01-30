@@ -5,6 +5,7 @@ export default function Portfolio() {
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [expandedProject, setExpandedProject] = useState(null);
   const [typedText, setTypedText] = useState('');
   const [currentRole, setCurrentRole] = useState(0);
   const [experienceTab, setExperienceTab] = useState('professional');
@@ -132,6 +133,11 @@ export default function Portfolio() {
       subtitle: 'Research Project',
       tech: ['PyTorch', 'LLM Security', 'Python', 'AdvBench', 'JailbreakBench'],
       description: 'Built a production-ready multi-layer guardrail system to defend LLMs against prompt-injection and jailbreak attacks, achieving 88.7% attack mitigation while maintaining low-latency performance.',
+      fullDescription: [
+        'Engineered an end-to-end "Defense-in-Depth" architecture to protect LLMs against adversarial prompt injections and jailbreak attempts.',
+        'Developed a specialized validation pipeline consisting of pre-processing input filters and post-generation safety guardrails.',
+        'Result: Achieved an 88.7% defense rate against standardized benchmarks (AdvBench/JailbreakBench), significantly reducing model vulnerability while maintaining deployment-feasible latency.'
+      ],
       icon: Shield,
       impact: '88.7% Attack Mitigation',
       gradient: 'from-red-500 to-orange-500',
@@ -142,6 +148,11 @@ export default function Portfolio() {
       subtitle: 'Research Project',
       tech: ['Python', 'AI Security', 'Evaluation Metrics'],
       description: 'Developed comprehensive evaluation framework assessing LLM vulnerabilities across adaptivity, transferability, stealth, and attacker cost, uncovering critical limitations in static defense approaches.',
+      fullDescription: [
+        'Conducted an extensive study on the vulnerability of LLM applications to malicious instructions embedded in untrusted content.',
+        'Created a unified evaluation framework based on six dimensions: success granularity, adaptivity, contextual embedding, transferability, stealth, and attacker cost.',
+        'Identified systematic gaps in current static benchmarks, proposing adaptive testing environments to better reflect real-world deployment risks.'
+      ],
       icon: Brain,
       impact: 'Novel Security Framework',
       gradient: 'from-purple-500 to-pink-500',
@@ -152,6 +163,11 @@ export default function Portfolio() {
       subtitle: 'Bonus Project',
       tech: ['Python', 'FastAPI', 'Prometheus', 'Grafana', 'Jaeger', 'Multi-Model AI'],
       description: 'Built GenAI chatbot with multi-model routing (fast/accurate), distributed tracing via Jaeger, and real-time observability through Prometheus and Grafana for performance monitoring.',
+      fullDescription: [
+        'Built full-stack GenAI chatbot with dynamic model routing (fast/accurate) and comprehensive observability stack.',
+        'Implemented distributed tracing via Jaeger and real-time metrics monitoring through Prometheus and Grafana.',
+        'Deployed multi-model system enabling performance comparison and latency analysis across different LLM configurations.'
+      ],
       icon: Sparkles,
       impact: 'Full Observability Stack',
       gradient: 'from-cyan-500 to-blue-500',
@@ -159,9 +175,14 @@ export default function Portfolio() {
     },
     {
       title: 'Medical Image Classification with Self-Supervised Learning',
-      subtitle: 'Research Project',
+      subtitle: 'From Cats to Cysts: Rethinking ImageNet Transfer Learning',
       tech: ['PyTorch', 'MAE', 'MoCo', 'Transfer Learning', 'Computer Vision'],
       description: 'Evaluated transfer learning vs. self-supervised learning (MAE, MoCo) for medical image classification. Pretrained on 2,000+ images with ImageNet transfer learning achieving 59.4% accuracy on small datasets.',
+      fullDescription: [
+        'Conducted a comparative analysis between ImageNet Transfer Learning and Self-Supervised Learning (SSL) for breast density classification in mammography.',
+        'Pretrained SSL models (MAE and MoCo) on 2,000+ unlabeled medical images to evaluate domain-specific feature extraction.',
+        'Result: Discovered that Supervised Transfer Learning (59.4% accuracy) currently outperforms SSL in small-scale medical datasets, providing a roadmap for future data-efficient medical AI.'
+      ],
       icon: Brain,
       impact: '2,000+ Images Processed',
       gradient: 'from-green-500 to-teal-500',
@@ -172,6 +193,11 @@ export default function Portfolio() {
       subtitle: 'Recipe AI',
       tech: ['React', 'AWS Amplify', 'Amazon Bedrock', 'Cognito', 'Claude 3 Sonnet'],
       description: 'Built serverless full-stack GenAI web app with CI/CD via GitHub. Integrated Claude 3 Sonnet API for real-time, context-aware responses from natural language inputs.',
+      fullDescription: [
+        'Architected a full-stack serverless web application using React (Vite), AWS Amplify, and Amazon Bedrock.',
+        'Implemented a secure authentication flow using Amazon Cognito and established a CI/CD pipeline via GitHub for automated cloud deployment.',
+        'Leveraged Claude 3 Sonnet via Bedrock API to process natural language inputs and generate real-time, context-aware content.'
+      ],
       icon: Code,
       impact: 'Production Deployment',
       gradient: 'from-blue-500 to-cyan-500',
@@ -182,6 +208,10 @@ export default function Portfolio() {
       subtitle: 'Automotive Security',
       tech: ['PyTorch', 'LSTM', 'CNN', 'FNN'],
       description: 'Developed and evaluated FNN, 1D-CNN, and LSTM models for multi-class CAN-bus intrusion detection. Achieved 95.1% (LSTM) and 94.9% (CNN) accuracy across DoS, Fuzzy, Gear-, and RPM-spoofing attacks.',
+      fullDescription: [
+        'Compared FNN, 1D-CNN, and LSTM for multi-class CAN-bus intrusion detection; built a preprocessing pipeline (feature selection, normalization, sequencing).',
+        'Reached 95.1% (LSTM) and 94.9% (CNN) accuracy across DoS, Fuzzy, Gear-spoofing, and RPM-spoofing, outperforming the FNN baseline.'
+      ],
       icon: Shield,
       impact: '95.1% Accuracy',
       gradient: 'from-amber-500 to-yellow-500',
@@ -189,9 +219,12 @@ export default function Portfolio() {
     },
     {
       title: 'Microcontroller-Based Data Acquisition System',
-      subtitle: 'Embedded Systems',
+      subtitle: 'Wind-Solar Hybrid System',
       tech: ['C', 'Assembly', 'ADC', 'Embedded Systems'],
       description: 'Designed microcontroller-based data acquisition system to sample and log wind and solar sensor data via ADC.',
+      fullDescription: [
+        'Built a data acquisition board using an M058 microcontroller programmed in C/Assembly to process and log sensor data (wind speed, solar irradiance, voltage) via an ADC.'
+      ],
       icon: Terminal,
       impact: 'Real-time Data Logging',
       gradient: 'from-indigo-500 to-purple-500',
@@ -816,56 +849,99 @@ export default function Portfolio() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {projects.map((project, index) => {
                 const Icon = project.icon;
+                const isExpanded = expandedProject === index;
+                
                 return (
                   <div
                     key={index}
-                    className="group p-6 rounded-xl bg-slate-800/30 border border-slate-700/50 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 flex flex-col relative overflow-hidden"
+                    className={`group rounded-xl bg-slate-800/30 border border-slate-700/50 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 flex flex-col relative overflow-hidden cursor-pointer ${
+                      isExpanded ? 'md:col-span-2 lg:col-span-3' : ''
+                    }`}
+                    onClick={() => setExpandedProject(isExpanded ? null : index)}
                   >
                     <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${project.gradient} opacity-150 group-hover:opacity-250 transition-opacity duration-300`} />
                     
-                    <div className="flex items-start justify-between mb-4">
-                      <div className={`p-3 rounded-lg bg-gradient-to-br ${project.gradient} bg-opacity-40 border border-cyan-500/30 w-fit group-hover:shadow-lg transition-all duration-300`}>
-                        <Icon size={24} className="text-white" />
+                    <div className="p-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className={`p-3 rounded-lg bg-gradient-to-br ${project.gradient} bg-opacity-40 border border-cyan-500/30 w-fit group-hover:shadow-lg transition-all duration-300`}>
+                          <Icon size={24} className="text-white" />
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {project.github && (
+                            <a
+                              href={project.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2 rounded-lg bg-slate-700/50 border border-slate-600/50 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 hover:bg-slate-700 transition-all"
+                              onClick={(e) => e.stopPropagation()}
+                              aria-label="View on GitHub"
+                            >
+                              <Github size={18} />
+                            </a>
+                          )}
+                          {project.impact && (
+                            <span className="px-2 py-1 rounded-md bg-cyan-500/20 border border-cyan-500/30 text-xs text-cyan-400 font-semibold">
+                              {project.impact}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        {project.github && (
-                          <a
-                            href={project.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-lg bg-slate-700/50 border border-slate-600/50 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 hover:bg-slate-700 transition-all"
-                            onClick={(e) => e.stopPropagation()}
-                            aria-label="View on GitHub"
+                      
+                      <h3 className="text-xl font-semibold text-slate-100 mb-2 group-hover:text-cyan-400 transition-colors duration-300">
+                        {project.title}
+                      </h3>
+                      {project.subtitle && (
+                        <p className="text-sm text-cyan-400 mb-3 font-medium">{project.subtitle}</p>
+                      )}
+                      
+                      {/* Short Description - Always Visible */}
+                      {!isExpanded && (
+                        <p className="text-slate-300 mb-4 text-sm leading-relaxed">{project.description}</p>
+                      )}
+                      
+                      {/* Full Description - Visible When Expanded */}
+                      {isExpanded && (
+                        <div className="mb-4 space-y-3">
+                          {project.fullDescription.map((point, idx) => (
+                            <div key={idx} className="flex items-start gap-3">
+                              <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 flex-shrink-0"></div>
+                              <p className="text-slate-300 text-sm leading-relaxed">{point}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {project.tech.map((tech, idx) => (
+                          <span
+                            key={idx}
+                            className="px-2 py-1 rounded-md bg-slate-700/50 text-xs text-slate-400 border border-slate-600/50"
                           >
-                            <Github size={18} />
-                          </a>
-                        )}
-                        {project.impact && (
-                          <span className="px-2 py-1 rounded-md bg-cyan-500/20 border border-cyan-500/30 text-xs text-cyan-400 font-semibold">
-                            {project.impact}
+                            {tech}
                           </span>
-                        )}
+                        ))}
                       </div>
-                    </div>
-                    
-                    <h3 className="text-xl font-semibold text-slate-100 mb-2 group-hover:text-cyan-400 transition-colors duration-300">
-                      {project.title}
-                    </h3>
-                    {project.subtitle && (
-                      <p className="text-sm text-cyan-400 mb-3 font-medium">{project.subtitle}</p>
-                    )}
-                    
-                    <p className="text-slate-300 mb-4 flex-1 text-sm leading-relaxed">{project.description}</p>
-                    
-                    <div className="flex flex-wrap gap-2">
-                      {project.tech.map((tech, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2 py-1 rounded-md bg-slate-700/50 text-xs text-slate-400 border border-slate-600/50"
-                        >
-                          {tech}
-                        </span>
-                      ))}
+                      
+                      {/* Expand/Collapse Button */}
+                      <button
+                        className="w-full py-2 mt-2 rounded-lg bg-slate-700/30 border border-slate-600/50 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 transition-all text-sm font-medium flex items-center justify-center gap-2"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setExpandedProject(isExpanded ? null : index);
+                        }}
+                      >
+                        {isExpanded ? (
+                          <>
+                            <ChevronDown size={16} className="rotate-180" />
+                            Show Less
+                          </>
+                        ) : (
+                          <>
+                            <ChevronDown size={16} />
+                            Read More
+                          </>
+                        )}
+                      </button>
                     </div>
                   </div>
                 );
