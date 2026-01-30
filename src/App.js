@@ -141,7 +141,8 @@ export default function Portfolio() {
       icon: Shield,
       impact: '88.7% Attack Mitigation',
       gradient: 'from-red-500 to-orange-500',
-      github: 'https://github.com/jmandalia99/llm-guardrail-system'
+      github: 'https://github.com/jmandalia99/llm-guardrail-system',
+      paper: 'https://drive.google.com/file/d/10MzYVQJg2qm0gSFjrZMiM_mvC6Ya9jbg/view?usp=share_link'
     },
     {
       title: 'Unified LLM Security Evaluation Framework',
@@ -156,7 +157,24 @@ export default function Portfolio() {
       icon: Brain,
       impact: 'Novel Security Framework',
       gradient: 'from-purple-500 to-pink-500',
-      github: 'https://github.com/jmandalia99/llm-security-framework'
+      github: 'https://github.com/jmandalia99/llm-security-framework',
+      paper: 'https://drive.google.com/file/d/1NVlcWF7kTYA2tkTq-ImFOUbz8w0gv8Ad/view?usp=share_link'
+    },
+    {
+      title: 'Medical Image Classification with Self-Supervised Learning',
+      subtitle: 'From Cats to Cysts: Rethinking ImageNet Transfer Learning',
+      tech: ['PyTorch', 'MAE', 'MoCo', 'Transfer Learning', 'Computer Vision'],
+      description: 'Evaluated transfer learning vs. self-supervised learning (MAE, MoCo) for medical image classification. Pretrained on 2,000+ images with ImageNet transfer learning achieving 59.4% accuracy on small datasets.',
+      fullDescription: [
+        'Conducted a comparative analysis between ImageNet Transfer Learning and Self-Supervised Learning (SSL) for breast density classification in mammography.',
+        'Pretrained SSL models (MAE and MoCo) on 2,000+ unlabeled medical images to evaluate domain-specific feature extraction.',
+        'Result: Discovered that Supervised Transfer Learning (59.4% accuracy) currently outperforms SSL in small-scale medical datasets, providing a roadmap for future data-efficient medical AI.'
+      ],
+      icon: Brain,
+      impact: '2,000+ Images Processed',
+      gradient: 'from-green-500 to-teal-500',
+      github: 'https://github.com/jmandalia99/medical-image-classification',
+      paper: 'https://drive.google.com/file/d/1BSgUK7tllo0ABwXFvLheD6wwqForQ_KW/view?usp=share_link'
     },
     {
       title: 'GenAI Chatbot with Multi-Model Routing & Observability',
@@ -172,21 +190,6 @@ export default function Portfolio() {
       impact: 'Full Observability Stack',
       gradient: 'from-cyan-500 to-blue-500',
       github: 'https://github.com/jmandalia99/GenAI_Bonus_Project'
-    },
-    {
-      title: 'Medical Image Classification with Self-Supervised Learning',
-      subtitle: 'From Cats to Cysts: Rethinking ImageNet Transfer Learning',
-      tech: ['PyTorch', 'MAE', 'MoCo', 'Transfer Learning', 'Computer Vision'],
-      description: 'Evaluated transfer learning vs. self-supervised learning (MAE, MoCo) for medical image classification. Pretrained on 2,000+ images with ImageNet transfer learning achieving 59.4% accuracy on small datasets.',
-      fullDescription: [
-        'Conducted a comparative analysis between ImageNet Transfer Learning and Self-Supervised Learning (SSL) for breast density classification in mammography.',
-        'Pretrained SSL models (MAE and MoCo) on 2,000+ unlabeled medical images to evaluate domain-specific feature extraction.',
-        'Result: Discovered that Supervised Transfer Learning (59.4% accuracy) currently outperforms SSL in small-scale medical datasets, providing a roadmap for future data-efficient medical AI.'
-      ],
-      icon: Brain,
-      impact: '2,000+ Images Processed',
-      gradient: 'from-green-500 to-teal-500',
-      github: 'https://github.com/jmandalia99/medical-image-classification'
     },
     {
       title: 'Serverless Generative AI Web Application',
@@ -215,7 +218,8 @@ export default function Portfolio() {
       icon: Shield,
       impact: '95.1% Accuracy',
       gradient: 'from-amber-500 to-yellow-500',
-      github: 'https://github.com/jmandalia99/can-intrusion-detection'
+      github: 'https://github.com/jmandalia99/can-intrusion-detection',
+      paper: 'https://drive.google.com/file/d/1ZTxMYeDHJpJ4JrPUhfZCXLZmbgVNU9wW/view?usp=share_link'
     },
     {
       title: 'Microcontroller-Based Data Acquisition System',
@@ -846,7 +850,7 @@ export default function Portfolio() {
               Research and development projects spanning AI security, automotive systems, and machine learning
             </p>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 gap-6">
               {projects.map((project, index) => {
                 const Icon = project.icon;
                 const isExpanded = expandedProject === index;
@@ -855,7 +859,7 @@ export default function Portfolio() {
                   <div
                     key={index}
                     className={`group rounded-xl bg-slate-800/30 border border-slate-700/50 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 flex flex-col relative overflow-hidden cursor-pointer ${
-                      isExpanded ? 'md:col-span-2 lg:col-span-3' : ''
+                      isExpanded ? 'md:col-span-2' : ''
                     }`}
                     onClick={() => setExpandedProject(isExpanded ? null : index)}
                   >
@@ -903,13 +907,29 @@ export default function Portfolio() {
                       {isExpanded && (
                         <div className="mb-4 space-y-3">
                           {project.fullDescription.map((point, idx) => (
-                            <div key={idx} className="flex items-start gap-3">
-                              <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 flex-shrink-0"></div>
-                              <p className="text-slate-300 text-sm leading-relaxed">{point}</p>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                             <div key={idx} className="flex items-start gap-3">
+                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 flex-shrink-0"></div>
+                                <p className="text-slate-300 text-sm leading-relaxed">{point}</p>
+                              </div>
+                            ))}
+    
+                            {/* View Paper Button - Only if paper exists */}
+                            {project.paper && (
+                              <div className="mt-4 pt-4 border-t border-slate-700/50">
+                                <a
+                                  href={project.paper}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 text-purple-300 hover:text-purple-200 hover:border-purple-400/50 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 text-sm font-medium"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <ExternalLink size={16} />
+                                  View Research Paper
+                                </a>
+                              </div>
+                            )}
+                          </div>
+                        )}
                       
                       <div className="flex flex-wrap gap-2 mb-4">
                         {project.tech.map((tech, idx) => (
@@ -1154,7 +1174,7 @@ export default function Portfolio() {
         <section className="py-24 px-6">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center">
-              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Achievements</span>
+              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Achievements</span>
             </h2>
             <p className="text-center text-slate-400 mb-12 max-w-2xl mx-auto">
               Recognition and milestones throughout my career
@@ -1164,10 +1184,10 @@ export default function Portfolio() {
               {achievements.map((achievement, index) => (
                 <div
                   key={index}
-                  className="p-6 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 backdrop-blur-sm hover:shadow-xl hover:shadow-cyan-500/20 transition-all duration-300"
+                  className="p-6 rounded-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/30 backdrop-blur-sm hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-2 h-2 rounded-full bg-cyan-400 mt-2 flex-shrink-0"></div>
+                    <div className="w-2 h-2 rounded-full bg-purple-400 mt-2 flex-shrink-0"></div>
                     <p className="text-slate-300 leading-relaxed">{achievement}</p>
                   </div>
                 </div>
