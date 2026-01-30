@@ -105,8 +105,9 @@ export default function Portfolio() {
       icon: Terminal,
       gradient: 'from-green-500 to-emerald-500',
       highlights: [
-        'Led 20+ software releases for MG Astor across 20,000+ vehicles, contributing to #1 CSI ranking',
-        'Designed next-generation Telematics and Cluster features improving user experience',
+        'Led 20+ software releases for MG Astor – India first AI SUV, across 20,000+ vehicles, contributing to the brand No. 1 Customer Satisfaction Index (CSI) ranking.',
+        'Development Lead Engineer for Infotainment, Telematics and AI Talking Robot features',
+        'Designed next-generation Telematics and Infotainment features improving user experience',
         'Built high-fidelity ECU test benches using CANoe and Vehicle Spy for CAN protocol validation',
         'Coordinated with global suppliers for OS releases and managed defect resolution through JIRA'
       ]
@@ -199,84 +200,68 @@ export default function Portfolio() {
   ];
 
   const technicalSkills = [
-    { name: 'Python', level: 90, color: 'from-blue-400 to-cyan-400', stars: 4 },
-    { name: 'C++', level: 75, color: 'from-blue-500 to-purple-500', stars: 4 },
-    { name: 'PyTorch', level: 85, color: 'from-orange-500 to-red-500', stars: 4 },
-    { name: 'TensorFlow', level: 75, color: 'from-orange-400 to-amber-400', stars: 4 },
-    { name: 'Machine Learning', level: 90, color: 'from-purple-500 to-pink-500', stars: 5 },
-    { name: 'Deep Learning', level: 85, color: 'from-indigo-500 to-purple-500', stars: 4 },
-    { name: 'Computer Vision', level: 80, color: 'from-green-400 to-emerald-400', stars: 4 },
-    { name: 'LLM Security', level: 90, color: 'from-red-500 to-pink-500', stars: 5 },
-    { name: 'AWS Cloud', level: 75, color: 'from-yellow-500 to-orange-500', stars: 4 },
-    { name: 'CI/CD', level: 80, color: 'from-teal-400 to-cyan-400', stars: 4 },
-    { name: 'CAN Protocol', level: 85, color: 'from-blue-600 to-indigo-600', stars: 4 },
-    { name: 'Automotive Systems', level: 90, color: 'from-green-500 to-teal-500', stars: 5 }
+    { name: 'Python', level: 95, color: 'from-blue-400 to-cyan-400' },
+    { name: 'PyTorch', level: 90, color: 'from-orange-500 to-red-500' },
+    { name: 'TensorFlow', level: 85, color: 'from-orange-400 to-amber-400' },
+    { name: 'Machine Learning', level: 95, color: 'from-purple-500 to-pink-500' },
+    { name: 'Deep Learning', level: 90, color: 'from-indigo-500 to-purple-500' },
+    { name: 'Computer Vision', level: 85, color: 'from-green-400 to-emerald-400' },
+    { name: 'LLM Security', level: 95, color: 'from-red-500 to-pink-500' },
+    { name: 'Gen AI', level: 90, color: 'from-cyan-500 to-blue-500' },
+    { name: 'NLP', level: 85, color: 'from-purple-400 to-pink-400' },
+    { name: 'AWS Cloud', level: 85, color: 'from-yellow-500 to-orange-500' },
+    { name: 'Azure', level: 80, color: 'from-blue-500 to-cyan-500' },
+    { name: 'CI/CD', level: 85, color: 'from-teal-400 to-cyan-400' },
+    { name: 'Docker', level: 80, color: 'from-blue-400 to-indigo-400' },
+    { name: 'Git', level: 90, color: 'from-orange-600 to-red-600' },
+    { name: 'CAN Protocol', level: 90, color: 'from-blue-600 to-indigo-600' },
+    { name: 'Automotive Systems', level: 95, color: 'from-green-500 to-teal-500' },
+    { name: 'OTA Security', level: 85, color: 'from-red-400 to-orange-400' },
+    { name: 'Data Structures', level: 90, color: 'from-purple-400 to-indigo-400' },
+    { name: 'OOP', level: 90, color: 'from-blue-500 to-purple-500' },
+    { name: 'Operating Systems', level: 80, color: 'from-slate-400 to-slate-600' },
+    { name: 'Networking', level: 75, color: 'from-teal-500 to-cyan-500' },
+    { name: 'C++', level: 85, color: 'from-blue-500 to-purple-500' },
+    { name: 'C', level: 80, color: 'from-slate-500 to-blue-500' },
+    { name: 'MATLAB', level: 75, color: 'from-orange-400 to-red-400' }
   ];
 
   const techStack = [
-    {
-      name: 'Python',
-      icon: '🐍',
-      description: 'High-level programming language for AI, Data Science, and web development.',
-      color: 'from-blue-400 to-cyan-400'
-    },
-    {
-      name: 'PyTorch',
-      icon: '🔥',
-      description: 'Deep learning framework for building and training neural networks.',
-      color: 'from-orange-500 to-red-500'
-    },
-    {
-      name: 'TensorFlow',
-      icon: '🧠',
-      description: 'Open-source platform for machine learning and AI model development.',
-      color: 'from-orange-400 to-amber-400'
-    },
-    {
-      name: 'AWS',
-      icon: '☁️',
-      description: 'Cloud computing platform for scalable infrastructure and services.',
-      color: 'from-yellow-500 to-orange-500'
-    },
-    {
-      name: 'Docker',
-      icon: '🐳',
-      description: 'Containerization platform for consistent development environments.',
-      color: 'from-blue-500 to-cyan-500'
-    },
-    {
-      name: 'Git',
-      icon: '📦',
-      description: 'Version control system for tracking code changes and collaboration.',
-      color: 'from-orange-600 to-red-600'
-    },
-    {
-      name: 'React',
-      icon: '⚛️',
-      description: 'JavaScript library for building interactive user interfaces.',
-      color: 'from-cyan-400 to-blue-500'
-    },
-    {
-      name: 'CANoe',
-      icon: '🚗',
-      description: 'Development and testing tool for automotive ECU networks.',
-      color: 'from-green-500 to-teal-500'
-    }
+    { name: 'Python', icon: '🐍' },
+    { name: 'PyTorch', icon: '🔥' },
+    { name: 'TensorFlow', icon: '🧠' },
+    { name: 'AWS', icon: '☁️' },
+    { name: 'Docker', icon: '🐳' },
+    { name: 'Git', icon: '📦' },
+    { name: 'React', icon: '⚛️' },
+    { name: 'CANoe', icon: '🚗' },
+    { name: 'Jenkins', icon: '🔧' },
+    { name: 'Kubernetes', icon: '☸️' },
+    { name: 'VSCode', icon: '💻' },
+    { name: 'Jupyter', icon: '📓' },
+    { name: 'NumPy', icon: '🔢' },
+    { name: 'Azure', icon: '☁️' },
+    { name: 'Pandas', icon: '🐼' },
+    { name: 'OpenCV', icon: '👁️' },
+    { name: 'JIRA', icon: '📋' },
+    { name: 'C++', icon: '⚙️' },
+    { name: 'Linux', icon: '🐧' },
+    { name: 'DevOps', icon: '🔄' }
   ];
 
   const softSkills = [
-    { name: 'Leadership', level: 90, icon: '👑' },
-    { name: 'Communication', level: 95, icon: '💬' },
-    { name: 'Project Management', level: 85, icon: '📊' },
-    { name: 'Problem Solving', level: 95, icon: '🧩' },
-    { name: 'Teamwork', level: 90, icon: '🤝' },
-    { name: 'Time Management', level: 90, icon: '⏰' },
-    { name: 'Organized', level: 95, icon: '📋' },
-    { name: 'Adaptability', level: 90, icon: '🔄' },
-    { name: 'Critical Thinking', level: 90, icon: '🤔' },
-    { name: 'Attention to Detail', level: 95, icon: '🔍' },
-    { name: 'Mentorship', level: 85, icon: '🎓' },
-    { name: 'Creativity', level: 85, icon: '🎨' }
+    'Leadership',
+    'Communication',
+    'Project Management',
+    'Problem Solving',
+    'Teamwork',
+    'Time Management',
+    'Organized',
+    'Adaptability',
+    'Critical Thinking',
+    'Mentorship',
+    'Creativity',
+    'Documentation'
   ];
 
   const achievements = [
@@ -899,12 +884,12 @@ export default function Portfolio() {
               Comprehensive skills in technical and professional domains
             </p>
 
-            {/* Tab Navigation */}
+            {/* Tab Navigation - Matches Experience Design */}
             <div className="flex justify-center mb-12">
               <div className="inline-flex rounded-xl bg-slate-800/50 border border-slate-700/50 p-1">
                 <button
                   onClick={() => setSkillsTab('technical')}
-                  className={`px-8 py-3 rounded-lg transition-all duration-300 font-semibold ${
+                  className={`px-6 py-2.5 rounded-lg transition-all duration-300 font-semibold text-sm ${
                     skillsTab === 'technical'
                       ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 shadow-lg shadow-cyan-500/50'
                       : 'text-slate-400 hover:text-cyan-400'
@@ -914,7 +899,7 @@ export default function Portfolio() {
                 </button>
                 <button
                   onClick={() => setSkillsTab('tech-stack')}
-                  className={`px-8 py-3 rounded-lg transition-all duration-300 font-semibold ${
+                  className={`px-6 py-2.5 rounded-lg transition-all duration-300 font-semibold text-sm ${
                     skillsTab === 'tech-stack'
                       ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 shadow-lg shadow-cyan-500/50'
                       : 'text-slate-400 hover:text-cyan-400'
@@ -924,7 +909,7 @@ export default function Portfolio() {
                 </button>
                 <button
                   onClick={() => setSkillsTab('soft')}
-                  className={`px-8 py-3 rounded-lg transition-all duration-300 font-semibold ${
+                  className={`px-6 py-2.5 rounded-lg transition-all duration-300 font-semibold text-sm ${
                     skillsTab === 'soft'
                       ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 shadow-lg shadow-cyan-500/50'
                       : 'text-slate-400 hover:text-cyan-400'
@@ -935,75 +920,57 @@ export default function Portfolio() {
               </div>
             </div>
 
-            {/* Technical Expertise with Progress Bars */}
+            {/* Technical Expertise Tab - Smaller Cards */}
             {skillsTab === 'technical' && (
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {technicalSkills.map((skill, index) => (
                   <div
                     key={index}
-                    className="p-6 rounded-xl bg-slate-800/30 border border-slate-700/50 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300"
+                    className="p-4 rounded-xl bg-slate-800/30 border border-slate-700/50 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300"
                   >
-                    <div className="flex justify-between items-center mb-3">
-                      <h3 className="text-lg font-semibold text-slate-100">{skill.name}</h3>
-                      <span className="text-cyan-400 font-bold text-sm">{skill.level}%</span>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-semibold text-slate-100 text-sm">{skill.name}</span>
+                      <span className="text-xs text-cyan-400 font-medium">{skill.level}%</span>
                     </div>
-                    
-                    <div className="relative h-3 bg-slate-700/50 rounded-full overflow-hidden mb-3">
-                      <div 
-                        className={`absolute top-0 left-0 h-full bg-gradient-to-r ${skill.color} rounded-full transition-all duration-1000 ease-out`}
+                    <div className="w-full bg-slate-700/50 rounded-full h-1.5 overflow-hidden">
+                      <div
+                        className={`h-full bg-gradient-to-r ${skill.color} rounded-full transition-all duration-500`}
                         style={{ width: `${skill.level}%` }}
                       />
-                    </div>
-                    
-                    <div className="flex gap-1">
-                      {renderStars(skill.stars)}
                     </div>
                   </div>
                 ))}
               </div>
             )}
 
-            {/* Technology Stack Cards */}
+            {/* Technology Stack Tab - Smaller Cards */}
             {skillsTab === 'tech-stack' && (
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                 {techStack.map((tech, index) => (
                   <div
                     key={index}
-                    className="group p-6 rounded-xl bg-slate-800/30 border border-slate-700/50 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 text-center relative overflow-hidden"
+                    className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/50 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 text-center"
                   >
-                    <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${tech.color}`} />
-                    
-                    <div className="text-5xl mb-4">{tech.icon}</div>
-                    <h3 className="text-xl font-bold text-slate-100 mb-3 group-hover:text-cyan-400 transition-colors">
-                      {tech.name}
-                    </h3>
-                    <p className="text-sm text-slate-400 leading-relaxed">{tech.description}</p>
+                    <div className="text-2xl mb-1.5">{tech.icon}</div>
+                    <p className="text-xs font-medium text-slate-200">{tech.name}</p>
                   </div>
                 ))}
               </div>
             )}
 
-            {/* Soft Skills */}
+            {/* Soft Skills Tab */}
             {skillsTab === 'soft' && (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {softSkills.map((skill, index) => (
-                  <div
-                    key={index}
-                    className="p-6 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 backdrop-blur-sm hover:shadow-xl hover:shadow-cyan-500/20 transition-all duration-300"
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="text-3xl">{skill.icon}</div>
-                      <h3 className="text-lg font-semibold text-slate-100">{skill.name}</h3>
+              <div className="max-w-4xl mx-auto">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {softSkills.map((skill, index) => (
+                    <div
+                      key={index}
+                      className="p-4 rounded-xl bg-slate-800/30 border border-slate-700/50 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 text-center"
+                    >
+                      <p className="text-slate-200 font-medium text-sm">{skill}</p>
                     </div>
-                    
-                    <div className="relative h-2 bg-slate-700/50 rounded-full overflow-hidden">
-                      <div 
-                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full transition-all duration-1000 ease-out"
-                        style={{ width: `${skill.level}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -1096,7 +1063,7 @@ export default function Portfolio() {
                       <Code className="text-cyan-400" size={24} />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-slate-100 mb-1">SDLC Best Practices</h3>
+                      <h3 className="text-lg font-semibold text-slate-100 mb-1">SDLC</h3>
                       <p className="text-sm text-slate-400">Software Development Lifecycle</p>
                     </div>
                   </div>
@@ -1145,7 +1112,7 @@ export default function Portfolio() {
               I'm always open to discussing new opportunities and innovative projects.
             </p>
             
-            <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <div className="grid md:grid-cols-2 gap-6 mb-12">
               <a
                 href="mailto:jmandalia@unr.edu"
                 className="group p-6 rounded-xl bg-slate-800/30 border border-slate-700/50 hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10"
@@ -1155,14 +1122,7 @@ export default function Portfolio() {
                 <p className="text-slate-400 text-sm">jmandalia@unr.edu</p>
               </a>
               
-              <a
-                href="tel:+17253405143"
-                className="group p-6 rounded-xl bg-slate-800/30 border border-slate-700/50 hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10"
-              >
-                <Terminal size={32} className="text-cyan-400 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
-                <h3 className="font-semibold text-slate-100 mb-2">Phone</h3>
-                <p className="text-slate-400 text-sm">+1 (725) 340-5143</p>
-              </a>
+            
 
               <button
                 onClick={downloadResume}
