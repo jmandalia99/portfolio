@@ -133,8 +133,7 @@ export default function Portfolio() {
       description: 'Built a production-ready multi-layer guardrail system to defend LLMs against prompt-injection and jailbreak attacks, achieving 88.7% attack mitigation while maintaining low-latency performance.',
       icon: Shield,
       impact: '88.7% Attack Mitigation',
-      gradient: 'from-red-500 to-orange-500',
-      github: 'https://github.com/jmandalia99/llm-guardrail-system'
+      gradient: 'from-red-500 to-orange-500'
     },
     {
       title: 'Unified LLM Security Evaluation Framework',
@@ -144,17 +143,7 @@ export default function Portfolio() {
       icon: Brain,
       impact: 'Novel Security Framework',
       gradient: 'from-purple-500 to-pink-500',
-      github: 'https://github.com/jmandalia99/llm-security-framework'
-    },
-    {
-      title: 'GenAI Chatbot with Multi-Model Routing & Observability',
-      subtitle: 'Bonus Project',
-      tech: ['Python', 'FastAPI', 'Prometheus', 'Grafana', 'Jaeger', 'Multi-Model AI'],
-      description: 'Built GenAI chatbot with multi-model routing (fast/accurate), distributed tracing via Jaeger, and real-time observability through Prometheus and Grafana for performance monitoring.',
-      icon: Sparkles,
-      impact: 'Full Observability Stack',
-      gradient: 'from-cyan-500 to-blue-500',
-      github: 'https://github.com/jmandalia99/GenAI_Bonus_Project'
+      github: 'https://github.com/jmandalia99/llm-guardrail-system'  // ← ADD THIS LINE
     },
     {
       title: 'Medical Image Classification with Self-Supervised Learning',
@@ -164,7 +153,17 @@ export default function Portfolio() {
       icon: Brain,
       impact: '2,000+ Images Processed',
       gradient: 'from-green-500 to-teal-500',
-      github: 'https://github.com/jmandalia99/medical-image-classification'
+      github: 'https://github.com/jmandalia99/llm-guardrail-system'  // ← ADD THIS LINE
+    },
+    {
+      title: 'GenAI Chatbot with Multi-Model Routing & Observability',  // ← NEW PROJECT
+      subtitle: 'Bonus Project',
+      tech: ['Python', 'FastAPI', 'Prometheus', 'Grafana', 'Jaeger', 'Multi-Model AI'],
+      description: 'Built GenAI chatbot with multi-model routing (fast/accurate), distributed tracing via Jaeger, and real-time observability through Prometheus and Grafana for performance monitoring.',
+      icon: Sparkles,
+      impact: 'Full Observability Stack',
+      gradient: 'from-cyan-500 to-blue-500',
+      github: 'https://github.com/jmandalia99/GenAI_Bonus_Project'
     },
     {
       title: 'Serverless Generative AI Web Application',
@@ -174,27 +173,25 @@ export default function Portfolio() {
       icon: Code,
       impact: 'Production Deployment',
       gradient: 'from-blue-500 to-cyan-500',
-      github: 'https://github.com/jmandalia99/recipe-ai'
+      github: 'https://github.com/jmandalia99/llm-guardrail-system'  // ← ADD THIS LINE
     },
     {
       title: 'Deep Learning for CAN Bus Intrusion Detection',
-      subtitle: 'Automotive Security',
       tech: ['PyTorch', 'LSTM', 'CNN', 'FNN'],
       description: 'Developed and evaluated FNN, 1D-CNN, and LSTM models for multi-class CAN-bus intrusion detection. Achieved 95.1% (LSTM) and 94.9% (CNN) accuracy across DoS, Fuzzy, Gear-, and RPM-spoofing attacks.',
       icon: Shield,
       impact: '95.1% Accuracy',
       gradient: 'from-amber-500 to-yellow-500',
-      github: 'https://github.com/jmandalia99/can-intrusion-detection'
+      github: 'https://github.com/jmandalia99/llm-guardrail-system'  // ← ADD THIS LINE
     },
     {
       title: 'Microcontroller-Based Data Acquisition System',
-      subtitle: 'Embedded Systems',
       tech: ['C', 'Assembly', 'ADC', 'Embedded Systems'],
       description: 'Designed microcontroller-based data acquisition system to sample and log wind and solar sensor data via ADC.',
       icon: Terminal,
       impact: 'Real-time Data Logging',
       gradient: 'from-indigo-500 to-purple-500',
-      github: 'https://github.com/jmandalia99/data-acquisition-system'
+      github: 'https://github.com/jmandalia99/llm-guardrail-system'  // ← ADD THIS LINE
     }
   ];
 
@@ -842,25 +839,11 @@ export default function Portfolio() {
                       <div className={`p-3 rounded-lg bg-gradient-to-br ${project.gradient} bg-opacity-40 border border-cyan-500/30 w-fit group-hover:shadow-lg transition-all duration-300`}>
                         <Icon size={24} className="text-white" />
                       </div>
-                      <div className="flex items-center gap-2">
-                        {project.github && (
-                          <a
-                            href={project.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-lg bg-slate-700/50 border border-slate-600/50 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 hover:bg-slate-700 transition-all"
-                            onClick={(e) => e.stopPropagation()}
-                            aria-label="View on GitHub"
-                          >
-                            <Github size={18} />
-                          </a>
-                        )}
-                        {project.impact && (
-                          <span className="px-2 py-1 rounded-md bg-cyan-500/20 border border-cyan-500/30 text-xs text-cyan-400 font-semibold">
-                            {project.impact}
-                          </span>
-                        )}
-                      </div>
+                      {project.impact && (
+                        <span className="px-2 py-1 rounded-md bg-cyan-500/20 border border-cyan-500/30 text-xs text-cyan-400 font-semibold">
+                          {project.impact}
+                        </span>
+                      )}
                     </div>
                     
                     <h3 className="text-xl font-semibold text-slate-100 mb-2 group-hover:text-cyan-400 transition-colors duration-300">
