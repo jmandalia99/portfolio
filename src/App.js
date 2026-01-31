@@ -141,7 +141,7 @@ export default function Portfolio() {
       icon: Shield,
       impact: '88.7% Attack Mitigation',
       gradient: 'from-red-500 to-orange-500',
-      github: 'https://github.com/jmandalia99/llm-guardrail-system',
+      github: 'https://github.com/jmandalia99/Multi_Layer_LLM_Guardrail_System',
       paper: 'https://drive.google.com/file/d/10MzYVQJg2qm0gSFjrZMiM_mvC6Ya9jbg/view?usp=share_link'
     },
     {
@@ -157,7 +157,6 @@ export default function Portfolio() {
       icon: Brain,
       impact: 'Novel Security Framework',
       gradient: 'from-purple-500 to-pink-500',
-      github: 'https://github.com/jmandalia99/llm-security-framework',
       paper: 'https://drive.google.com/file/d/1NVlcWF7kTYA2tkTq-ImFOUbz8w0gv8Ad/view?usp=share_link'
     },
     {
@@ -173,7 +172,7 @@ export default function Portfolio() {
       icon: Brain,
       impact: '2,000+ Images Processed',
       gradient: 'from-green-500 to-teal-500',
-      github: 'https://github.com/jmandalia99/medical-image-classification',
+      github: 'https://github.com/jmandalia99/Medical_Image_Classification_with_SSL',
       paper: 'https://drive.google.com/file/d/1BSgUK7tllo0ABwXFvLheD6wwqForQ_KW/view?usp=share_link'
     },
     {
@@ -189,7 +188,7 @@ export default function Portfolio() {
       icon: Sparkles,
       impact: 'Full Observability Stack',
       gradient: 'from-cyan-500 to-blue-500',
-      github: 'https://github.com/jmandalia99/GenAI_Bonus_Project'
+      github: 'https://github.com/jmandalia99/GenAI_Chatbot_Demo_w_Metrics'
     },
     {
       title: 'Serverless Generative AI Web Application',
@@ -204,7 +203,7 @@ export default function Portfolio() {
       icon: Code,
       impact: 'Production Deployment',
       gradient: 'from-blue-500 to-cyan-500',
-      github: 'https://github.com/jmandalia99/recipe-ai'
+      github: 'https://github.com/jmandalia99/GenAI_Recipe_AI'
     },
     {
       title: 'Deep Learning for CAN Bus Intrusion Detection',
@@ -218,7 +217,7 @@ export default function Portfolio() {
       icon: Shield,
       impact: '95.1% Accuracy',
       gradient: 'from-amber-500 to-yellow-500',
-      github: 'https://github.com/jmandalia99/can-intrusion-detection',
+      github: 'https://github.com/jmandalia99/Deep_Learning_CANBus',
       paper: 'https://drive.google.com/file/d/1ZTxMYeDHJpJ4JrPUhfZCXLZmbgVNU9wW/view?usp=share_link'
     },
     {
@@ -231,8 +230,7 @@ export default function Portfolio() {
       ],
       icon: Terminal,
       impact: 'Real-time Data Logging',
-      gradient: 'from-indigo-500 to-purple-500',
-      github: 'https://github.com/jmandalia99/data-acquisition-system'
+      gradient: 'from-indigo-500 to-purple-500'
     }
   ];
 
