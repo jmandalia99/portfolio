@@ -302,6 +302,7 @@ export default function Portfolio() {
   const achievements = [
     'Nominated "Women Engineer of the Year" (Digital Engineering Awards 2023)',
     'Built secure OTA & bench setups enabling ICAT certification and EMI-EMC compliance',
+    '"Highest Potential Employee Nominee" Recognized across the entire PE Department at MG Motor for exceptional performance, ownership, and long-term impact.',
     'Contributed to MG ASTOR\'s CSI Rank #1 by resolving nationwide infotainment & telematics issues',
     'Recognized for highest idea submissions in new-gen feature development at MG Motor'
   ];
@@ -1117,18 +1118,6 @@ export default function Portfolio() {
                 </div>
               </div>
 
-              <div className="p-6 rounded-xl bg-slate-800/30 border border-slate-700/50 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30">
-                    <Code className="text-cyan-400" size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-slate-100 mb-1">Python Bootcamp</h3>
-                    <p className="text-sm text-slate-400">Advanced Python Programming</p>
-                  </div>
-                </div>
-              </div>
-
               <div 
                 onClick={() => openCertificate('DevOps')}
                 className="p-6 rounded-xl bg-slate-800/30 border border-slate-700/50 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 cursor-pointer group"
@@ -1164,6 +1153,18 @@ export default function Portfolio() {
                   <ExternalLink className="text-slate-400 group-hover:text-cyan-400 transition-colors flex-shrink-0" size={20} />
                 </div>
               </div>
+              <div className="p-6 rounded-xl bg-slate-800/30 border border-slate-700/50 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30">
+                    <Code className="text-cyan-400" size={24} />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-100 mb-1">Python Bootcamp</h3>
+                    <p className="text-sm text-slate-400">Advanced Python Programming</p>
+                  </div>
+                </div>
+              </div>
+              
             </div>
           </div>
         </section>
