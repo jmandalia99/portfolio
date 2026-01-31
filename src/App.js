@@ -82,8 +82,9 @@ export default function Portfolio() {
       highlights: [
         'Built multi-layer LLM guardrail system achieving 88.7% attack mitigation on AdvBench and JailbreakBench',
         'Developed unified LLM security evaluation framework assessing adaptivity, transferability, stealth, and attacker cost',
+        'Developed a GenAI-powered chatbot integrated with LLM guardrails to deliver safe, reliable, and context-aware responses',
         'Evaluated transfer learning vs. self-supervised learning for medical image classification with 2,000+ images',
-        'Designed PyTorch-based ML pipelines covering data preprocessing, training, evaluation, and experimentation'
+        'Designed PyTorch-based ML pipelines covering data preprocessing, training, evaluation, and experimentation',
       ]
     },
     {
@@ -1164,7 +1165,7 @@ export default function Portfolio() {
                   </div>
                 </div>
               </div>
-              
+
             </div>
           </div>
         </section>
