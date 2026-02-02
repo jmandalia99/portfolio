@@ -255,35 +255,68 @@ export default function Portfolio() {
     { name: 'OTA Security', level: 85, color: 'from-red-400 to-orange-400' },
     { name: 'Data Structures', level: 90, color: 'from-purple-400 to-indigo-400' },
     { name: 'OOP', level: 90, color: 'from-blue-500 to-purple-500' },
-    { name: 'Operating Systems', level: 80, color: 'from-slate-400 to-slate-600' },
     { name: 'Networking', level: 75, color: 'from-teal-500 to-cyan-500' },
+    { name: 'React.js', level: 75, color: 'from-cyan-400 to-blue-400' },
+    { name: 'Node.js', level: 75, color: 'from-green-500 to-emerald-500' },
+    { name: 'REST APIs', level: 75, color: 'from-indigo-400 to-purple-400' },
     { name: 'C++', level: 85, color: 'from-blue-500 to-purple-500' },
-    { name: 'C', level: 80, color: 'from-slate-500 to-blue-500' },
     { name: 'MATLAB', level: 75, color: 'from-orange-400 to-red-400' }
   ];
 
-  const techStack = [
+  const technologyStack = {
+  'Core Tech': [
     { name: 'Python', icon: '🐍' },
+    { name: 'C++', icon: '⚙️' },
+    { name: 'C', icon: '©️' },
+    { name: 'JavaScript', icon: '📜' },
+    { name: 'MATLAB', icon: '📊' },
     { name: 'PyTorch', icon: '🔥' },
     { name: 'TensorFlow', icon: '🧠' },
+    { name: 'Keras', icon: '🎯' },
+    { name: 'Scikit-learn', icon: '🔬' },
+    { name: 'Hugging Face', icon: '🤗' }
+  ],
+  'Cloud & DevOps': [
     { name: 'AWS', icon: '☁️' },
-    { name: 'Docker', icon: '🐳' },
-    { name: 'Git', icon: '📦' },
-    { name: 'React', icon: '⚛️' },
-    { name: 'CANoe', icon: '🚗' },
-    { name: 'Jenkins', icon: '🔧' },
-    { name: 'Kubernetes', icon: '☸️' },
-    { name: 'VSCode', icon: '💻' },
-    { name: 'Jupyter', icon: '📓' },
-    { name: 'NumPy', icon: '🔢' },
     { name: 'Azure', icon: '☁️' },
-    { name: 'Pandas', icon: '🐼' },
-    { name: 'OpenCV', icon: '👁️' },
-    { name: 'JIRA', icon: '📋' },
-    { name: 'C++', icon: '⚙️' },
+    { name: 'Docker', icon: '🐳' },
+    { name: 'Kubernetes', icon: '☸️' },
+    { name: 'Jenkins', icon: '🔧' },
+    { name: 'Git', icon: '📦' },
+    { name: 'GitHub Actions', icon: '⚡' },
+    { name: 'AWS Amplify', icon: '⚡' },
+    { name: 'AWS Bedrock', icon: '🪨' },
+    { name: 'AWS Lambda', icon: 'λ' }
+  ],
+  'AI Tools & Dev Env': [
+    { name: 'Ollama', icon: '🦙' },
+    { name: 'LangChain', icon: '⛓️' },
+    { name: 'Claude API', icon: '🤖' },
+    { name: 'OpenAI API', icon: '🧠' },
+    { name: 'VSCode', icon: '💻' },
     { name: 'Linux', icon: '🐧' },
-    { name: 'DevOps', icon: '🔄' }
-  ];
+    { name: 'Postman', icon: '📮' }
+  ],
+  'Full-Stack & Data': [
+    { name: 'React', icon: '⚛️' },
+    { name: 'Node.js', icon: '🟢' },
+    { name: 'REST APIs', icon: '🔌' },
+    { name: 'NumPy', icon: '🔢' },
+    { name: 'Pandas', icon: '🐼' },
+    { name: 'Matplotlib', icon: '📈' },
+    { name: 'Jupyter', icon: '📓' },
+    { name: 'OpenCV', icon: '👁️' }
+  ],
+  'Automotive & Monitoring': [
+    { name: 'CANoe', icon: '🚗' },
+    { name: 'Vehicle Spy', icon: '🔍' },
+    { name: 'JIRA', icon: '📋' },
+    { name: 'ECU Testing', icon: '🔌' },
+    { name: 'Grafana', icon: '📊' },
+    { name: 'Prometheus', icon: '🔥' },
+    { name: 'Jaeger', icon: '🔎' }
+  ]
+};
 
   const softSkills = [
     'Leadership',
@@ -319,7 +352,7 @@ export default function Portfolio() {
 
   const downloadResume = () => {
   // Replace with YOUR actual Google Drive file ID
-  const GOOGLE_DRIVE_FILE_ID = '1sficxGiqnRrKpSXuBzs3M38p2l79MnA6'; 
+  const GOOGLE_DRIVE_FILE_ID = '1zT3zBsVLGFe-h9z4tTlOCKQ9YKr6-a-k'; 
   const resumeUrl = `https://drive.google.com/uc?export=download&id=${GOOGLE_DRIVE_FILE_ID}`;
   
   // Track resume download in Google Analytics
@@ -991,7 +1024,7 @@ export default function Portfolio() {
                       : 'text-slate-400 hover:text-cyan-400'
                   }`}
                 >
-                  Technical Expertise
+                  Tech Expertise
                 </button>
                 <button
                   onClick={() => setSkillsTab('tech-stack')}
@@ -1001,7 +1034,7 @@ export default function Portfolio() {
                       : 'text-slate-400 hover:text-cyan-400'
                   }`}
                 >
-                  Technology Stack
+                  Tech Stack
                 </button>
                 <button
                   onClick={() => setSkillsTab('soft')}
@@ -1018,7 +1051,7 @@ export default function Portfolio() {
 
             {/* Technical Expertise Tab - Smaller Cards */}
             {skillsTab === 'technical' && (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-5">
                 {technicalSkills.map((skill, index) => (
                   <div
                     key={index}
@@ -1038,21 +1071,39 @@ export default function Portfolio() {
                 ))}
               </div>
             )}
-
-            {/* Technology Stack Tab - Smaller Cards */}
+            {/* Technology Stack Tab - 5 Columns, 2 Items Per Row */}
             {skillsTab === 'tech-stack' && (
-              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                {techStack.map((tech, index) => (
-                  <div
-                    key={index}
-                    className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/50 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 text-center"
+              <div className="grid grid-cols-5 gap-3">
+                {Object.entries(technologyStack).map(([category, tools]) => (
+                  <div 
+                    key={category} 
+                    className="bg-slate-800/20 rounded-lg p-2.5 border border-slate-700/30"
                   >
-                    <div className="text-2xl mb-1.5">{tech.icon}</div>
-                    <p className="text-xs font-medium text-slate-200">{tech.name}</p>
+                    {/* Category Header */}
+                    <h3 className="text-[10px] font-semibold text-cyan-400 mb-2 text-center">
+                      {category}
+                    </h3>
+                    
+                    {/* 2 Items Per Row Grid */}
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {tools.map((tech, index) => (
+                        <div
+                          key={index}
+                          className="p-1 rounded bg-slate-800/40 border border-slate-700/40 hover:border-cyan-500/50 transition-all text-center"
+                          title={tech.name}
+                        >
+                          <div className="text-base">{tech.icon}</div>
+                          <p className="text-[8px] text-slate-300 mt-0.5 truncate leading-tight">
+                            {tech.name}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
             )}
+
 
             {/* Soft Skills Tab */}
             {skillsTab === 'soft' && (
