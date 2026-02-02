@@ -1071,29 +1071,28 @@ export default function Portfolio() {
                 ))}
               </div>
             )}
-            {/* Technology Stack Tab - 5 Columns, 2 Items Per Row */}
+            {/* Technology Stack Tab - Responsive Grid */}
             {skillsTab === 'tech-stack' && (
-              <div className="grid grid-cols-5 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                 {Object.entries(technologyStack).map(([category, tools]) => (
                   <div 
                     key={category} 
-                    className="bg-slate-800/20 rounded-lg p-2.5 border border-slate-700/30"
+                    className="bg-slate-800/20 rounded-lg p-3 border border-slate-700/30"
                   >
                     {/* Category Header */}
-                    <h3 className="text-[10px] font-semibold text-cyan-400 mb-2 text-center">
+                    <h3 className="text-xs sm:text-sm font-semibold text-cyan-400 mb-3 text-center">
                       {category}
                     </h3>
-                    
                     {/* 2 Items Per Row Grid */}
-                    <div className="grid grid-cols-2 gap-1.5">
+                    <div className="grid grid-cols-2 gap-2">
                       {tools.map((tech, index) => (
                         <div
                           key={index}
-                          className="p-1 rounded bg-slate-800/40 border border-slate-700/40 hover:border-cyan-500/50 transition-all text-center"
+                          className="p-2 rounded bg-slate-800/40 border border-slate-700/40 hover:border-cyan-500/50 transition-all text-center"
                           title={tech.name}
                         >
-                          <div className="text-base">{tech.icon}</div>
-                          <p className="text-[8px] text-slate-300 mt-0.5 truncate leading-tight">
+                          <div className="text-xl sm:text-2xl">{tech.icon}</div>
+                          <p className="text-[9px] sm:text-[10px] text-slate-300 mt-1 truncate leading-tight">
                             {tech.name}
                           </p>
                         </div>
