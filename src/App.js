@@ -303,7 +303,7 @@ export default function Portfolio() {
   const achievements = [
     'Nominated "Women Engineer of the Year" (Digital Engineering Awards 2023)',
     'Built secure OTA & bench setups enabling ICAT certification and EMI-EMC compliance',
-    '"Highest Potential Employee Nominee" Recognized across the entire PE Department at MG Motor for exceptional performance, ownership, and long-term impact.',
+    '"Highest Potential Employee" Recognized across the entire PE Department at MG Motor for exceptional performance, ownership, and long-term impact.',
     'Contributed to MG ASTOR\'s CSI Rank #1 by resolving nationwide infotainment & telematics issues',
     'Recognized for highest idea submissions in new-gen feature development at MG Motor'
   ];
@@ -721,15 +721,15 @@ export default function Portfolio() {
                       <ul className="space-y-2">
                         <li className="flex items-start text-slate-300">
                           <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 mr-3 flex-shrink-0" />
-                          <span>Led undergraduate Physics I laboratory sessions covering mechanics and thermodynamics</span>
+                          <span>Leading undergraduate Physics I laboratory sessions covering mechanics and thermodynamics</span>
                         </li>
                         <li className="flex items-start text-slate-300">
                           <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 mr-3 flex-shrink-0" />
-                          <span>Mentored <strong className="text-cyan-400">40+ students</strong> in hands-on system troubleshooting</span>
+                          <span>Mentoring <strong className="text-cyan-400">45 students</strong> in hands-on system troubleshooting</span>
                         </li>
                         <li className="flex items-start text-slate-300">
                           <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 mr-3 flex-shrink-0" />
-                          <span>Facilitated practical understanding of complex physics concepts through interactive demonstrations</span>
+                          <span>Facilitating practical understanding of complex physics concepts through interactive demonstrations</span>
                         </li>
                       </ul>
                     </div>
@@ -758,7 +758,7 @@ export default function Portfolio() {
                       <ul className="space-y-2">
                         <li className="flex items-start text-slate-300">
                           <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 mr-3 flex-shrink-0" />
-                          <span>Guided first-year engineering students through hands-on design labs</span>
+                          <span>Guided first-year engineering <strong className="text-cyan-400">90 students </strong> through hands-on design labs</span>
                         </li>
                         <li className="flex items-start text-slate-300">
                           <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 mr-3 flex-shrink-0" />
