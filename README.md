@@ -35,7 +35,6 @@ Reports: https://analytics.google.com
   `project_name`, `role`, `ref`, `from`, `certificate`, `stage`.
 
 ## Routes & Roots (dance site)
-The Bharatanatyam site and its tools live in `public/dance/` → https://www.jinalmandalia.com/dance/
-(`index.html`, `taal/`, `hasta-trainer/`, `hasta-performer/`). The old `/taal/`, `/hasta-trainer/`,
-`/hasta-performer/` addresses forward there. The dance card on the main site links to `bharatanatyam.site`
-in `src/content.js`.
+The Bharatanatyam site and its tools live in their own repo, jmandalia99/routes-and-roots →
+https://dance.jinalmandalia.com. The old addresses here (`/dance/`, `/taal/`, `/hasta-trainer/`,
+`/hasta-performer/`) just forward there. The dance card links to `bharatanatyam.site` in `src/content.js`.
