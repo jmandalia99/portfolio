@@ -22,9 +22,10 @@ export const hero = {
     'Automotive & Embedded Systems',
     'AI/ML Research',
   ],
-  headline: 'Technical program and release lead — delivering connected products from firmware to cloud.',
+  // **double stars** make a word bold anywhere on the site
+  headline: 'Technical program and release lead — delivering **connected products** from **firmware to cloud**.',
   intro:
-    'Nearly four years delivering connected-vehicle and device programs across firmware, apps, and cloud. Currently pursuing an M.S. in Computer Science while owning delivery of the Phase Connect app at Phase Technologies.',
+    '**~4 years** delivering connected-vehicle and device programs. Today I own delivery of the **Phase Connect app** at Phase Technologies while finishing my **M.S. in Computer Science** (Dec 2026).',
 };
 
 export const numbers = [
@@ -32,24 +33,21 @@ export const numbers = [
   { value: 22, suffix: '+', label: 'Software releases led at MG Motor' },
   { value: 20000, suffix: '+', label: 'Vehicles reached by those releases' },
   { value: 120, suffix: '+', label: 'Issues driven to closure' },
-  { value: 75.3, suffix: '%', decimals: 1, label: 'Fewer image tokens in my thesis experiments' },
+  { value: 92.9, suffix: '%', decimals: 1, label: 'Fewer AI input tokens in my thesis' },
 ];
 
+// Shown on the back of the photo (click the photo in the hero).
 export const about = {
-  title: 'My journey across engineering, software delivery, and AI',
-  paragraphs: [
-    'I began with a bachelor’s degree in Electrical Engineering at The Maharaja Sayajirao University of Baroda in India.',
-    'My first professional role was at MG Motor, where I tested vehicle features such as navigation, Bluetooth, driver assistance, and connected services. I later became Deputy Manager for Infotainment and Telematics, taking responsibility for software releases, supplier coordination, testing, and critical problems reported in customer vehicles.',
-    'At Matter Motor Works, my work moved toward defining complete systems: the requirements, team responsibilities, security, and update flow needed to deliver vehicle software remotely.',
-    'In January 2025, I began my M.S. in Computer Science at the University of Nevada, Reno, where my research looks at how much visual input a cloud AI model really needs for a task. Since May 2026, I have also been a Software Developer at Phase Technologies in Rapid City, where I own the delivery of the Phase Connect app.',
+  title: 'Engineer turned program lead',
+  lines: [
+    'Started in **Electrical Engineering**, then grew at **MG Motor** from testing features to **leading infotainment & telematics releases**.',
+    'Defined the **OTA update program** at Matter Motor Works; now I own delivery of the **Phase Connect app**.',
+    'Finishing an **M.S. in Computer Science** at UNR — researching **cheaper cloud AI** and teaching **135 students** as a TA.',
   ],
-  closing:
-    'Across these roles, I work on both the technical details and the coordination needed to deliver a product: understanding requirements, connecting teams, investigating failures, and checking that a release is ready.',
   glance: [
-    { k: 'Now', v: 'Software Developer, Phase Technologies' },
-    { k: 'Studying', v: 'M.S. Computer Science, UNR · Dec 2026' },
-    { k: 'Teaching', v: 'Graduate TA · 135 students in labs' },
-    { k: 'Focus', v: 'Releases, validation & connected devices' },
+    { k: 'Now', v: 'Phase Technologies' },
+    { k: 'Studying', v: 'M.S. CS · UNR · Dec 2026' },
+    { k: 'Teaching', v: 'Graduate TA · 135 students' },
     { k: 'Looking for', v: 'Technical Program Manager roles' },
   ],
 };
@@ -62,17 +60,14 @@ export const journey = [
     place: 'Rapid City, SD',
     role: 'Software Developer',
     org: 'Phase Technologies',
-    theme: 'Bringing Phase Connect to release readiness',
-    summary:
-      'I own end-to-end delivery of Phase Connect, the company’s iOS and Android app for commissioning and controlling power-electronics field devices.',
+    theme: 'Bringing Phase Connect to release',
+    summary: 'I own **end-to-end delivery** of Phase Connect, the iOS & Android app for commissioning power-electronics field devices.',
     points: [
-      'Took the app from non-functional to release-ready, working across the firmware, hardware, and cloud teams.',
-      'Defined the device interface with firmware over BLE (Bluetooth Low Energy, using binary Protobuf messages) and Modbus, and built the MQTT link to the cloud.',
-      'Defined the release process: automated versioning and release notes, merge-request review, and forced app updates.',
-      'Run bug and release tracking, and test every release on real field devices.',
-      'Introduced an AI-assisted workflow for features, test cases, unit tests, and review on every merge request.',
+      'Took the app from **non-functional to release-ready** across firmware, hardware and cloud teams.',
+      'Set up the **release process** — versioning, release notes, review gates and forced updates.',
+      'Run **bug & release tracking** and test every release on **real field devices**.',
     ],
-    tools: ['iOS & Android', 'BLE', 'Protobuf', 'Modbus', 'MQTT', 'Release process'],
+    tools: ['iOS & Android', 'BLE', 'MQTT', 'Modbus', 'Release process'],
   },
   {
     year: '2025',
@@ -81,19 +76,17 @@ export const journey = [
     role: 'Graduate Teaching Assistant',
     org: 'University of Nevada, Reno',
     theme: 'Teaching 135 students in hands-on labs',
-    summary:
-      'Alongside my research, I led hands-on lab sessions for 135 undergraduate students across two courses.',
+    summary: 'Led hands-on lab sessions for **135 undergraduates** across two courses.',
     stats: [
       ['135', 'students'],
       ['90', 'in ENGR 100'],
       ['45', 'in Physics I'],
     ],
     points: [
-      'ENGR 100 — Introduction to Engineering (Fall 2025): guided 90 first-year students through hands-on design labs spanning Computer Science, Mechanical, Chemical, and Biomedical Engineering.',
-      'Applied Physics (Spring 2026): led Physics I lab sessions on mechanics and thermodynamics for 45 students, mentoring them in hands-on troubleshooting.',
-      'Explained complex ideas through interactive demonstrations, and encouraged interdisciplinary thinking and problem solving.',
+      '**ENGR 100** (Fall 2025): guided **90 first-year students** through engineering design labs.',
+      '**Physics I labs** (Spring 2026): mechanics and thermodynamics for **45 students**.',
     ],
-    tools: ['Teaching', 'Mentoring', 'Lab leadership', 'Communication'],
+    tools: ['Teaching', 'Mentoring', 'Lab leadership'],
   },
   {
     year: '2025',
@@ -101,17 +94,14 @@ export const journey = [
     place: 'Reno, NV',
     role: 'AI/ML Researcher',
     org: 'University of Nevada, Reno',
-    theme: 'Researching how much a cloud AI model needs to see',
-    summary:
-      'My M.S. thesis studies how a device can send less visual input to a cloud vision-language model while keeping the evidence the task needs.',
+    theme: 'How much does a cloud AI model need to see?',
+    summary: 'My thesis cuts the **visual input sent to cloud AI** while keeping the evidence a task needs.',
     points: [
-      'Thesis: task-aware selection of images and video frames on the device, from single images to short heart-ultrasound clips and hours-long capsule-endoscopy video.',
-      'Built evaluation sets from labeled data (EchoNet-Dynamic, Kvasir-Capsule, Galar) with locked test sets and cross-validation.',
-      'Ran multi-model evaluations (3 Gemini models × 60 images × 4 strategies); failure reviews caught a model bias and a frame-selection method that dropped key diagnostic frames, which led to a redesigned selector.',
-      'Trained LSTM, CNN, and FNN models on labeled CAN traffic to detect intrusions in vehicle networks (95.1% accuracy).',
-      'Built a multi-layer guardrail system that defends large language models against prompt-injection and jailbreak attacks (88.7% attack mitigation), and a framework for evaluating LLM security.',
+      'Up to **92.9% fewer input tokens** on long medical video; **75.3% fewer** on single images.',
+      'Built **evaluation sets and failure reviews** that caught a model bias and led to a redesigned selector.',
+      'Also built **CAN-bus intrusion detection (95.1%)** and an **LLM guardrail system (88.7%)**.',
     ],
-    tools: ['Python', 'PyTorch', 'Gemini API', 'Evaluation design', 'Computer vision', 'LLM security'],
+    tools: ['Python', 'PyTorch', 'Gemini API', 'Evaluation design'],
   },
   {
     year: '2024',
@@ -119,14 +109,12 @@ export const journey = [
     place: 'India',
     role: 'Engineer, Infotainment & Cluster Systems',
     org: 'Matter Motor Works',
-    theme: 'Defining remote updates from the cloud to the vehicle',
-    summary:
-      'I owned the definition of the OTA (over-the-air) update program — how new software travels from the cloud into the vehicle.',
+    theme: 'Defining over-the-air updates',
+    summary: 'I owned the definition of the **OTA (over-the-air) update program** — how software travels from cloud to vehicle.',
     points: [
-      'Wrote the complete OTA requirements across the web portal, cloud, and vehicle software, and assigned each team’s responsibilities.',
-      'Designed the end-to-end OTA architecture and update flow with secure authentication and Azure DevOps CI/CD from build to vehicle, and validated it on ECUs. The design was later used to launch OTA updates in vehicles.',
-      'Wrote instrument-cluster requirements to government regulatory norms.',
-      'Built secure vehicle-to-cloud provisioning for Map and SIM services, and ran DFMEA to reduce failure modes early.',
+      'Wrote the **complete OTA requirements** and split responsibilities across portal, cloud and vehicle teams.',
+      'Designed the **end-to-end update flow** with secure authentication and CI/CD — later used to **launch OTA in vehicles**.',
+      'Wrote **instrument-cluster requirements** to regulatory norms and ran **DFMEA**.',
     ],
     tools: ['OTA', 'Azure DevOps', 'CI/CD', 'Requirements', 'DFMEA'],
   },
@@ -137,25 +125,19 @@ export const journey = [
     role: 'Deputy Manager, Infotainment & Telematics',
     org: 'JSW MG Motor India',
     theme: 'Leading releases and solving field problems',
-    summary:
-      'I owned the infotainment and telematics software release roadmap for the MG Astor, across factory production and OTA releases.',
+    summary: 'I owned the **infotainment & telematics release roadmap** for the MG Astor.',
     stats: [
       ['22+', 'releases'],
       ['20,000+', 'vehicles'],
-      ['5', 'team members'],
       ['3', 'suppliers'],
       ['120+', 'issues closed'],
-      ['8+', 'field issues solved'],
     ],
     points: [
-      'Led 22+ software releases to 20,000+ vehicles; managed a team of five for testing and flashing, gated each release with a plant production trial run (PTR), and reported to General Managers and Directors.',
-      'Managed three suppliers (infotainment software, maps, and cameras), including China-based teams across time zones, on builds, release schedules, and defect fixes.',
-      'Drove 120+ issues to closure in JIRA and Azure DevOps.',
-      'Development lead for infotainment, telematics, and the AI talking-robot feature, and designed next-generation infotainment and telematics features.',
-      'Resolved 8+ critical field issues on-site in Delhi, Mumbai, and Hyderabad — debugging customer vehicles from logs and driving root cause and corrective fixes with suppliers.',
-      'Built CANoe and Vehicle Spy ECU test benches enabling ICAT certification and EMI-EMC compliance, and took the camera system through certification testing at ICAT.',
+      'Led **22+ releases to 20,000+ vehicles**, gating each with a **plant production trial run**; managed a **team of five**.',
+      'Managed **3 suppliers**, including China-based teams, on builds, schedules and defect fixes.',
+      'Solved **8+ critical field issues** on-site, driving root cause and fixes with suppliers.',
     ],
-    tools: ['Release management', 'Supplier management', 'JIRA', 'Vector CANoe', 'Vehicle Spy'],
+    tools: ['Release management', 'Supplier management', 'JIRA', 'Vector CANoe'],
   },
   {
     year: '2021',
@@ -163,15 +145,13 @@ export const journey = [
     place: 'India',
     role: 'Graduate Engineer Trainee',
     org: 'JSW MG Motor India',
-    theme: 'Testing the features people use in a vehicle',
-    summary:
-      'I began my career validating vehicle features and checking whether they worked as expected before they reached customers.',
+    theme: 'Testing what drivers use every day',
+    summary: 'Started my career **validating vehicle features** before they reached customers.',
     points: [
-      'Validated ADAS (advanced driver-assistance systems), navigation, multimedia, and Bluetooth.',
-      'Validated telematics features, including emergency calling (e-Call) and remote vehicle control.',
-      'Automated JIRA bug tracking to support recording and following up on software problems.',
+      'Validated **ADAS, navigation, multimedia and Bluetooth**.',
+      'Validated **telematics** — emergency calling (e-Call) and remote vehicle control.',
     ],
-    tools: ['Verification & validation', 'ADAS', 'Telematics', 'JIRA'],
+    tools: ['Verification & validation', 'ADAS', 'Telematics'],
   },
   {
     year: '2017',
@@ -180,48 +160,45 @@ export const journey = [
     role: 'B.E. Electrical Engineering',
     org: 'The Maharaja Sayajirao University of Baroda',
     theme: 'Electrical engineering foundation',
-    summary:
-      'My electrical engineering education gave me the foundation for working with physical devices, control systems, and the software around them.',
-    points: ['Graduated with a CGPA of 8.72 / 10.', 'Later applied this foundation to automotive electronics and connected products.'],
+    summary: 'Graduated with **CGPA 8.72 / 10** — my foundation for devices, control systems and embedded electronics.',
+    points: [],
     tools: ['Electrical engineering', 'Embedded systems'],
   },
 ];
 
 export const research = {
-  title: 'Reducing the Visual Tax',
-  subtitle:
-    'Task-Aware Visual Input Selection for Cloud Vision-Language Models, from Images to Long Medical Video',
-  meta: 'M.S. thesis · University of Nevada, Reno · Advisor: Dr. Rui Hu · December 2026',
+  title: 'Sending cloud AI only what it needs to see',
+  official: 'Reducing the Visual Tax: Task-Aware Visual Input Selection for Cloud Vision-Language Models, from Images to Long Medical Video',
+  meta: 'M.S. thesis · University of Nevada, Reno · Advisor: Dr. Rui Hu · Dec 2026',
   plain:
-    'Every image or video frame sent to a cloud AI model costs input tokens, time, and bandwidth — I call this the “visual tax.” My thesis asks how the sending device can choose what to send, so the cloud model receives much less input but still sees the evidence the task needs.',
+    'Every image or video frame sent to a cloud AI model costs **tokens, time and bandwidth**. My thesis lets the **device decide what to send**, so the model gets **far less input** but still sees what the task needs.',
   stages: [
     {
       key: 'image',
       label: 'One image',
       lever: 'Ask for the right resolution',
-      result: '75.3% fewer image tokens',
-      detail:
-        'On 250 screenshot tasks, requesting low resolution cut the logged image tokens by 75.3%, with the mean task score changing by only −0.4%. On 150 medical images the drop was 1.7%, but with wider uncertainty.',
+      big: '75.3%',
+      unit: 'fewer image tokens',
+      note: 'Task score changed by only **−0.4%** across 250 tasks.',
     },
     {
       key: 'short',
       label: 'Short video',
       lever: 'Pick the frames that matter',
-      result: '4 frames out of 177',
-      detail:
-        'For heart-ultrasound (echocardiography) clips, a selector with no learned parameters keeps 4 frames and places them closer to the labelled cardiac phases than uniform sampling, evaluated on 1,276 studies.',
+      big: '4 of 177',
+      unit: 'frames sent',
+      note: 'Heart-ultrasound clips — closer to the key cardiac phases than even sampling, on **1,276 studies**.',
     },
     {
       key: 'long',
       label: 'Long video',
-      lever: 'Score on device, send a montage',
-      result: '92.9% fewer input tokens',
-      detail:
-        'For hours-long capsule-endoscopy video, a ResNet-18 scorer on the device picks 16 frames and packs them into one montage image — 92.9% fewer input tokens than sending them separately. From these montages the cloud model flagged 17 of 21 studies with findings, versus 4 of 21 with uniformly chosen frames.',
+      lever: 'Score on device, send one montage',
+      big: '92.9%',
+      unit: 'fewer input tokens',
+      note: 'Hours-long capsule video — flagged **17 of 21** studies with findings, vs **4 of 21** with even sampling.',
     },
   ],
-  honest:
-    'These results support budgeted evidence selection and large reductions in visual input. They do not establish reliable diagnosis — the clinician stays responsible for the review.',
+  honest: 'A research result, not a diagnostic tool — the clinician stays responsible for the review.',
 };
 
 // Shown in the Projects section. `type` decides which filter tab it appears under.
@@ -232,13 +209,12 @@ export const projects = [
     type: 'ai',
     label: 'AI security · Research',
     impact: '88.7% attack mitigation',
-    short: 'A defense-in-depth system that protects large language models against prompt-injection and jailbreak attacks while keeping latency low.',
+    short: 'Protects large language models from **prompt-injection and jailbreak** attacks.',
     points: [
-      'Engineered a defense-in-depth architecture with input filters before the model and safety guardrails after generation.',
-      'Achieved an 88.7% defense rate on the AdvBench and JailbreakBench benchmarks while keeping latency deployment-feasible.',
-      'Integrated the guardrails into a GenAI chatbot to deliver safe, context-aware responses.',
+      'Layered defense: **input filters** before the model and **safety checks** after it.',
+      '**88.7% defense rate** on AdvBench and JailbreakBench with low added latency.',
     ],
-    tech: ['PyTorch', 'Python', 'LLM security', 'AdvBench', 'JailbreakBench'],
+    tech: ['PyTorch', 'Python', 'LLM security'],
     github: 'https://github.com/jmandalia99/Multi_Layer_LLM_Guardrail_System',
     paper: 'https://drive.google.com/file/d/10MzYVQJg2qm0gSFjrZMiM_mvC6Ya9jbg/view?usp=share_link',
   },
@@ -248,11 +224,10 @@ export const projects = [
     type: 'ai',
     label: 'AI security · Research',
     impact: '6-dimension framework',
-    short: 'A framework for judging how vulnerable LLM applications are to malicious instructions hidden in untrusted content.',
+    short: 'A framework for judging how **vulnerable LLM apps** are to hidden malicious instructions.',
     points: [
-      'Studied how LLM applications can be attacked through instructions embedded in untrusted content.',
-      'Defined six evaluation dimensions: success granularity, adaptivity, contextual embedding, transferability, stealth, and attacker cost.',
-      'Identified gaps in static benchmarks and proposed adaptive testing that better reflects real deployment risk.',
+      'Defined **six evaluation dimensions**, from stealth and adaptivity to attacker cost.',
+      'Showed gaps in static benchmarks and proposed **adaptive testing** closer to real risk.',
     ],
     tech: ['Python', 'AI security', 'Evaluation design'],
     paper: 'https://drive.google.com/file/d/1NVlcWF7kTYA2tkTq-ImFOUbz8w0gv8Ad/view?usp=share_link',
@@ -263,13 +238,12 @@ export const projects = [
     type: 'ai',
     label: 'Computer vision · Research',
     impact: '2,000+ images',
-    short: '“From Cats to Cysts” — comparing ImageNet transfer learning with self-supervised learning for breast-density classification in mammograms.',
+    short: '“From Cats to Cysts” — **transfer learning vs self-supervised learning** on mammograms.',
     points: [
-      'Compared ImageNet transfer learning with self-supervised learning (MAE and MoCo) for breast-density classification in mammography.',
-      'Pretrained the self-supervised models on 2,000+ unlabeled medical images.',
-      'Found that supervised transfer learning (59.4% accuracy) still outperforms self-supervised learning on small medical datasets.',
+      'Pretrained self-supervised models (MAE, MoCo) on **2,000+ unlabeled medical images**.',
+      'Found **supervised transfer learning (59.4%)** still wins on small medical datasets.',
     ],
-    tech: ['PyTorch', 'MAE', 'MoCo', 'Transfer learning', 'Computer vision'],
+    tech: ['PyTorch', 'MAE', 'MoCo', 'Computer vision'],
     github: 'https://github.com/jmandalia99/Medical_Image_Classification_with_SSL',
     paper: 'https://drive.google.com/file/d/1BSgUK7tllo0ABwXFvLheD6wwqForQ_KW/view?usp=share_link',
   },
@@ -279,10 +253,10 @@ export const projects = [
     type: 'auto',
     label: 'Automotive security',
     impact: '95.1% accuracy',
-    short: 'Detecting attacks on a vehicle’s internal network (CAN bus) with deep learning models.',
+    short: 'Detecting **attacks on a vehicle’s internal network** with deep learning.',
     points: [
-      'Compared FNN, 1D-CNN, and LSTM models for multi-class CAN-bus intrusion detection, with a preprocessing pipeline for feature selection, normalization, and sequencing.',
-      'Reached 95.1% (LSTM) and 94.9% (CNN) accuracy across DoS, fuzzing, gear-spoofing, and RPM-spoofing attacks, outperforming the FNN baseline.',
+      'Compared **FNN, CNN and LSTM** models on DoS, fuzzing and spoofing attacks.',
+      '**95.1% (LSTM)** and **94.9% (CNN)** accuracy, beating the FNN baseline.',
     ],
     tech: ['PyTorch', 'LSTM', 'CNN', 'CAN'],
     github: 'https://github.com/jmandalia99/Deep_Learning_CANBus',
@@ -294,13 +268,12 @@ export const projects = [
     type: 'cloud',
     label: 'Generative AI · Cloud',
     impact: 'Full observability stack',
-    short: 'A chatbot that routes each question to a fast or an accurate model, with tracing and live performance dashboards.',
+    short: 'A chatbot that **routes each question** to a fast or an accurate model, with live dashboards.',
     points: [
-      'Built a full-stack GenAI chatbot with dynamic routing between fast and accurate models.',
-      'Added distributed tracing with Jaeger and real-time metrics with Prometheus and Grafana.',
-      'Compared latency and performance across different LLM configurations.',
+      '**Dynamic routing** between fast and accurate models.',
+      '**Tracing and live metrics** with Jaeger, Prometheus and Grafana.',
     ],
-    tech: ['Python', 'FastAPI', 'Prometheus', 'Grafana', 'Jaeger'],
+    tech: ['Python', 'FastAPI', 'Prometheus', 'Grafana'],
     github: 'https://github.com/jmandalia99/GenAI_Chatbot_Demo_w_Metrics',
   },
   {
@@ -309,13 +282,12 @@ export const projects = [
     type: 'cloud',
     label: 'Generative AI · Cloud',
     impact: 'Deployed on AWS',
-    short: 'A serverless web app that turns natural-language requests into recipes using Claude 3 Sonnet on Amazon Bedrock.',
+    short: 'Turns plain-language requests into recipes using **Claude on Amazon Bedrock**.',
     points: [
-      'Built a full-stack serverless app with React (Vite), AWS Amplify, and Amazon Bedrock.',
-      'Added secure sign-in with Amazon Cognito and a CI/CD pipeline from GitHub for automatic cloud deployment.',
-      'Used Claude 3 Sonnet through the Bedrock API to generate real-time, context-aware content.',
+      '**Serverless** on AWS Amplify with Cognito sign-in.',
+      '**CI/CD from GitHub** for automatic deployment.',
     ],
-    tech: ['React', 'AWS Amplify', 'Amazon Bedrock', 'Cognito', 'CI/CD'],
+    tech: ['React', 'AWS Amplify', 'Amazon Bedrock', 'CI/CD'],
     github: 'https://github.com/jmandalia99/GenAI_Recipe_AI',
   },
   {
@@ -324,12 +296,12 @@ export const projects = [
     type: 'auto',
     label: 'Embedded systems',
     impact: 'Wind-solar hybrid',
-    short: 'A data-logging board for a wind-solar hybrid system, built during my electrical engineering degree.',
+    short: 'A **data-logging board** for a wind-solar hybrid system.',
     points: [
-      'Built a data acquisition board on an M058 microcontroller, programmed in C and Assembly.',
-      'Sampled and logged wind speed, solar irradiance, and voltage through an ADC.',
+      'Built on an **M058 microcontroller**, programmed in C and Assembly.',
+      'Logged **wind speed, solar irradiance and voltage** through an ADC.',
     ],
-    tech: ['C', 'Assembly', 'ADC', 'Embedded systems'],
+    tech: ['C', 'Assembly', 'Embedded systems'],
   },
 ];
 
@@ -421,15 +393,15 @@ export const education = [
     school: 'University of Nevada, Reno',
     period: 'Jan 2025 – Dec 2026 (expected)',
     score: 'GPA 3.9 / 4.0',
-    note: 'Thesis track — “Reducing the Visual Tax,” advised by Dr. Rui Hu.',
-    focus: ['AI', 'LLMs', 'Cloud', 'Cybersecurity', 'Computer vision', 'Medical AI'],
+    note: '**Thesis track** — sending cloud AI only what it needs to see. Advisor: Dr. Rui Hu.',
+    focus: ['AI', 'LLMs', 'Cloud', 'Cybersecurity', 'Computer vision'],
   },
   {
     degree: 'B.E. Electrical Engineering',
     school: 'The Maharaja Sayajirao University of Baroda',
     period: 'Jul 2017 – May 2021',
     score: 'CGPA 8.72 / 10',
-    note: 'Electrical systems, embedded programming, control systems, and automotive electronics.',
+    note: '**Electrical systems, embedded programming** and control systems.',
   },
 ];
 
@@ -446,16 +418,16 @@ export const certifications = [
 
 export const recognition = [
   { title: 'Women Engineer of the Year', tag: 'Nominee', by: 'Digital Engineering Awards 2023' },
-  { title: 'Highest Potential Employee', tag: 'MG Motor', by: 'Recognized across the PE department for performance, ownership, and long-term impact' },
-  { title: 'Most new-feature ideas submitted', tag: 'MG Motor', by: 'Recognized for the highest number of idea submissions in next-generation feature development' },
-  { title: 'MG Astor — CSI Rank #1', tag: 'Contributor', by: 'Resolved nationwide infotainment & telematics issues behind the brand’s No. 1 Customer Satisfaction Index ranking' },
+  { title: 'Highest Potential Employee', tag: 'MG Motor', by: 'Recognized across the **PE department**' },
+  { title: 'Most new-feature ideas', tag: 'MG Motor', by: '**Top idea submitter** for next-gen features' },
+  { title: 'MG Astor — CSI Rank #1', tag: 'Contributor', by: 'Fixed infotainment issues behind the **No. 1 customer-satisfaction** rank' },
 ];
 
 // The big Bharatanatyam card in "Beyond work".
 export const bharatanatyam = {
   title: 'Bharatanatyam',
   tag: '6 years of training',
-  short: 'The classical dance I grew up with — six years of training as a child, and back in training since 2026.',
+  short: 'The classical dance I grew up with — **six years of training** as a child, and **back in class since 2026**.',
   // Where the dance card links to (Routes & Roots, the dance site).
   site: 'https://dance.jinalmandalia.com/',
   intro:
@@ -493,12 +465,12 @@ export const beyond = [
     key: 'hike',
     title: 'Hiking',
     tag: 'Mountain trails',
-    text: 'Trails, national parks, and long views — the mountains are my favorite way to reset.',
+    text: 'Trails, national parks and long views — the **mountains** are my favorite way to reset.',
   },
   {
     key: 'travel',
     title: 'Visiting new places',
     tag: 'Always planning the next one',
-    text: 'New cities, coastlines, and cultures. Seeing how other places work is how I recharge.',
+    text: 'New cities, coastlines and cultures — **seeing how other places work** is how I recharge.',
   },
 ];

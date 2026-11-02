@@ -6,6 +6,7 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 84px;
 }
+@media (max-width: 1023px) { html { scroll-padding-top: 112px; } }
 /* smooth-scroll library */
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
@@ -112,15 +113,30 @@ body {
 .group\/dance:hover .ghungroo .bell, .ghungroo-live .bell { animation: swing 0.9s ease-in-out infinite alternate; }
 @keyframes swing { from { transform: rotate(-9deg); } to { transform: rotate(9deg); } }
 
-/* scroll cue */
-@keyframes wheel { 0% { transform: translateY(0); opacity: 1; } 70% { transform: translateY(10px); opacity: 0; } 100% { opacity: 0; } }
-.wheel { animation: wheel 1.8s ease-in-out infinite; }
+/* scroll cue: a dot that runs down a thin line */
+@keyframes cue { 0% { transform: translateY(-100%); } 100% { transform: translateY(290%); } }
+.cue-dot { animation: cue 1.9s cubic-bezier(0.6, 0, 0.4, 1) infinite; }
+
+/* photo card that turns over to show "About me" */
+.flipper { transform-style: preserve-3d; transition: transform 0.85s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.flipper.is-flipped { transform: rotateY(180deg); }
+.face { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+.face-back { transform: rotateY(180deg); }
+
+/* horizontal section chips on phones */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* chat typing dots */
+@keyframes typing { 0%, 80%, 100% { transform: translateY(0); opacity: 0.45; } 40% { transform: translateY(-4px); opacity: 1; } }
+.typing-dot { animation: typing 1s ease-in-out infinite; }
 
 .tabular { font-variant-numeric: tabular-nums; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .blob, .wheel, .fade-up, .fade-in, .pop-in, .ghungroo .bell { animation: none !important; }
+  .blob, .cue-dot, .typing-dot, .fade-up, .fade-in, .pop-in, .ghungroo .bell { animation: none !important; }
+  .flipper { transition: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .acc { transition: none; }
 }

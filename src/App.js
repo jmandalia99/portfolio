@@ -4,16 +4,17 @@ import Lenis from 'lenis';
 import {
   ArrowDown, ArrowUpRight, Mail, Linkedin, Github, FileText, X, ChevronDown,
   MapPin, Award, Trophy, GraduationCap, Mountain, Compass, Image as ImageIcon, Film,
-  Video, Sparkles, Shield, Target, Microscope, Car, Cloud, Cpu, Plus, Copy, Check,
+  Video, Sparkles, Shield, Target, Microscope, Car, Cloud, Cpu, Plus, Copy, Check, RotateCw,
 } from 'lucide-react';
 import {
   site, hero, numbers, about, journey, research, projects, skills, education,
   certifications, recognition, beyond, bharatanatyam,
 } from './content';
+import { Rich } from './Rich';
+import Chat from './Chat';
 
 const NAV = [
-  ['about', 'About'],
-  ['journey', 'My Journey'],
+  ['journey', 'Journey'],
   ['research', 'Research'],
   ['projects', 'Projects'],
   ['skills', 'Skills'],
@@ -22,6 +23,14 @@ const NAV = [
   ['beyond', 'Beyond Work'],
   ['contact', 'Contact'],
 ];
+
+// Height of the fixed header, so in-page links stop just below it.
+const headerOffset = () => {
+  const h = document.querySelector('header');
+  return -((h ? h.offsetHeight : 72) + 12);
+};
+// Bold words on dark green panels
+const ON_DARK = 'font-semibold text-white';
 
 // Sends an event to Google Analytics (see README for what each one means).
 const track = (name, params = {}) => {
@@ -59,7 +68,7 @@ function useSmoothScroll() {
       const el = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
       if (!el) return;
       e.preventDefault();
-      lenis.scrollTo(hash === '#top' ? 0 : el, { offset: -84, duration: 1.2 });
+      lenis.scrollTo(hash === '#top' ? 0 : el, { offset: headerOffset(), duration: 1.2 });
     };
     document.addEventListener('click', onClick);
     return () => { document.removeEventListener('click', onClick); cancelAnimationFrame(id); lenis.destroy(); window.__lenis = null; };
@@ -180,15 +189,26 @@ function LivingBackground() {
 
 function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
   const [active, setActive] = useState('');
-  const btnRef = useRef(null);
+  const barRef = useRef(null);
+  const rowRef = useRef(null);
 
+  // background after the first bit of scrolling + reading-progress line
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    let raf = 0;
+    const onScroll = () => {
+      setScrolled(window.scrollY > 24);
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const p = max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0;
+        if (barRef.current) barRef.current.style.transform = `scaleX(${p})`;
+      });
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener('resize', onScroll);
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); cancelAnimationFrame(raf); };
   }, []);
 
   useEffect(() => {
@@ -197,75 +217,42 @@ function Header() {
       (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); }),
       { rootMargin: '-45% 0px -50% 0px' }
     );
-    NAV.forEach(([id]) => { const el = document.getElementById(id); if (el) io.observe(el); });
+    ['top', ...NAV.map(([id]) => id)].forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
     return () => io.disconnect();
   }, []);
 
+  // phones: keep the current section's chip in view
   useEffect(() => {
-    lockScroll(open);
-    if (!open) return undefined;
-    const onKey = (e) => { if (e.key === 'Escape') { setOpen(false); if (btnRef.current) btnRef.current.focus(); } };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [open]);
-
-  const toggle = () => { setOpen((o) => { if (!o) track('menu_open'); return !o; }); };
-  // Close the menu first, then scroll once the page is scrollable again.
-  const go = (e, id) => {
-    e.preventDefault();
-    setOpen(false);
-    lockScroll(false);
-    requestAnimationFrame(() => {
-      const el = document.getElementById(id);
-      if (el && window.__lenis) window.__lenis.scrollTo(el, { offset: -84, duration: 1.2 });
-      else if (el) el.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
-      try { window.history.replaceState(null, '', `#${id}`); } catch (err) { /* ignore */ }
-    });
-  };
+    const row = rowRef.current;
+    if (!row || row.offsetParent === null) return;
+    const a = row.querySelector(`[data-id="${active}"]`);
+    row.scrollTo({ left: a ? a.offsetLeft - row.clientWidth / 2 + a.offsetWidth / 2 : 0, behavior: 'smooth' });
+  }, [active]);
 
   return (
-    <>
-      <header className={`fixed top-0 inset-x-0 z-[58] transition-all duration-500 ${scrolled ? 'bg-parchment/80 backdrop-blur-xl border-b border-line/70' : 'bg-transparent border-b border-transparent'}`}>
-        <div className="max-w-[1240px] mx-auto px-5 md:px-10 h-[72px] flex items-center justify-between">
-          <Logo />
-          <button ref={btnRef} onClick={toggle} aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} aria-controls="site-menu"
-            className={`group inline-flex items-center gap-2.5 rounded-full pl-4 pr-3 py-2 text-[14.5px] font-semibold border transition-all duration-300 ${open ? 'bg-forest-deep text-white border-forest-deep' : 'bg-paper/90 text-ink border-line hover:border-forest/40 hover:-translate-y-0.5 shadow-card'}`}>
-            {open ? 'Close' : 'Menu'}
-            <span className="relative w-5 h-5 grid place-items-center">
-              <span className={`absolute h-[2px] w-[18px] rounded-full bg-current transition-all duration-300 ${open ? 'rotate-45' : '-translate-y-[4px]'}`} />
-              <span className={`absolute h-[2px] w-[18px] rounded-full bg-current transition-all duration-300 ${open ? '-rotate-45' : 'translate-y-[4px]'}`} />
-            </span>
-          </button>
-        </div>
-      </header>
-
-      <div id="site-menu" role="dialog" aria-modal="true" aria-label="Site menu"
-        className={`fixed inset-0 z-[57] ${open ? 'visible' : 'invisible pointer-events-none'}`}>
-        <div className={`absolute inset-0 bg-[#1C1A17]/25 transition-opacity duration-500 ${open ? 'opacity-100' : 'opacity-0'}`} onClick={() => setOpen(false)} />
-        <aside className={`absolute top-0 right-0 h-full w-[min(340px,86vw)] bg-paper border-l border-line shadow-lift flex flex-col transition-transform duration-500 ease-[cubic-bezier(.2,.7,.2,1)] ${open ? 'translate-x-0' : 'translate-x-full'}`}>
-          <nav aria-label="Main" data-lenis-prevent className="flex-1 overflow-y-auto px-6 pt-[84px] pb-4">
-            {NAV.map(([id, label], i) => (
-              <a key={id} href={`#${id}`} onClick={(e) => go(e, id)}
-                className={`group/link flex items-center gap-3 py-2.5 border-b border-line/70 transition-colors ${active === id ? 'text-forest-deep' : 'text-ink hover:text-forest-deep'}`}>
-                <span className="text-[11.5px] font-semibold text-amber tabular w-5">{String(i + 1).padStart(2, '0')}</span>
-                <span className="font-serif text-[19px] leading-snug transition-transform duration-300 group-hover/link:translate-x-1">{label}</span>
-                {active === id && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-aspen" aria-label="current section" />}
-              </a>
-            ))}
-          </nav>
-          <div className="px-6 py-5 border-t border-line bg-parchment/60">
-            <a href={`mailto:${site.email}`} onClick={() => track('email_click', { from: 'menu' })} className="block text-[14.5px] font-medium text-ink break-all hover:text-forest-deep">{site.email}</a>
-            <div className="mt-3 flex gap-2">
-              <a href={site.resume} target="_blank" rel="noopener noreferrer" onClick={() => track('resume_open', { from: 'menu' })}
-                className="inline-flex items-center gap-1.5 rounded-full bg-forest-deep text-white px-3.5 py-2 text-[13.5px] font-semibold hover:bg-forest transition-colors"><FileText size={14} /> Resume</a>
-              <a href={site.linkedin} target="_blank" rel="noopener noreferrer" onClick={() => track('linkedin_click', { from: 'menu' })}
-                className="inline-flex items-center gap-1.5 rounded-full border border-line bg-paper px-3.5 py-2 text-[13.5px] font-semibold text-ink hover:border-forest/40 transition-colors"><Linkedin size={14} /> LinkedIn</a>
-            </div>
-            <p className="mt-3 flex items-center gap-1.5 text-[13px] text-muted"><MapPin size={13} /> {site.location}</p>
-          </div>
-        </aside>
+    <header className={`fixed top-0 inset-x-0 z-50 transition-colors duration-500 ${scrolled ? 'bg-parchment/85 backdrop-blur-xl border-b border-line/70' : 'border-b border-transparent'}`}>
+      <div className="max-w-[1240px] mx-auto px-5 md:px-10 h-[60px] lg:h-[72px] flex items-center justify-between gap-6">
+        <Logo />
+        <nav className="hidden lg:flex items-center" aria-label="Main">
+          {NAV.map(([id, label]) => (
+            <a key={id} href={`#${id}`}
+              className={`relative px-2.5 xl:px-3.5 py-2 text-[14px] xl:text-[14.5px] font-medium transition-colors duration-300 ${active === id ? 'text-forest-deep' : 'text-body hover:text-ink'}`}>
+              {label}
+              <span className={`absolute left-2.5 right-2.5 xl:left-3.5 xl:right-3.5 -bottom-0.5 h-[2px] rounded-full bg-aspen transition-transform duration-500 origin-left ${active === id ? 'scale-x-100' : 'scale-x-0'}`} />
+            </a>
+          ))}
+        </nav>
       </div>
-    </>
+      <nav ref={rowRef} className="lg:hidden flex gap-1.5 overflow-x-auto no-scrollbar px-5 md:px-10 pb-2.5" aria-label="Sections">
+        {NAV.map(([id, label]) => (
+          <a key={id} href={`#${id}`} data-id={id}
+            className={`shrink-0 rounded-full px-3 py-1.5 text-[13px] font-medium border transition-colors duration-300 ${active === id ? 'bg-forest-deep text-white border-forest-deep' : 'bg-paper/80 text-body border-line/80'}`}>
+            {label}
+          </a>
+        ))}
+      </nav>
+      <span ref={barRef} aria-hidden="true" className="absolute left-0 right-0 bottom-[-1px] h-[2px] bg-gradient-to-r from-aspen to-amber origin-left" style={{ transform: 'scaleX(0)' }} />
+    </header>
   );
 }
 
@@ -274,6 +261,9 @@ function Header() {
 function Hero() {
   const imgRef = useRef(null);
   const cardRef = useRef(null);
+  const cueRef = useRef(null);
+  const [flipped, setFlipped] = useState(false);
+  const flip = () => setFlipped((f) => { if (!f) track('about_open'); return !f; });
 
   useEffect(() => {
     if (reducedMotion()) return undefined;
@@ -283,6 +273,7 @@ function Hero() {
       raf = requestAnimationFrame(() => {
         const p = Math.min(window.scrollY / 700, 1);
         if (imgRef.current) imgRef.current.style.transform = `scale(${1.02 + p * 0.07}) translateY(${p * 8}px)`;
+        if (cueRef.current) cueRef.current.style.opacity = String(Math.max(0, 1 - window.scrollY / 160));
       });
     };
     onScroll();
@@ -300,7 +291,7 @@ function Hero() {
   const untilt = () => { if (cardRef.current) cardRef.current.style.transform = ''; };
 
   return (
-    <section id="top" className="relative min-h-[100svh] flex items-center pt-28 pb-20 lg:pt-24">
+    <section id="top" className="relative min-h-[100svh] flex items-center pt-32 pb-20 lg:pt-24">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10 w-full grid lg:grid-cols-[1.32fr_1fr] gap-14 lg:gap-12 items-center">
         <div>
           <div className="reveal flex flex-wrap gap-2.5 mb-8 max-w-[520px]">
@@ -312,10 +303,10 @@ function Hero() {
             Hi, I’m Jinal Mandalia.
           </h1>
           <p className="reveal mt-7 text-[clamp(1.15rem,1.6vw,1.4rem)] leading-[1.5] text-[#3E3A35] max-w-[34rem]" style={{ '--d': '160ms' }}>
-            {hero.headline}
+            <Rich text={hero.headline} />
           </p>
           <p className="reveal mt-5 text-[16px] leading-[1.7] text-body max-w-[33rem]" style={{ '--d': '220ms' }}>
-            {hero.intro}
+            <Rich text={hero.intro} />
           </p>
           <div className="reveal mt-9 flex flex-wrap gap-3.5" style={{ '--d': '300ms' }}>
             <Button href="#journey">Explore My Journey <ArrowDown size={17} /></Button>
@@ -324,14 +315,49 @@ function Hero() {
         </div>
 
         <div className="reveal relative mx-auto w-full max-w-[440px] lg:max-w-none" style={{ '--d': '200ms' }} onMouseMove={tilt} onMouseLeave={untilt}>
-          <div ref={cardRef} className="relative transition-transform duration-500 ease-out will-change-transform">
+          <div ref={cardRef} className="relative transition-transform duration-500 ease-out will-change-transform" style={{ perspective: '1600px' }}>
             <div className="absolute -inset-4 md:-inset-5 rounded-[36px] bg-gradient-to-br from-[#EFE2CB] via-[#E7E2D2] to-[#CFD8C8] shadow-lift" />
-            <div className="relative rounded-[26px] overflow-hidden aspect-[3/4] bg-[#cfd8c8]">
-              <img ref={imgRef} src={site.photo} alt="Jinal Mandalia among golden aspens on a mountain trail"
-                className="w-full h-full object-cover object-[50%_45%] will-change-transform" style={{ transform: 'scale(1.02)' }} />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+            <div className={`flipper relative aspect-[3/4] ${flipped ? 'is-flipped' : ''}`}>
+              {/* front: the photo — click it to read about me */}
+              <button type="button" onClick={flip} aria-expanded={flipped} aria-controls="about-card" tabIndex={flipped ? -1 : 0}
+                className={`face group/photo absolute inset-0 rounded-[26px] overflow-hidden bg-[#cfd8c8] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-parchment ${flipped ? 'pointer-events-none' : ''}`}>
+                <img ref={imgRef} src={site.photo} alt="Jinal Mandalia among golden aspens on a mountain trail"
+                  className="w-full h-full object-cover object-[50%_45%] will-change-transform" style={{ transform: 'scale(1.02)' }} />
+                <span className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent" />
+                <span className="absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-paper/90 px-3.5 py-2 text-[13.5px] font-semibold text-ink shadow-card transition-all duration-300 group-hover/photo:bg-paper group-hover/photo:-translate-y-0.5">
+                  <RotateCw size={14} className="transition-transform duration-500 group-hover/photo:rotate-180" /> About me
+                </span>
+              </button>
+              {/* back: about me */}
+              <div id="about-card" role="button" tabIndex={flipped ? 0 : -1} aria-hidden={!flipped} aria-label="About me — click to see the photo again"
+                onClick={flip} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); } }}
+                className={`face face-back absolute inset-0 rounded-[26px] bg-paper border border-line p-6 md:p-8 flex flex-col cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-forest ${flipped ? '' : 'pointer-events-none'}`}>
+                <div className="flex-1 flex flex-col justify-center">
+                <p className="text-[12.5px] font-semibold tracking-[0.18em] uppercase text-amber">About me</p>
+                <h2 className="mt-2 font-serif font-bold text-ink text-[23px] md:text-[27px] lg:text-[30px] leading-tight">{about.title}</h2>
+                <ul className="mt-4 md:mt-5 lg:mt-6 space-y-2.5 md:space-y-3 lg:space-y-4">
+                  {about.lines.map((l) => (
+                    <li key={l} className="grid grid-cols-[16px_1fr] text-[14px] md:text-[15.5px] lg:text-[16.5px] leading-[1.55] text-body">
+                      <span className="mt-[8px] w-[7px] h-[7px] rounded-[2px] bg-aspen rotate-45" />
+                      <span><Rich text={l} /></span>
+                    </li>
+                  ))}
+                </ul>
+                <dl className="hidden sm:grid grid-cols-2 gap-2.5 mt-5 lg:mt-7">
+                  {about.glance.map(({ k, v }) => (
+                    <div key={k} className="rounded-xl bg-parchment border border-line/80 px-3 py-2.5">
+                      <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">{k}</dt>
+                      <dd className="text-[13.5px] font-semibold text-ink leading-snug mt-0.5">{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+                </div>
+                <span className="pt-4 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-forest-deep">
+                  <RotateCw size={14} /> Back to the photo
+                </span>
+              </div>
             </div>
-            <div className="absolute -left-4 md:-left-9 bottom-8 bg-paper rounded-2xl shadow-lift px-4 py-3 flex items-center gap-3 border border-line/60">
+            <div className={`absolute -left-4 md:-left-9 bottom-8 bg-paper rounded-2xl shadow-lift px-4 py-3 flex items-center gap-3 border border-line/60 transition-all duration-500 ${flipped ? 'opacity-0 translate-y-2 pointer-events-none' : ''}`}>
               <span className="w-9 h-9 rounded-full bg-forest-soft text-forest-deep grid place-items-center"><MapPin size={17} /></span>
               <span>
                 <span className="block text-[12.5px] text-muted leading-none mb-1">Based in</span>
@@ -341,8 +367,10 @@ function Hero() {
           </div>
         </div>
       </div>
-      <a href="#numbers" className="hidden md:flex absolute bottom-7 left-1/2 -translate-x-1/2 w-[26px] h-[42px] rounded-full border-2 border-[#BDB3A5] justify-center pt-2" aria-label="Scroll down">
-        <span className="wheel w-1 h-2 rounded-full bg-forest" />
+      <a ref={cueRef} href="#numbers" aria-label="Scroll down"
+        className="hidden md:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2.5 text-[11px] font-semibold tracking-[0.28em] uppercase text-muted hover:text-forest-deep transition-colors duration-300">
+        Scroll
+        <span className="relative block w-px h-11 bg-[#D9CDB9] overflow-hidden"><span className="cue-dot absolute left-0 top-0 w-px h-4 bg-forest" /></span>
       </a>
     </section>
   );
@@ -391,40 +419,6 @@ function Numbers() {
   );
 }
 
-/* ─────────────── about ─────────────── */
-
-function About() {
-  return (
-    <section id="about" className="relative py-20 md:py-28">
-      <div className="max-w-[1240px] mx-auto px-5 md:px-10 grid lg:grid-cols-[1.45fr_1fr] gap-12 lg:gap-16">
-        <div>
-          <SectionHead kicker="About me" title={about.title} />
-          <div className="space-y-5 text-[17px] leading-[1.75] text-body">
-            {about.paragraphs.map((p, i) => <p key={i} className="reveal" style={{ '--d': `${i * 60}ms` }}>{p}</p>)}
-            <p className="reveal font-serif text-[20px] leading-[1.6] text-ink border-l-[3px] border-aspen pl-5 mt-8 italic">{about.closing}</p>
-          </div>
-        </div>
-        <aside className="reveal lg:pt-24" style={{ '--d': '120ms' }}>
-          <div className="lg:sticky lg:top-28 rounded-[26px] bg-paper/90 border border-line/80 shadow-card p-7">
-            <p className="font-serif text-[22px] text-ink mb-5">At a glance</p>
-            <dl className="divide-y divide-line">
-              {about.glance.map(({ k, v }) => (
-                <div key={k} className="py-4 grid grid-cols-[112px_1fr] gap-3">
-                  <dt className="text-[13px] font-semibold uppercase tracking-[0.12em] text-muted pt-0.5">{k}</dt>
-                  <dd className="text-[15.5px] text-ink leading-snug">{v}</dd>
-                </div>
-              ))}
-            </dl>
-            <div className="mt-6 flex flex-wrap gap-2.5">
-              <Button href={`mailto:${site.email}`} onClick={() => track('email_click', { from: 'about' })}><Mail size={16} /> Get in touch</Button>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
-  );
-}
-
 /* ─────────────── journey ─────────────── */
 
 function JourneyItem({ item, open, onToggle, index }) {
@@ -455,9 +449,9 @@ function JourneyItem({ item, open, onToggle, index }) {
         <div id={id} className={`acc ${open ? 'open' : ''}`}>
           <div>
             <div className="px-4 md:px-7 pb-7">
-              <p className="text-[16px] leading-[1.7] text-ink">{item.summary}</p>
+              <p className="text-[16px] leading-[1.7] text-body"><Rich text={item.summary} /></p>
               {item.stats && (
-                <div className={`mt-5 grid gap-2.5 ${item.stats.length > 3 ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-6' : 'grid-cols-3 max-w-md'}`}>
+                <div className={`mt-5 grid gap-2.5 ${item.stats.length > 3 ? 'grid-cols-2 sm:grid-cols-4 max-w-xl' : 'grid-cols-3 max-w-md'}`}>
                   {item.stats.map(([v, l]) => (
                     <div key={l} className="rounded-xl bg-amber-soft/60 border border-amber/20 px-3 py-3 text-center">
                       <div className="font-serif font-bold text-ink text-[19px] leading-none tabular">{v}</div>
@@ -466,15 +460,17 @@ function JourneyItem({ item, open, onToggle, index }) {
                   ))}
                 </div>
               )}
-              <ul className="mt-5 space-y-3">
-                {item.points.map((p) => (
-                  <li key={p} className="grid grid-cols-[18px_1fr] text-[15.5px] leading-[1.65] text-body">
-                    <span className="mt-[10px] w-[7px] h-[7px] rounded-[2px] bg-forest/70 rotate-45" />
-                    <span>{p}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6 flex flex-wrap gap-2">
+              {item.points.length > 0 && (
+                <ul className="mt-4 space-y-2.5">
+                  {item.points.map((p) => (
+                    <li key={p} className="grid grid-cols-[18px_1fr] text-[15.5px] leading-[1.6] text-body">
+                      <span className="mt-[9px] w-[7px] h-[7px] rounded-[2px] bg-forest/70 rotate-45" />
+                      <span><Rich text={p} /></span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div className="mt-5 flex flex-wrap gap-2">
                 {item.tools.map((t) => (
                   <span key={t} className="text-[12.5px] px-2.5 py-1 rounded-md bg-forest-soft/70 text-forest-deep border border-forest/10">{t}</span>
                 ))}
@@ -488,7 +484,7 @@ function JourneyItem({ item, open, onToggle, index }) {
 }
 
 function Journey() {
-  const [open, setOpen] = useState(() => new Set([0]));
+  const [open, setOpen] = useState(() => new Set());
   const allOpen = open.size === journey.length;
   const toggle = (i) => setOpen((s) => { const n = new Set(s); if (n.has(i)) n.delete(i); else n.add(i); return n; });
   return (
@@ -496,7 +492,7 @@ function Journey() {
       <div className="max-w-[1100px] mx-auto px-5 md:px-10">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHead kicker="My journey" title="From the test bench to the release plan">
-            Newest first. Open any chapter to read what I owned, the tools I used, and what came out of it.
+            Newest first — open any chapter for the details.
           </SectionHead>
           <button onClick={() => setOpen(allOpen ? new Set() : new Set(journey.map((_, i) => i)))}
             className="reveal mb-14 text-[14px] font-semibold text-forest-deep border border-forest/25 rounded-full px-4 py-2 hover:bg-forest-soft transition-colors">
@@ -519,57 +515,45 @@ function Journey() {
 const STAGE_ICON = { image: ImageIcon, short: Film, long: Video };
 
 function Research() {
-  const [stage, setStage] = useState(0);
-  const s = research.stages[stage];
   return (
     <section id="research" className="relative py-20 md:py-28">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
-        <SectionHead kicker="Research · M.S. thesis" title={research.title}>{research.subtitle}</SectionHead>
+        <SectionHead kicker="Research · M.S. thesis" title={research.title} />
 
         <div className="reveal rounded-[30px] bg-paper/90 border border-line shadow-lift overflow-hidden">
-          <div className="grid lg:grid-cols-[1fr_1.15fr]">
+          <div className="grid lg:grid-cols-[1fr_1.3fr]">
             <div className="p-7 md:p-10 bg-gradient-to-br from-forest-deep to-[#284F37] text-white relative overflow-hidden">
               <div className="absolute -right-24 -top-24 w-72 h-72 rounded-full border border-white/10" />
               <div className="absolute -right-10 -top-10 w-44 h-44 rounded-full border border-white/10" />
-              <p className="text-[12.5px] uppercase tracking-[0.16em] text-aspen font-semibold">In plain words</p>
-              <p className="mt-4 font-serif text-[21px] md:text-[23px] leading-[1.5]">{research.plain}</p>
-              <p className="mt-6 text-[14px] text-white/70 leading-relaxed">{research.meta}</p>
-              <div className="mt-8 flex items-center gap-2 text-[13.5px] text-white/80">
-                <span className="relative flex w-2.5 h-2.5"><span className="absolute inset-0 rounded-full bg-aspen animate-ping opacity-60" /><span className="relative w-2.5 h-2.5 rounded-full bg-aspen" /></span>
-                Writing up · degree expected December 2026
-              </div>
+              <p className="relative text-[12.5px] uppercase tracking-[0.16em] text-aspen font-semibold">In plain words</p>
+              <p className="relative mt-4 font-serif text-[20px] md:text-[22px] leading-[1.55] text-white/90"><Rich text={research.plain} strong={ON_DARK} /></p>
+              <p className="relative mt-7 text-[13.5px] leading-relaxed text-white/65">
+                <span className="text-white/85 font-semibold">Thesis:</span> “{research.official}”
+              </p>
+              <p className="relative mt-2 text-[13.5px] text-white/65">{research.meta}</p>
             </div>
 
-            <div className="p-7 md:p-10">
-              <p className="text-[14px] text-muted mb-4">The question grows with the input — pick a stage:</p>
-              <div className="relative grid grid-cols-3 p-1 rounded-2xl bg-[#F1EADF] border border-line" role="tablist">
-                <span className="absolute top-1 bottom-1 left-1 w-[calc((100%-0.5rem)/3)] rounded-xl bg-paper shadow-card transition-transform duration-500 ease-[cubic-bezier(.2,.7,.2,1)]"
-                  style={{ transform: `translateX(${stage * 100}%)` }} />
-                {research.stages.map((st, i) => {
-                  const Icon = STAGE_ICON[st.key];
-                  return (
-                    <button key={st.key} role="tab" aria-selected={stage === i} onClick={() => { setStage(i); track('research_stage', { stage: st.label }); }}
-                      className={`relative z-10 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 py-3 px-2 text-[13.5px] sm:text-[14.5px] font-semibold transition-colors ${stage === i ? 'text-forest-deep' : 'text-muted hover:text-ink'}`}>
-                      <Icon size={17} /> {st.label}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div key={s.key} className="mt-7 fade-up" role="tabpanel">
-                <p className="text-[12.5px] uppercase tracking-[0.16em] font-semibold text-amber">The lever</p>
-                <p className="font-serif text-[24px] text-ink mt-1">{s.lever}</p>
-                <div className="mt-5 inline-flex items-baseline gap-3 rounded-2xl bg-aspen-soft/70 border border-aspen/30 px-5 py-3">
-                  <span className="font-serif font-bold text-[26px] md:text-[30px] text-ink leading-none">{s.result}</span>
-                </div>
-                <p className="mt-5 text-[16px] leading-[1.7] text-body">{s.detail}</p>
-              </div>
-
-              <p className="mt-7 pt-5 border-t border-line text-[14px] leading-relaxed text-muted">{research.honest}</p>
+            <div className="p-5 md:p-8 flex flex-col gap-3">
+              {research.stages.map((st, i) => {
+                const Icon = STAGE_ICON[st.key];
+                return (
+                  <div key={st.key} className="reveal group rounded-2xl border border-line bg-parchment/60 p-5 grid sm:grid-cols-[170px_1fr] gap-3 sm:gap-6 sm:items-center hover:bg-paper hover:shadow-card transition-all duration-500" style={{ '--d': `${120 + i * 90}ms` }}>
+                    <div>
+                      <span className="flex items-center gap-2 text-[12px] uppercase tracking-[0.14em] font-semibold text-amber"><Icon size={15} /> {st.label}</span>
+                      <div className="mt-2 font-serif font-bold text-[30px] md:text-[34px] text-ink leading-none">{st.big}</div>
+                      <div className="mt-1 text-[13.5px] font-medium text-forest-deep">{st.unit}</div>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-ink text-[15.5px]">{st.lever}</p>
+                      <p className="mt-1 text-[14.5px] leading-[1.6] text-body"><Rich text={st.note} /></p>
+                    </div>
+                  </div>
+                );
+              })}
+              <p className="mt-1 text-[13.5px] leading-relaxed text-muted">{research.honest}</p>
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );
@@ -615,12 +599,12 @@ function ProjectModal({ project, onClose }) {
           <p className="mt-4 inline-block rounded-lg bg-paper/85 px-3 py-1.5 text-[14.5px] font-semibold text-ink">{project.impact}</p>
         </div>
         <div className="px-6 sm:px-9 py-7">
-          <p className="text-[16px] leading-[1.7] text-ink">{project.short}</p>
+          <p className="text-[16px] leading-[1.7] text-body"><Rich text={project.short} /></p>
           <ul className="mt-5 space-y-3">
             {project.points.map((pt) => (
               <li key={pt} className="grid grid-cols-[18px_1fr] text-[15.5px] leading-[1.65] text-body">
                 <span className="mt-[10px] w-[7px] h-[7px] rounded-[2px] bg-forest/70 rotate-45" />
-                <span>{pt}</span>
+                <span><Rich text={pt} /></span>
               </li>
             ))}
           </ul>
@@ -650,7 +634,7 @@ function Projects() {
     <section id="projects" className="relative py-20 md:py-28">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
         <SectionHead kicker="Projects" title="Things I’ve built along the way">
-          Research, automotive security, generative AI, and embedded work. Open any project for the details, code, and papers.
+          Open any project for the details, code and papers.
         </SectionHead>
 
         <div className="reveal mb-8">
@@ -685,7 +669,7 @@ function Projects() {
                 <span className="p-6 flex flex-col flex-1">
                   <span className="text-[12px] font-semibold uppercase tracking-[0.14em] text-amber">{p.label}</span>
                   <span className="mt-2 font-serif font-semibold text-[20px] leading-snug text-ink">{p.title}</span>
-                  <span className="mt-2 text-[15px] leading-[1.6] text-body">{p.short}</span>
+                  <span className="mt-2 text-[15px] leading-[1.6] text-body"><Rich text={p.short} /></span>
                   <span className="mt-auto pt-5 flex items-center justify-between">
                     <span className="flex gap-1.5 text-muted">
                       {p.github && <Github size={16} aria-label="Code on GitHub" />}
@@ -753,7 +737,7 @@ function Education() {
               <h3 className="mt-2 font-serif font-bold text-[26px] text-ink leading-tight">{e.degree}</h3>
               <p className="mt-1 text-[16px] font-medium text-forest-deep">{e.school}</p>
               <p className="mt-5 inline-block rounded-lg bg-aspen-soft/70 border border-aspen/30 px-3 py-1.5 text-[14.5px] font-semibold text-ink">{e.score}</p>
-              <p className="mt-5 text-[15.5px] leading-[1.65] text-body max-w-md">{e.note}</p>
+              <p className="mt-5 text-[15.5px] leading-[1.65] text-body max-w-md"><Rich text={e.note} /></p>
               {e.focus && (
                 <div className="relative mt-5 flex flex-wrap gap-2">
                   {e.focus.map((f) => <span key={f} className="text-[13px] px-2.5 py-1 rounded-md bg-forest-soft/70 text-forest-deep border border-forest/10">{f}</span>)}
@@ -795,18 +779,22 @@ function Certifications() {
           })}
         </div>
 
-        <div className="mt-20">
-          <div className="reveal mb-10 max-w-3xl">
+        <div className="mt-16">
+          <div className="reveal mb-7 max-w-3xl">
             <p className="text-[13px] font-semibold tracking-[0.18em] uppercase text-amber mb-3">Recognition</p>
             <h3 className="font-serif font-bold text-ink text-[clamp(1.7rem,2.8vw,2.3rem)] leading-tight">Moments I’m proud of</h3>
           </div>
-          <div className="grid md:grid-cols-2 gap-5">
+          <div className="grid md:grid-cols-2 gap-4">
             {recognition.map((r, i) => (
-              <div key={r.title} className="reveal relative rounded-[24px] p-7 bg-gradient-to-br from-[#FBF1DE] to-[#F6E5C6] border border-amber/25 shadow-card hover:shadow-lift hover:-translate-y-1 transition-all duration-500" style={{ '--d': `${i * 80}ms` }}>
-                <span className="w-11 h-11 rounded-xl bg-paper/80 text-amber grid place-items-center shadow-card"><Trophy size={20} /></span>
-                <span className="absolute top-7 right-7 text-[12px] font-semibold uppercase tracking-[0.1em] text-bark bg-paper/70 rounded-md px-2 py-1">{r.tag}</span>
-                <p className="mt-5 font-serif font-semibold text-[21px] text-ink leading-snug">{r.title}</p>
-                <p className="mt-2 text-[15px] leading-[1.6] text-body">{r.by}</p>
+              <div key={r.title} className="reveal flex items-center gap-4 rounded-[18px] px-5 py-4 bg-gradient-to-br from-[#FBF1DE] to-[#F6E5C6] border border-amber/25 shadow-card hover:shadow-lift hover:-translate-y-0.5 transition-all duration-500" style={{ '--d': `${i * 70}ms` }}>
+                <span className="shrink-0 w-10 h-10 rounded-xl bg-paper/80 text-amber grid place-items-center"><Trophy size={18} /></span>
+                <span className="min-w-0 flex-1">
+                  <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                    <span className="font-serif font-semibold text-[17.5px] text-ink leading-snug">{r.title}</span>
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-bark bg-paper/70 rounded px-1.5 py-0.5">{r.tag}</span>
+                  </span>
+                  <span className="block mt-0.5 text-[14px] leading-snug text-body"><Rich text={r.by} /></span>
+                </span>
               </div>
             ))}
           </div>
@@ -863,7 +851,7 @@ function Beyond() {
                 <span className="p-6 md:p-7 flex flex-col flex-1">
                   <span className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-amber">{b.tag}</span>
                   <span className="mt-2 font-serif font-semibold text-[23px] text-ink">{b.title}</span>
-                  <span className="mt-2 text-[15.5px] leading-[1.65] text-body">{b.text}</span>
+                  <span className="mt-2 text-[15.5px] leading-[1.65] text-body"><Rich text={b.text} /></span>
                   {isDance && (
                     <span className="mt-auto pt-5 inline-flex items-center gap-2 text-[14.5px] font-semibold text-forest-deep">
                       Visit Routes &amp; Roots
@@ -915,7 +903,7 @@ function Contact() {
             <p className="text-[13px] font-semibold tracking-[0.18em] uppercase text-aspen mb-4">Contact</p>
             <h2 className="font-serif font-bold text-[clamp(2.1rem,4.2vw,3.5rem)] leading-[1.08] max-w-2xl">Let’s take your next product to launch.</h2>
             <p className="mt-5 text-[17px] leading-[1.7] text-white/80 max-w-xl">
-              I’m looking for Technical Program Manager roles where releases, devices, and people all need to come together. I’d love to hear from you.
+              I’m looking for <strong className={ON_DARK}>Technical Program Manager</strong> roles where releases, devices and people come together.
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-3">
               <a href={`mailto:${site.email}`} onClick={() => track('email_click', { from: 'contact' })}
@@ -952,7 +940,6 @@ export default function App() {
       <main className="relative z-10">
         <Hero />
         <Numbers />
-        <About />
         <Journey />
         <Research />
         <Projects />
@@ -968,6 +955,7 @@ export default function App() {
           <a href="#top" className="hover:text-ink transition-colors">Back to top ↑</a>
         </div>
       </footer>
+      <Chat />
     </div>
   );
 }
