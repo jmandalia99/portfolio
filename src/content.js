@@ -455,6 +455,7 @@ export const recognition = [
 export const bharatanatyam = {
   title: 'Bharatanatyam',
   tag: '6 years of training',
+  short: 'The classical dance I grew up with — six years of training as a child, and back in training since 2026.',
   intro:
     'Bharatanatyam is the classical dance I grew up with. It taught me discipline, rhythm, and how to tell a story without words — and after a long break, I’m back in training.',
   journey: [

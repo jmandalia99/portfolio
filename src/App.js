@@ -767,85 +767,114 @@ function DanceIcon(props) {
 
 const BEYOND_ICON = { hike: Mountain, travel: Compass };
 
-function Beyond() {
+function DanceModal({ open, onClose }) {
   const d = bharatanatyam;
-  const [step, setStep] = useState(d.journey.length - 1);
+  const closeRef = useRef(null);
+  useEffect(() => {
+    if (!open) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    if (closeRef.current) closeRef.current.focus();
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
+  }, [open, onClose]);
+  if (!open) return null;
+  return createPortal(
+    <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="dance-title">
+      <div className="absolute inset-0 bg-[#1C1A17]/40 backdrop-blur-sm fade-in" onClick={onClose} />
+      <div className="relative w-full sm:max-w-[760px] max-h-[90vh] overflow-y-auto rounded-t-[28px] sm:rounded-[28px] bg-paper shadow-lift pop-in">
+        <div className="relative px-6 sm:px-9 pt-8 pb-7 bg-gradient-to-br from-[#FBF1DE] via-[#F8E6C4] to-[#F1D3A1] overflow-hidden">
+          <button ref={closeRef} onClick={onClose} aria-label="Close"
+            className="absolute right-5 top-5 z-10 w-10 h-10 rounded-full bg-paper/80 text-ink grid place-items-center hover:bg-paper transition-colors"><X size={19} /></button>
+          <DanceIcon className="ghungroo ghungroo-live text-amber/80 w-[170px] h-[90px] -ml-1" aria-hidden="true" />
+          <p className="mt-3 text-[12.5px] font-semibold uppercase tracking-[0.14em] text-amber">{d.tag}</p>
+          <h3 id="dance-title" className="mt-2 font-serif font-bold text-[28px] sm:text-[32px] leading-tight text-ink">{d.title}</h3>
+          <p className="mt-3 text-[16px] leading-[1.7] text-body max-w-xl">{d.intro}</p>
+        </div>
+        <div className="px-6 sm:px-9 py-7 grid sm:grid-cols-2 gap-8">
+          <div>
+            <p className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-bark">My dance journey</p>
+            <ol className="mt-4 relative">
+              <span className="absolute left-[7px] top-2 bottom-2 w-px bg-amber/30" aria-hidden="true" />
+              {d.journey.map((j) => (
+                <li key={j.when} className="grid grid-cols-[22px_1fr] gap-3 py-2.5">
+                  <span className="relative mt-1 w-[15px] h-[15px] rounded-full border-2 bg-paper border-amber" />
+                  <span>
+                    <span className="block text-[15px] font-semibold text-ink">{j.when}</span>
+                    <span className="block text-[15px] leading-[1.6] text-body">{j.what}</span>
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div>
+            <p className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-bark">What I’m learning now</p>
+            <ul className="mt-4 space-y-2.5">
+              {d.learning.map(([k, v]) => (
+                <li key={k} className="rounded-2xl bg-[#FBF4E6] border border-amber/15 px-4 py-3">
+                  <span className="block font-serif font-semibold text-[16.5px] text-ink">{k}</span>
+                  <span className="block text-[14.5px] leading-snug text-body mt-0.5">{v}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="px-6 sm:px-9 pb-8 flex flex-wrap items-center gap-4 justify-between border-t border-line pt-6">
+          <p className="text-[15px] italic font-serif text-bark">{d.closing}</p>
+          {d.tool && (
+            <Button href={d.tool} external onClick={() => track('taal_tool_open')}>Try my taal practice tool <ArrowUpRight size={17} /></Button>
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+function Beyond() {
+  const [danceOpen, setDanceOpen] = useState(false);
+  const closeDance = React.useCallback(() => setDanceOpen(false), []);
+  const openDance = () => { setDanceOpen(true); track('dance_open'); };
+  const cards = [
+    { key: 'dance', title: bharatanatyam.title, tag: bharatanatyam.tag, text: bharatanatyam.short },
+    ...beyond,
+  ];
   return (
     <section id="beyond" className="relative py-20 md:py-28">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
         <SectionHead kicker="Beyond work" title="What keeps me curious" />
-
-        {/* Bharatanatyam feature */}
-        <div className="reveal group/dance relative rounded-[30px] overflow-hidden border border-amber/25 shadow-lift bg-gradient-to-br from-[#FBF1DE] via-[#F8E6C4] to-[#F1D3A1]">
-          <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full border border-amber/20" />
-          <div className="absolute -right-10 -top-10 w-52 h-52 rounded-full border border-amber/20" />
-          <div className="relative grid lg:grid-cols-[1.15fr_1fr]">
-            <div className="p-7 md:p-10">
-              <div className="flex items-center gap-3">
-                <span className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-amber">01 · {d.tag}</span>
-              </div>
-              <h3 className="mt-3 font-serif font-bold text-[clamp(1.9rem,3.2vw,2.6rem)] leading-tight text-ink">{d.title}</h3>
-              <p className="mt-4 text-[16.5px] leading-[1.7] text-body max-w-xl">{d.intro}</p>
-
-              <p className="mt-8 text-[12.5px] font-semibold uppercase tracking-[0.14em] text-bark">My dance journey</p>
-              <ol className="mt-4 relative">
-                <span className="absolute left-[7px] top-2 bottom-2 w-px bg-amber/30" aria-hidden="true" />
-                {d.journey.map((j, i) => (
-                  <li key={j.when}>
-                    <button onMouseEnter={() => setStep(i)} onFocus={() => setStep(i)} onClick={() => setStep(i)}
-                      className="w-full text-left grid grid-cols-[22px_1fr] gap-3 py-2.5 focus:outline-none">
-                      <span className={`relative mt-1 w-[15px] h-[15px] rounded-full border-2 transition-all duration-300 ${step === i ? 'bg-amber border-amber scale-110' : 'bg-[#FBF1DE] border-amber/50'}`} />
-                      <span>
-                        <span className={`block text-[15px] font-semibold transition-colors ${step === i ? 'text-ink' : 'text-bark/80'}`}>{j.when}</span>
-                        <span className={`block text-[15px] leading-[1.6] transition-all duration-500 ${step === i ? 'text-body opacity-100' : 'text-body/70 opacity-80'}`}>{j.what}</span>
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ol>
-            </div>
-
-            <div className="relative p-7 md:p-10 lg:border-l border-t lg:border-t-0 border-amber/20 bg-paper/40 backdrop-blur-sm flex flex-col">
-              <DanceIcon className="ghungroo text-amber/80 w-[190px] h-[100px] -ml-1" aria-hidden="true" />
-              <p className="mt-4 text-[12.5px] font-semibold uppercase tracking-[0.14em] text-bark">What I’m learning now</p>
-              <ul className="mt-4 space-y-3">
-                {d.learning.map(([k, v]) => (
-                  <li key={k} className="rounded-2xl bg-paper/80 border border-amber/15 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card">
-                    <span className="block font-serif font-semibold text-[17px] text-ink">{k}</span>
-                    <span className="block text-[14.5px] leading-snug text-body mt-0.5">{v}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-5 text-[15px] italic font-serif text-bark">{d.closing}</p>
-              {d.tool && (
-                <a href={d.tool} target="_blank" rel="noopener noreferrer" onClick={() => track('taal_tool_open')}
-                  className="mt-5 self-start inline-flex items-center gap-2 rounded-full bg-forest-deep text-white px-5 py-3 text-[15px] font-semibold hover:bg-forest hover:-translate-y-0.5 transition-all">
-                  Try my taal practice tool <ArrowUpRight size={17} />
-                </a>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-5 grid md:grid-cols-2 gap-5">
-          {beyond.map((b, i) => {
-            const Icon = BEYOND_ICON[b.key];
+        <div className="grid md:grid-cols-3 gap-5">
+          {cards.map((b, i) => {
+            const isDance = b.key === 'dance';
+            const Icon = isDance ? DanceIcon : BEYOND_ICON[b.key];
+            const Tag = isDance ? 'button' : 'div';
             return (
-              <div key={b.key} className="reveal group rounded-[26px] overflow-hidden bg-paper/80 backdrop-blur border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 grid grid-cols-[120px_1fr] sm:grid-cols-[160px_1fr]" style={{ '--d': `${(i + 1) * 90}ms` }}>
-                <div className={`relative overflow-hidden ${b.key === 'hike' ? 'bg-gradient-to-br from-[#DCE6D6] via-[#B9CBB1] to-[#2D5A3D]' : 'bg-gradient-to-br from-[#E1EAF4] via-[#C9D7E8] to-[#2F5F99]'}`}>
-                  <Icon className="absolute right-4 bottom-4 text-white/85 transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6" width={64} height={64} />
-                  <span className="absolute left-4 top-4 text-[12px] font-semibold text-ink bg-paper/90 rounded-md px-2.5 py-1">{String(i + 2).padStart(2, '0')}</span>
-                </div>
-                <div className="p-6 md:p-7">
-                  <p className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-amber">{b.tag}</p>
-                  <h3 className="mt-2 font-serif font-semibold text-[23px] text-ink">{b.title}</h3>
-                  <p className="mt-2 text-[15.5px] leading-[1.65] text-body">{b.text}</p>
-                </div>
-              </div>
+              <Tag key={b.key} {...(isDance ? { onClick: openDance, type: 'button' } : {})}
+                className={`reveal group group/dance text-left rounded-[26px] overflow-hidden bg-paper/80 backdrop-blur border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 flex flex-col ${isDance ? 'cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest' : ''}`}
+                style={{ '--d': `${i * 90}ms` }}>
+                <span className={`relative block h-44 overflow-hidden ${isDance ? 'bg-gradient-to-br from-[#F4DDB0] via-[#EDC98A] to-[#C4873A]' : b.key === 'hike' ? 'bg-gradient-to-br from-[#DCE6D6] via-[#B9CBB1] to-[#2D5A3D]' : 'bg-gradient-to-br from-[#E1EAF4] via-[#C9D7E8] to-[#2F5F99]'}`}>
+                  <Icon className={`absolute text-white/85 transition-transform duration-700 group-hover:scale-110 ${isDance ? 'ghungroo right-5 bottom-8' : 'right-6 bottom-5 group-hover:-rotate-6'}`}
+                    width={isDance ? 150 : 84} height={isDance ? 80 : 84} />
+                  <span className="absolute left-5 top-5 text-[12px] font-semibold text-ink bg-paper/90 rounded-md px-2.5 py-1">{String(i + 1).padStart(2, '0')}</span>
+                </span>
+                <span className="p-6 md:p-7 flex flex-col flex-1">
+                  <span className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-amber">{b.tag}</span>
+                  <span className="mt-2 font-serif font-semibold text-[23px] text-ink">{b.title}</span>
+                  <span className="mt-2 text-[15.5px] leading-[1.65] text-body">{b.text}</span>
+                  {isDance && (
+                    <span className="mt-auto pt-5 inline-flex items-center gap-2 text-[14.5px] font-semibold text-forest-deep">
+                      Open my dance story
+                      <span className="w-7 h-7 rounded-full border border-forest/25 grid place-items-center transition-all duration-500 group-hover:bg-forest-deep group-hover:text-white group-hover:rotate-90"><Plus size={15} /></span>
+                    </span>
+                  )}
+                </span>
+              </Tag>
             );
           })}
         </div>
       </div>
+      <DanceModal open={danceOpen} onClose={closeDance} />
     </section>
   );
 }

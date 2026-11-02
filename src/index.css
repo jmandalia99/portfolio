@@ -105,7 +105,7 @@ body {
 
 /* ghungroo bells swing when the dance card is hovered */
 .ghungroo .bell { transform-box: view-box; }
-.group\/dance:hover .ghungroo .bell { animation: swing 0.9s ease-in-out infinite alternate; }
+.group\/dance:hover .ghungroo .bell, .ghungroo-live .bell { animation: swing 0.9s ease-in-out infinite alternate; }
 @keyframes swing { from { transform: rotate(-9deg); } to { transform: rotate(9deg); } }
 
 /* scroll cue */
