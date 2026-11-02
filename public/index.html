@@ -11,7 +11,6 @@
     <meta name="theme-color" content="#FAF6EF" />
     <link rel="canonical" href="https://www.jinalmandalia.com/" />
 
-    <!-- How the link looks when shared on LinkedIn, WhatsApp, etc. -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.jinalmandalia.com/" />
     <meta property="og:title" content="Jinal Mandalia — Technical Program &amp; Release Lead" />
@@ -32,7 +31,6 @@
     />
     <link rel="preload" as="image" href="%PUBLIC_URL%/images/jinal-portrait.jpg" />
 
-    <!-- Google Analytics — see README "Visitor tracking" for how to use these tricks -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VRVWW9YJ"></script>
     <script>
       (function () {
@@ -40,7 +38,6 @@
         var params = null;
         try { params = new URLSearchParams(window.location.search); } catch (e) {}
 
-        // 1) Don't count my own visits: open the site once with ?me=1 on each device (?me=0 undoes it).
         try {
           if (params && params.get('me') === '1') localStorage.setItem('jm_owner', '1');
           if (params && params.get('me') === '0') localStorage.removeItem('jm_owner');
@@ -52,20 +49,18 @@
         window.gtag = gtag;
         gtag('js', new Date());
 
-        // 2) Short personal links: www.jinalmandalia.com/?r=amazon shows up in GA as source "amazon".
         var cfg = {};
         var ref = params && (params.get('r') || params.get('ref'));
         if (ref && !params.get('utm_source')) {
           ref = ref.toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 60);
           if (ref) {
             cfg.page_location = window.location.origin + window.location.pathname +
-              '?utm_source=' + encodeURIComponent(ref) + '&utm_medium=personal_link&utm_campaign=job_search';
+              '?utm_source=' + encodeURIComponent(ref) + '&utm_medium=link';
           }
         }
         gtag('config', ID, cfg);
         if (ref) gtag('event', 'personal_link_visit', { ref: ref });
 
-        // Keep the address bar clean for the visitor.
         if (params && (params.has('r') || params.has('ref') || params.has('me'))) {
           try {
             params.delete('r'); params.delete('ref'); params.delete('me');

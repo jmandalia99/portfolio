@@ -1,52 +1,82 @@
-import React from 'react';
+import React, { useId } from 'react';
 
-// The chat helper: a small caramel mouse wearing a support headset.
+// The chat helper: a round, colourful little bird wearing headphones.
 export default function Mascot({ className = '', still = false }) {
+  const uid = useId().replace(/:/g, '');
+  const belly = `belly${uid}`;
+  const body = `body${uid}`;
   return (
     <svg viewBox="0 0 120 120" className={`${className} ${still ? '' : 'mascot-live'}`} aria-hidden="true">
+      <defs>
+        <linearGradient id={belly} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#FCE07A" />
+          <stop offset="1" stopColor="#F4A23B" />
+        </linearGradient>
+        <linearGradient id={body} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#36C2B0" />
+          <stop offset="1" stopColor="#1E8E86" />
+        </linearGradient>
+      </defs>
+
+      {/* a music note drifting up from the headphones */}
+      {!still && (
+        <g className="m-note" fill="#E4572E">
+          <ellipse cx="104" cy="30" rx="4.2" ry="3.2" transform="rotate(-20 104 30)" />
+          <path d="M107.6 29 V15 l6 2.4" fill="none" stroke="#E4572E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </g>
+      )}
+
       <g className="m-bob">
-        {/* tail + body */}
-        <path className="m-tail" d="M84 106 C102 106 110 93 101 84" fill="none" stroke="#C99B74" strokeWidth="3.2" strokeLinecap="round" />
-        <ellipse cx="60" cy="106" rx="29" ry="17" fill="#E6C5A0" />
-        <ellipse cx="60" cy="110" rx="16" ry="9" fill="#F7E7D2" />
-        <ellipse className="m-paw" cx="35" cy="99" rx="7.5" ry="6.5" fill="#EED3B2" />
-        <ellipse cx="85" cy="99" rx="7.5" ry="6.5" fill="#EED3B2" />
+        {/* tail feathers */}
+        <g className="m-tail">
+          <ellipse cx="94" cy="98" rx="17" ry="5.5" transform="rotate(28 94 98)" fill="#2F6FB5" />
+          <ellipse cx="92" cy="103" rx="16" ry="5.2" transform="rotate(44 92 103)" fill="#E4572E" />
+          <ellipse cx="88" cy="106" rx="14" ry="5" transform="rotate(62 88 106)" fill="#F6C945" />
+        </g>
+        {/* feet */}
+        <g stroke="#F08A24" strokeWidth="2.6" strokeLinecap="round" fill="none">
+          <path d="M51 104 v6 M47 111 l4 -1.5 l4 1.5" />
+          <path d="M69 104 v6 M65 111 l4 -1.5 l4 1.5" />
+        </g>
 
         <g className="m-head">
-          {/* ears */}
-          <g className="m-ear-l">
-            <circle cx="30" cy="35" r="20" fill="#E2BC93" />
-            <circle cx="30" cy="36" r="12" fill="#F3B5AA" />
+          {/* crest */}
+          <g className="m-crest">
+            <ellipse cx="54" cy="27" rx="4" ry="9" transform="rotate(-22 54 27)" fill="#E86FA0" />
+            <ellipse cx="60" cy="24" rx="4.2" ry="10" fill="#F6C945" />
+            <ellipse cx="66" cy="27" rx="4" ry="9" transform="rotate(22 66 27)" fill="#E4572E" />
           </g>
-          <g className="m-ear-r">
-            <circle cx="90" cy="35" r="20" fill="#E2BC93" />
-            <circle cx="90" cy="36" r="12" fill="#F3B5AA" />
+          {/* body */}
+          <ellipse cx="60" cy="70" rx="36" ry="38" fill={`url(#${body})`} />
+          <ellipse cx="60" cy="84" rx="24" ry="23" fill={`url(#${belly})`} />
+          {/* wings */}
+          <g>
+            <ellipse cx="27" cy="80" rx="10" ry="19" transform="rotate(18 27 80)" fill="#3E9B5F" />
+            <ellipse cx="24" cy="90" rx="6.5" ry="9" transform="rotate(18 24 90)" fill="#2F6FB5" />
           </g>
-          {/* head */}
-          <ellipse cx="60" cy="65" rx="38" ry="33" fill="#EED3B2" />
+          <g className="m-wing">
+            <ellipse cx="93" cy="80" rx="10" ry="19" transform="rotate(-18 93 80)" fill="#3E9B5F" />
+            <ellipse cx="96" cy="90" rx="6.5" ry="9" transform="rotate(-18 96 90)" fill="#2F6FB5" />
+          </g>
           {/* face */}
           <g className="m-eyes">
-            <ellipse cx="46" cy="64" rx="5" ry="6.5" fill="#2B211B" />
-            <ellipse cx="74" cy="64" rx="5" ry="6.5" fill="#2B211B" />
-            <circle cx="47.8" cy="61.6" r="1.9" fill="#fff" />
-            <circle cx="75.8" cy="61.6" r="1.9" fill="#fff" />
+            <circle cx="47" cy="57" r="9" fill="#fff" />
+            <circle cx="73" cy="57" r="9" fill="#fff" />
+            <circle cx="48.5" cy="58" r="5.6" fill="#1E1A17" />
+            <circle cx="71.5" cy="58" r="5.6" fill="#1E1A17" />
+            <circle cx="50.3" cy="55.6" r="2" fill="#fff" />
+            <circle cx="73.3" cy="55.6" r="2" fill="#fff" />
           </g>
-          <ellipse cx="36.5" cy="77" rx="6.5" ry="4" fill="#F09A8C" opacity="0.55" />
-          <ellipse cx="83.5" cy="77" rx="6.5" ry="4" fill="#F09A8C" opacity="0.55" />
-          <ellipse cx="60" cy="75" rx="4.6" ry="3.4" fill="#D9787A" />
-          <path d="M55 80 Q57.5 83.5 60 80 Q62.5 83.5 65 80" fill="none" stroke="#6B4A32" strokeWidth="1.8" strokeLinecap="round" />
-          <g stroke="#B98F6C" strokeWidth="1.2" strokeLinecap="round">
-            <line x1="50" y1="77" x2="31" y2="72.5" />
-            <line x1="50" y1="80" x2="32" y2="83" />
-            <line x1="70" y1="77" x2="89" y2="72.5" />
-            <line x1="70" y1="80" x2="88" y2="83" />
-          </g>
-          {/* headset */}
-          <path d="M23 62 C24 31 96 31 97 62" fill="none" stroke="#1F4432" strokeWidth="4.5" strokeLinecap="round" />
-          <rect x="16" y="54" width="12" height="20" rx="6" fill="#1F4432" />
-          <rect x="92" y="54" width="12" height="20" rx="6" fill="#1F4432" />
-          <path d="M22 72 Q25 88 42 89" fill="none" stroke="#1F4432" strokeWidth="3" strokeLinecap="round" />
-          <circle cx="44.5" cy="89" r="4.2" fill="#D9A429" />
+          <ellipse cx="36" cy="69" rx="6" ry="3.8" fill="#F28CA8" opacity="0.75" />
+          <ellipse cx="84" cy="69" rx="6" ry="3.8" fill="#F28CA8" opacity="0.75" />
+          <path d="M54 66 Q60 62 66 66 Q60 77 54 66 Z" fill="#F08A24" />
+          <path d="M55.5 67.5 Q60 70 64.5 67.5" fill="none" stroke="#C9661A" strokeWidth="1.2" strokeLinecap="round" />
+          {/* headphones */}
+          <path d="M23 60 C22 22 98 22 97 60" fill="none" stroke="#1F4432" strokeWidth="5" strokeLinecap="round" />
+          <rect x="14" y="48" width="15" height="24" rx="7.5" fill="#E4572E" />
+          <rect x="91" y="48" width="15" height="24" rx="7.5" fill="#E4572E" />
+          <rect x="24" y="52" width="5" height="16" rx="2.5" fill="#F6C945" />
+          <rect x="91" y="52" width="5" height="16" rx="2.5" fill="#F6C945" />
         </g>
       </g>
     </svg>

@@ -129,10 +129,10 @@ function Logo() {
 
 function SectionHead({ kicker, title, children, center }) {
   return (
-    <div className={`reveal mb-12 md:mb-14 ${center ? 'text-center mx-auto' : ''} max-w-3xl`}>
-      <p className="text-[13px] font-semibold tracking-[0.18em] uppercase text-amber mb-3">{kicker}</p>
-      <h2 className="font-serif font-bold text-ink text-[clamp(2rem,3.6vw,3rem)] leading-[1.1] tracking-[-0.01em]">{title}</h2>
-      {children && <p className="mt-4 text-[17px] leading-relaxed text-body">{children}</p>}
+    <div className={`reveal mb-6 md:mb-8 ${center ? 'text-center mx-auto' : ''} max-w-3xl`}>
+      <p className="text-[12.5px] font-semibold tracking-[0.18em] uppercase text-amber mb-2">{kicker}</p>
+      <h2 className="font-serif font-bold text-ink text-[clamp(1.7rem,2.8vw,2.4rem)] leading-[1.12] tracking-[-0.01em]">{title}</h2>
+      {children && <p className="mt-3 text-[16px] leading-relaxed text-body">{children}</p>}
     </div>
   );
 }
@@ -291,36 +291,36 @@ function Hero() {
   const untilt = () => { if (cardRef.current) cardRef.current.style.transform = ''; };
 
   return (
-    <section id="top" className="relative min-h-[100svh] flex items-center pt-32 pb-20 lg:pt-24">
-      <div className="max-w-[1240px] mx-auto px-5 md:px-10 w-full grid lg:grid-cols-[1.32fr_1fr] gap-14 lg:gap-12 items-center">
+    <section id="top" className="relative min-h-[100svh] flex items-center pt-28 pb-12 lg:pt-24 lg:pb-16">
+      <div className="max-w-[1240px] mx-auto px-5 md:px-10 w-full grid lg:grid-cols-[1.32fr_1fr] gap-10 lg:gap-12 items-center">
         <div>
-          <div className="reveal flex flex-wrap gap-2.5 mb-8 max-w-[520px]">
+          <div className="reveal flex flex-wrap gap-2 mb-6 md:mb-8 max-w-[520px]">
             {hero.tags.map((t) => (
-              <span key={t} className="px-3 md:px-3.5 py-1.5 rounded-full border border-line bg-paper/80 text-[12.5px] md:text-[13.5px] text-body">{t}</span>
+              <span key={t} className="px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-full border border-line bg-paper/80 text-[12px] md:text-[13.5px] text-body">{t}</span>
             ))}
           </div>
           <h1 className="reveal font-serif font-bold text-ink leading-[1.04] tracking-[-0.02em] text-[clamp(2.6rem,4.15vw,3.95rem)] lg:whitespace-nowrap" style={{ '--d': '80ms' }}>
             Hi, I’m Jinal Mandalia.
           </h1>
-          <p className="reveal mt-7 text-[clamp(1.15rem,1.6vw,1.4rem)] leading-[1.5] text-[#3E3A35] max-w-[34rem]" style={{ '--d': '160ms' }}>
+          <p className="reveal mt-5 md:mt-7 text-[clamp(1.1rem,1.6vw,1.4rem)] leading-[1.5] text-[#3E3A35] max-w-[34rem]" style={{ '--d': '160ms' }}>
             <Rich text={hero.headline} />
           </p>
           <p className="reveal mt-5 text-[16px] leading-[1.7] text-body max-w-[33rem]" style={{ '--d': '220ms' }}>
             <Rich text={hero.intro} />
           </p>
-          <div className="reveal mt-9 flex flex-wrap gap-3.5" style={{ '--d': '300ms' }}>
+          <div className="reveal mt-7 md:mt-9 flex flex-wrap gap-3" style={{ '--d': '300ms' }}>
             <Button href="#journey">Explore My Journey <ArrowDown size={17} /></Button>
             <Button href={site.resume} variant="ghost" external onClick={() => track('resume_open', { from: 'hero' })}>View My Resume</Button>
           </div>
         </div>
 
-        <div className="reveal relative mx-auto w-full max-w-[440px] lg:max-w-none" style={{ '--d': '200ms' }} onMouseMove={tilt} onMouseLeave={untilt}>
+        <div className="reveal relative mx-auto w-full max-w-[330px] sm:max-w-[400px] lg:max-w-none" style={{ '--d': '200ms' }} onMouseMove={tilt} onMouseLeave={untilt}>
           <div ref={cardRef} className="relative transition-transform duration-500 ease-out will-change-transform" style={{ perspective: '1600px' }}>
             <div className="absolute -inset-4 md:-inset-5 rounded-[36px] bg-gradient-to-br from-[#EFE2CB] via-[#E7E2D2] to-[#CFD8C8] shadow-lift" />
             <div className={`flipper relative aspect-[3/4] ${flipped ? 'is-flipped' : ''}`}>
               {/* front: the photo — click it to read about me */}
               <button type="button" onClick={flip} aria-expanded={flipped} aria-controls="about-card" tabIndex={flipped ? -1 : 0}
-                className={`face group/photo absolute inset-0 rounded-[26px] overflow-hidden bg-[#cfd8c8] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-parchment ${flipped ? 'pointer-events-none' : ''}`}>
+                className={`face face-front group/photo absolute inset-0 rounded-[26px] overflow-hidden bg-[#cfd8c8] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-4 focus-visible:ring-offset-parchment ${flipped ? 'pointer-events-none' : ''}`}>
                 <img ref={imgRef} src={site.photo} alt="Jinal Mandalia among golden aspens on a mountain trail"
                   className="w-full h-full object-cover object-[50%_45%] will-change-transform" style={{ transform: 'scale(1.02)' }} />
                 <span className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent" />
@@ -400,17 +400,17 @@ function CountUp({ value, decimals = 0, prefix = '', suffix = '' }) {
 
 function Numbers() {
   return (
-    <section id="numbers" className="relative py-16 md:py-20">
+    <section id="numbers" className="relative pt-2 pb-6 md:pt-4 md:pb-8">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
-        <p className="reveal text-[13px] font-semibold tracking-[0.18em] uppercase text-amber mb-6">By the numbers</p>
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-5">
+        <p className="reveal text-[12.5px] font-semibold tracking-[0.18em] uppercase text-amber mb-3">By the numbers</p>
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
           {numbers.map((s, i) => (
-            <div key={s.label} className={`reveal group rounded-[22px] bg-paper/90 border border-line/80 p-5 md:p-6 shadow-card hover:shadow-lift hover:-translate-y-1 transition-all duration-500 ${i === numbers.length - 1 ? 'col-span-2 lg:col-span-1' : ''}`} style={{ '--d': `${i * 80}ms` }}>
-              <div className="font-serif font-bold text-ink text-[clamp(1.9rem,2.6vw,2.5rem)] leading-none tracking-[-0.02em]">
+            <div key={s.label} className={`reveal group rounded-[20px] bg-paper/90 border border-line/80 px-4 py-4 md:px-5 shadow-card hover:shadow-lift hover:-translate-y-1 transition-all duration-500 ${i === numbers.length - 1 ? 'col-span-2 lg:col-span-1' : ''}`} style={{ '--d': `${i * 80}ms` }}>
+              <div className="font-serif font-bold text-ink text-[clamp(1.6rem,2.2vw,2.1rem)] leading-none tracking-[-0.02em]">
                 <CountUp {...s} />
               </div>
-              <div className="mt-3 h-[3px] w-8 rounded-full bg-aspen transition-all duration-500 group-hover:w-14" />
-              <p className="mt-3 text-[14px] leading-snug text-body">{s.label}</p>
+              <div className="mt-2.5 h-[3px] w-7 rounded-full bg-aspen transition-all duration-500 group-hover:w-12" />
+              <p className="mt-2 text-[13.5px] leading-snug text-body">{s.label}</p>
             </div>
           ))}
         </div>
@@ -424,36 +424,37 @@ function Numbers() {
 function JourneyItem({ item, open, onToggle, index }) {
   const id = `journey-${index}`;
   return (
-    <li className="reveal relative grid grid-cols-[52px_1fr] md:grid-cols-[150px_1fr] gap-4 md:gap-8" style={{ '--d': `${index * 50}ms` }}>
+    <li className="reveal relative grid grid-cols-[52px_1fr] md:grid-cols-[120px_1fr] gap-4 md:gap-8" style={{ '--d': `${index * 50}ms` }}>
       {/* rail */}
       <div className="relative">
-        <span className={`block font-serif font-bold tabular leading-none text-[20px] md:text-[56px] tracking-[-0.03em] transition-colors duration-500 pt-7 md:pt-5 ${open ? 'text-amber' : 'text-[#A88A62]'}`}>{item.year}</span>
-        <span className={`absolute right-[-13.5px] md:right-[-21.5px] top-[33px] md:top-[34px] w-[11px] h-[11px] rounded-full border-2 transition-all duration-500 ${open ? 'bg-aspen border-aspen scale-125' : 'bg-parchment border-[#A88A62]'}`} />
+        <span className={`block font-serif font-bold tabular leading-none text-[19px] md:text-[40px] tracking-[-0.03em] transition-colors duration-500 pt-[18px] md:pt-4 ${open ? 'text-amber' : 'text-[#A88A62]'}`}>{item.year}</span>
+        <span className={`absolute right-[-13.5px] md:right-[-21.5px] top-[23px] md:top-[30px] w-[11px] h-[11px] rounded-full border-2 transition-all duration-500 ${open ? 'bg-aspen border-aspen scale-125' : 'bg-parchment border-[#A88A62]'}`} />
       </div>
       {/* card */}
-      <div className={`mb-5 rounded-[22px] border transition-all duration-500 ${open ? 'bg-paper border-line shadow-lift' : 'bg-paper/60 border-line/70 shadow-card hover:bg-paper hover:-translate-y-0.5'}`}>
+      <div className={`mb-3 rounded-[20px] border transition-all duration-500 ${open ? 'bg-paper border-line shadow-lift' : 'bg-paper/60 border-line/70 shadow-card hover:bg-paper hover:-translate-y-0.5'}`}>
         <button onClick={onToggle} aria-expanded={open} aria-controls={id}
-          className="w-full text-left px-4 md:px-7 py-5 md:py-6 grid grid-cols-[1fr_auto] gap-x-4 items-start focus:outline-none focus-visible:ring-2 focus-visible:ring-forest rounded-[22px]">
+          className="w-full text-left px-4 md:px-6 py-3.5 md:py-4 grid grid-cols-[1fr_auto] gap-x-4 items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-forest rounded-[20px]">
           <span className="min-w-0">
-            <span className="block text-[12.5px] font-semibold uppercase tracking-[0.14em] text-amber mb-2">{item.theme}</span>
-            <span className="block font-serif font-semibold text-ink text-[20px] md:text-[23px] leading-snug">{item.role}</span>
-            <span className="block text-[15.5px] text-forest-deep font-medium mt-1">{item.org}</span>
-            <span className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[14px] text-muted tabular">
-              <span>{item.period}</span><span className="w-1 h-1 rounded-full bg-[#C9BBA6]" /><span>{item.place}</span>
+            <span className="block text-[11.5px] font-semibold uppercase tracking-[0.14em] text-amber mb-1">{item.theme}</span>
+            <span className="block font-serif font-semibold text-ink text-[18px] md:text-[20px] leading-snug">{item.role}</span>
+            <span className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-[13.5px] md:text-[14px] tabular">
+              <span className="text-forest-deep font-medium">{item.org}</span>
+              <span className="w-1 h-1 rounded-full bg-[#C9BBA6]" /><span className="text-muted">{item.period}</span>
+              <span className="hidden sm:block w-1 h-1 rounded-full bg-[#C9BBA6]" /><span className="hidden sm:block text-muted">{item.place}</span>
             </span>
           </span>
-          <span className={`mt-1 w-9 h-9 rounded-full grid place-items-center border transition-all duration-500 ${open ? 'bg-forest-deep border-forest-deep text-white rotate-180' : 'border-line text-body'}`}>
+          <span className={`w-8 h-8 rounded-full grid place-items-center border transition-all duration-500 ${open ? 'bg-forest-deep border-forest-deep text-white rotate-180' : 'border-line text-body'}`}>
             <ChevronDown size={18} />
           </span>
         </button>
         <div id={id} className={`acc ${open ? 'open' : ''}`}>
           <div>
-            <div className="px-4 md:px-7 pb-7">
-              <p className="text-[16px] leading-[1.7] text-body"><Rich text={item.summary} /></p>
+            <div className="px-4 md:px-6 pb-5">
+              <p className="text-[15.5px] leading-[1.65] text-body"><Rich text={item.summary} /></p>
               {item.stats && (
-                <div className={`mt-5 grid gap-2.5 ${item.stats.length > 3 ? 'grid-cols-2 sm:grid-cols-4 max-w-xl' : 'grid-cols-3 max-w-md'}`}>
+                <div className={`mt-4 grid gap-2 ${item.stats.length > 3 ? 'grid-cols-2 sm:grid-cols-4 max-w-xl' : 'grid-cols-3 max-w-md'}`}>
                   {item.stats.map(([v, l]) => (
-                    <div key={l} className="rounded-xl bg-amber-soft/60 border border-amber/20 px-3 py-3 text-center">
+                    <div key={l} className="rounded-xl bg-amber-soft/60 border border-amber/20 px-3 py-2.5 text-center">
                       <div className="font-serif font-bold text-ink text-[19px] leading-none tabular">{v}</div>
                       <div className="text-[12px] text-body mt-1.5 leading-tight">{l}</div>
                     </div>
@@ -461,16 +462,16 @@ function JourneyItem({ item, open, onToggle, index }) {
                 </div>
               )}
               {item.points.length > 0 && (
-                <ul className="mt-4 space-y-2.5">
+                <ul className="mt-3 space-y-2">
                   {item.points.map((p) => (
-                    <li key={p} className="grid grid-cols-[18px_1fr] text-[15.5px] leading-[1.6] text-body">
+                    <li key={p} className="grid grid-cols-[18px_1fr] text-[15px] leading-[1.6] text-body">
                       <span className="mt-[9px] w-[7px] h-[7px] rounded-[2px] bg-forest/70 rotate-45" />
                       <span><Rich text={p} /></span>
                     </li>
                   ))}
                 </ul>
               )}
-              <div className="mt-5 flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-wrap gap-1.5">
                 {item.tools.map((t) => (
                   <span key={t} className="text-[12.5px] px-2.5 py-1 rounded-md bg-forest-soft/70 text-forest-deep border border-forest/10">{t}</span>
                 ))}
@@ -488,17 +489,17 @@ function Journey() {
   const allOpen = open.size === journey.length;
   const toggle = (i) => setOpen((s) => { const n = new Set(s); if (n.has(i)) n.delete(i); else n.add(i); return n; });
   return (
-    <section id="journey" className="relative py-20 md:py-28">
+    <section id="journey" className="relative py-10 md:py-14">
       <div className="max-w-[1100px] mx-auto px-5 md:px-10">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHead kicker="My journey" title="From the test bench to the release plan" />
           <button onClick={() => setOpen(allOpen ? new Set() : new Set(journey.map((_, i) => i)))}
-            className="reveal mb-14 text-[14px] font-semibold text-forest-deep border border-forest/25 rounded-full px-4 py-2 hover:bg-forest-soft transition-colors">
+            className="reveal mb-6 md:mb-8 text-[13.5px] font-semibold text-forest-deep border border-forest/25 rounded-full px-4 py-1.5 hover:bg-forest-soft transition-colors">
             {allOpen ? 'Collapse all' : 'Expand all'}
           </button>
         </div>
         <ol className="relative">
-          <span className="absolute left-[60px] md:left-[166px] top-6 bottom-10 w-px bg-gradient-to-b from-[#C9B591] via-[#C9B591] to-transparent" aria-hidden="true" />
+          <span className="absolute left-[60px] md:left-[136px] top-6 bottom-10 w-px bg-gradient-to-b from-[#C9B591] via-[#C9B591] to-transparent" aria-hidden="true" />
           {journey.map((item, i) => (
             <JourneyItem key={item.period + item.role} item={item} index={i} open={open.has(i)} onToggle={() => { if (!open.has(i)) track('journey_open', { role: `${item.role} — ${item.org}` }); toggle(i); }} />
           ))}
@@ -514,41 +515,41 @@ const STAGE_ICON = { image: ImageIcon, short: Film, long: Video };
 
 function Research() {
   return (
-    <section id="research" className="relative py-20 md:py-28">
+    <section id="research" className="relative py-10 md:py-14">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
         <SectionHead kicker="Research · M.S. thesis" title={research.title} />
 
         <div className="reveal rounded-[30px] bg-paper/90 border border-line shadow-lift overflow-hidden">
           <div className="grid lg:grid-cols-[1fr_1.3fr]">
-            <div className="p-7 md:p-10 bg-gradient-to-br from-forest-deep to-[#284F37] text-white relative overflow-hidden">
+            <div className="p-6 md:p-8 bg-gradient-to-br from-forest-deep to-[#284F37] text-white relative overflow-hidden">
               <div className="absolute -right-24 -top-24 w-72 h-72 rounded-full border border-white/10" />
               <div className="absolute -right-10 -top-10 w-44 h-44 rounded-full border border-white/10" />
               <p className="relative text-[12.5px] uppercase tracking-[0.16em] text-aspen font-semibold">In plain words</p>
-              <p className="relative mt-4 font-serif text-[20px] md:text-[22px] leading-[1.55] text-white/90"><Rich text={research.plain} strong={ON_DARK} /></p>
-              <p className="relative mt-7 text-[13.5px] leading-relaxed text-white/65">
+              <p className="relative mt-3 font-serif text-[17px] md:text-[19px] leading-[1.55] text-white/90"><Rich text={research.plain} strong={ON_DARK} /></p>
+              <p className="relative mt-5 text-[13px] leading-relaxed text-white/65">
                 <span className="text-white/85 font-semibold">Thesis:</span> “{research.official}”
               </p>
-              <p className="relative mt-2 text-[13.5px] text-white/65">{research.meta}</p>
+              <p className="relative mt-1.5 text-[13px] text-white/65">{research.meta}</p>
             </div>
 
-            <div className="p-5 md:p-8 flex flex-col gap-3">
+            <div className="p-4 md:p-6 flex flex-col gap-2.5">
               {research.stages.map((st, i) => {
                 const Icon = STAGE_ICON[st.key];
                 return (
-                  <div key={st.key} className="reveal group rounded-2xl border border-line bg-parchment/60 p-5 grid sm:grid-cols-[170px_1fr] gap-3 sm:gap-6 sm:items-center hover:bg-paper hover:shadow-card transition-all duration-500" style={{ '--d': `${120 + i * 90}ms` }}>
+                  <div key={st.key} className="reveal group rounded-2xl border border-line bg-parchment/60 p-4 grid grid-cols-[104px_1fr] sm:grid-cols-[150px_1fr] gap-x-4 gap-y-1.5 items-center hover:bg-paper hover:shadow-card transition-all duration-500" style={{ '--d': `${120 + i * 90}ms` }}>
+                    <span className="col-span-2 flex items-center gap-2 text-[11.5px] uppercase tracking-[0.14em] font-semibold text-amber"><Icon size={14} /> {st.label}</span>
                     <div>
-                      <span className="flex items-center gap-2 text-[12px] uppercase tracking-[0.14em] font-semibold text-amber"><Icon size={15} /> {st.label}</span>
-                      <div className="mt-2 font-serif font-bold text-[30px] md:text-[34px] text-ink leading-none">{st.big}</div>
-                      <div className="mt-1 text-[13.5px] font-medium text-forest-deep">{st.unit}</div>
+                      <div className="font-serif font-bold text-[24px] sm:text-[30px] text-ink leading-none">{st.big}</div>
+                      <div className="mt-1 text-[12.5px] font-medium text-forest-deep leading-tight">{st.unit}</div>
                     </div>
                     <div>
-                      <p className="font-semibold text-ink text-[15.5px]">{st.lever}</p>
-                      <p className="mt-1 text-[14.5px] leading-[1.6] text-body"><Rich text={st.note} /></p>
+                      <p className="font-semibold text-ink text-[14.5px] leading-snug">{st.lever}</p>
+                      <p className="mt-0.5 text-[13.5px] leading-[1.55] text-body"><Rich text={st.note} /></p>
                     </div>
                   </div>
                 );
               })}
-              <p className="mt-1 text-[13.5px] leading-relaxed text-muted">{research.honest}</p>
+              <p className="text-[12.5px] leading-relaxed text-muted">{research.honest}</p>
             </div>
           </div>
         </div>
@@ -566,6 +567,11 @@ const PROJECT_TABS = [
   ['auto', 'Automotive & Embedded'],
   ['cloud', 'GenAI & Cloud'],
 ];
+const PROJECT_STRIP = {
+  ai: 'from-forest to-[#8FB39A]',
+  auto: 'from-aspen to-amber',
+  cloud: 'from-sky to-[#8DB1DE]',
+};
 const PROJECT_TINT = {
   ai: 'from-[#E3EBDF] via-[#EEF1E6] to-[#F7F1E5] text-forest-deep',
   auto: 'from-[#F6E7C1] via-[#F8EDD5] to-[#FBF4E6] text-bark',
@@ -629,11 +635,11 @@ function Projects() {
   const list = projects.map((p, i) => ({ ...p, i })).filter((p) => tab === 'all' || p.type === tab);
   const close = React.useCallback(() => setOpenIdx(null), []);
   return (
-    <section id="projects" className="relative py-20 md:py-28">
+    <section id="projects" className="relative py-10 md:py-14">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
         <SectionHead kicker="Projects" title="Things I’ve built along the way" />
 
-        <div className="reveal mb-8">
+        <div className="reveal mb-5">
           <div className="relative grid grid-cols-2 gap-1 sm:gap-0 sm:inline-grid sm:grid-cols-none sm:grid-flow-col sm:auto-cols-fr p-1 rounded-2xl bg-[#F1EADF] border border-line" role="tablist" aria-label="Filter projects">
             <span className="hidden sm:block absolute top-1 bottom-1 left-1 rounded-xl bg-paper shadow-card transition-transform duration-500 ease-[cubic-bezier(.2,.7,.2,1)]"
               style={{ width: `calc((100% - 0.5rem) / ${PROJECT_TABS.length})`, transform: `translateX(${tabIndex * 100}%)` }} />
@@ -649,24 +655,23 @@ function Projects() {
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="swipe-row scroll-px-5 sm:scroll-px-0 flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 overflow-x-auto sm:overflow-visible snap-x snap-mandatory -mx-5 px-5 sm:mx-0 sm:px-0 pb-2 sm:pb-0 no-scrollbar">
           {list.map((p, k) => {
             const Icon = PROJECT_ICON[p.icon] || Sparkles;
             return (
               <button key={`${tab}-${p.title}`} onClick={() => { setOpenIdx(p.i); track('project_open', { project_name: p.title }); }}
-                className="fade-up group text-left rounded-[24px] bg-paper/90 border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 flex flex-col overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                className="fade-up group text-left shrink-0 w-[84%] sm:w-auto snap-start rounded-[24px] bg-paper/90 border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 flex flex-col overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
                 style={{ animationDelay: `${k * 60}ms` }}>
-                <span className={`relative h-28 bg-gradient-to-br ${PROJECT_TINT[p.type]} overflow-hidden`}>
-                  <span className="absolute -right-8 -top-8 w-36 h-36 rounded-full border border-current opacity-[0.12] transition-transform duration-700 group-hover:scale-125" />
-                  <span className="absolute -right-2 -top-2 w-24 h-24 rounded-full border border-current opacity-[0.12] transition-transform duration-700 group-hover:scale-125" />
-                  <span className="absolute left-6 bottom-5 w-12 h-12 rounded-2xl bg-paper/85 grid place-items-center shadow-card transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-105"><Icon size={22} /></span>
-                  <span className="absolute right-5 bottom-5 text-[12.5px] font-semibold text-ink bg-paper/85 rounded-md px-2.5 py-1">{p.impact}</span>
-                </span>
-                <span className="p-6 flex flex-col flex-1">
-                  <span className="text-[12px] font-semibold uppercase tracking-[0.14em] text-amber">{p.label}</span>
-                  <span className="mt-2 font-serif font-semibold text-[20px] leading-snug text-ink">{p.title}</span>
-                  <span className="mt-2 text-[15px] leading-[1.6] text-body"><Rich text={p.short} /></span>
-                  <span className="mt-auto pt-5 flex items-center justify-between">
+                <span className={`h-1.5 bg-gradient-to-r ${PROJECT_STRIP[p.type]}`} />
+                <span className="px-5 pt-4 pb-4 flex flex-col flex-1">
+                  <span className="flex items-center justify-between gap-3">
+                    <span className={`w-10 h-10 rounded-xl bg-gradient-to-br ${PROJECT_TINT[p.type]} grid place-items-center transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-105`}><Icon size={19} /></span>
+                    <span className="text-[12px] font-semibold text-ink bg-parchment border border-line rounded-md px-2 py-0.5">{p.impact}</span>
+                  </span>
+                  <span className="mt-3 text-[11.5px] font-semibold uppercase tracking-[0.14em] text-amber">{p.label}</span>
+                  <span className="mt-1 font-serif font-semibold text-[18px] leading-snug text-ink">{p.title}</span>
+                  <span className="mt-1.5 text-[14.5px] leading-[1.55] text-body"><Rich text={p.short} /></span>
+                  <span className="mt-auto pt-4 flex items-center justify-between">
                     <span className="flex gap-1.5 text-muted">
                       {p.github && <Github size={16} aria-label="Code on GitHub" />}
                       {p.paper && <FileText size={16} aria-label="Paper" />}
@@ -692,7 +697,7 @@ function Skills() {
   const [g, setG] = useState(0);
   const group = skills[g];
   return (
-    <section id="skills" className="relative py-16 md:py-20">
+    <section id="skills" className="relative py-10 md:py-14">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
         <SectionHead kicker="Skills & tools" title="What I bring to a program" />
         <div className="reveal rounded-[24px] bg-paper/90 border border-line/80 shadow-card overflow-hidden md:grid md:grid-cols-[310px_1fr]">
@@ -722,20 +727,20 @@ function Skills() {
 
 function Education() {
   return (
-    <section id="education" className="relative py-20 md:py-28">
+    <section id="education" className="relative py-10 md:py-14">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
         <SectionHead kicker="Education" title="From electrical engineering to computer science" />
-        <div className="grid md:grid-cols-2 gap-5">
+        <div className="grid md:grid-cols-2 gap-4">
           {education.map((e, i) => (
-            <div key={e.degree} className="reveal group relative rounded-[26px] bg-paper/90 border border-line/80 shadow-card p-7 md:p-9 overflow-hidden hover:shadow-lift transition-all duration-500" style={{ '--d': `${i * 80}ms` }}>
-              <GraduationCap className="absolute -right-6 -bottom-6 text-forest/[0.06] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6" size={170} />
-              <p className="text-[13.5px] text-muted tabular">{e.period}</p>
-              <h3 className="mt-2 font-serif font-bold text-[26px] text-ink leading-tight">{e.degree}</h3>
-              <p className="mt-1 text-[16px] font-medium text-forest-deep">{e.school}</p>
-              <p className="mt-5 inline-block rounded-lg bg-aspen-soft/70 border border-aspen/30 px-3 py-1.5 text-[14.5px] font-semibold text-ink">{e.score}</p>
-              <p className="mt-5 text-[15.5px] leading-[1.65] text-body max-w-md"><Rich text={e.note} /></p>
+            <div key={e.degree} className="reveal group relative rounded-[26px] bg-paper/90 border border-line/80 shadow-card p-5 md:p-6 overflow-hidden hover:shadow-lift transition-all duration-500" style={{ '--d': `${i * 80}ms` }}>
+              <GraduationCap className="absolute -right-6 -bottom-6 text-forest/[0.06] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6" size={120} />
+              <p className="text-[13px] text-muted tabular">{e.period}</p>
+              <h3 className="mt-1 font-serif font-bold text-[21px] text-ink leading-tight">{e.degree}</h3>
+              <p className="mt-0.5 text-[15px] font-medium text-forest-deep">{e.school}</p>
+              <p className="mt-3 inline-block rounded-lg bg-aspen-soft/70 border border-aspen/30 px-2.5 py-1 text-[13.5px] font-semibold text-ink">{e.score}</p>
+              <p className="mt-3 text-[14.5px] leading-[1.6] text-body max-w-md"><Rich text={e.note} /></p>
               {e.focus && (
-                <div className="relative mt-5 flex flex-wrap gap-2">
+                <div className="relative mt-3 flex flex-wrap gap-1.5">
                   {e.focus.map((f) => <span key={f} className="text-[13px] px-2.5 py-1 rounded-md bg-forest-soft/70 text-forest-deep border border-forest/10">{f}</span>)}
                 </div>
               )}
@@ -751,38 +756,37 @@ function Education() {
 
 function Certifications() {
   return (
-    <section id="certifications" className="relative py-20 md:py-28">
+    <section id="certifications" className="relative py-10 md:py-14">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
         <SectionHead kicker="Certifications" title="Always learning" />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {certifications.map((c, i) => {
             const Tag = c.link ? 'a' : 'div';
             return (
               <Tag key={c.name} {...(c.link ? { href: c.link, target: '_blank', rel: 'noopener noreferrer', onClick: () => track('certificate_open', { certificate: c.name }) } : {})}
-                className={`reveal group rounded-[20px] bg-paper/90 border border-line/80 p-6 shadow-card transition-all duration-500 flex gap-4 ${c.link ? 'hover:shadow-lift hover:-translate-y-1 cursor-pointer' : ''}`}
+                className={`reveal group rounded-[16px] bg-paper/90 border border-line/80 px-4 py-3.5 shadow-card transition-all duration-500 flex items-center gap-3.5 ${c.link ? 'hover:shadow-lift hover:-translate-y-1 cursor-pointer' : ''}`}
                 style={{ '--d': `${i * 60}ms` }}>
-                <span className="shrink-0 w-11 h-11 rounded-xl bg-forest-soft text-forest-deep grid place-items-center"><Award size={20} /></span>
+                <span className="shrink-0 w-9 h-9 rounded-lg bg-forest-soft text-forest-deep grid place-items-center"><Award size={17} /></span>
                 <span className="min-w-0 flex-1">
                   <span className="flex items-start justify-between gap-3">
-                    <span className="font-semibold text-[16px] text-ink leading-snug">{c.name}</span>
-                    {c.link && <ArrowUpRight size={18} className="shrink-0 text-muted transition-all group-hover:text-forest-deep group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />}
+                    <span className="font-semibold text-[15px] text-ink leading-snug">{c.name}</span>
+                    {c.link && <ArrowUpRight size={16} className="shrink-0 text-muted transition-all group-hover:text-forest-deep group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />}
                   </span>
-                  <span className="block mt-1 text-[14px] text-muted leading-snug">{c.by}</span>
-                  {c.status && <span className="mt-3 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-amber bg-amber-soft/70 rounded-md px-2 py-1"><Sparkles size={13} /> {c.status}</span>}
+                  <span className="block mt-0.5 text-[13px] text-muted leading-snug">{c.by}{c.status && <span className="ml-2 inline-flex align-middle items-center gap-1.5 text-[11.5px] font-semibold text-amber bg-amber-soft/70 rounded-md px-1.5 py-0.5"><Sparkles size={11} /> {c.status}</span>}</span>
                 </span>
               </Tag>
             );
           })}
         </div>
 
-        <div className="mt-16">
-          <div className="reveal mb-7 max-w-3xl">
-            <p className="text-[13px] font-semibold tracking-[0.18em] uppercase text-amber mb-3">Recognition</p>
-            <h3 className="font-serif font-bold text-ink text-[clamp(1.7rem,2.8vw,2.3rem)] leading-tight">Moments I’m proud of</h3>
+        <div className="mt-10">
+          <div className="reveal mb-4 max-w-3xl">
+            <p className="text-[12.5px] font-semibold tracking-[0.18em] uppercase text-amber mb-2">Recognition</p>
+            <h3 className="font-serif font-bold text-ink text-[clamp(1.4rem,2.2vw,1.8rem)] leading-tight">Moments I’m proud of</h3>
           </div>
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-3">
             {recognition.map((r, i) => (
-              <div key={r.title} className="reveal flex items-center gap-4 rounded-[18px] px-5 py-4 bg-gradient-to-br from-[#FBF1DE] to-[#F6E5C6] border border-amber/25 shadow-card hover:shadow-lift hover:-translate-y-0.5 transition-all duration-500" style={{ '--d': `${i * 70}ms` }}>
+              <div key={r.title} className="reveal flex items-center gap-4 rounded-[16px] px-4 py-3 bg-gradient-to-br from-[#FBF1DE] to-[#F6E5C6] border border-amber/25 shadow-card hover:shadow-lift hover:-translate-y-0.5 transition-all duration-500" style={{ '--d': `${i * 70}ms` }}>
                 <span className="shrink-0 w-10 h-10 rounded-xl bg-paper/80 text-amber grid place-items-center"><Trophy size={18} /></span>
                 <span className="min-w-0 flex-1">
                   <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
@@ -827,29 +831,29 @@ function Beyond() {
     ...beyond,
   ];
   return (
-    <section id="beyond" className="relative py-20 md:py-28">
+    <section id="beyond" className="relative py-10 md:py-14">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
         <SectionHead kicker="Beyond work" title="What keeps me curious" />
-        <div className="grid md:grid-cols-3 gap-5">
+        <div className="swipe-row scroll-px-5 md:scroll-px-0 flex md:grid md:grid-cols-3 gap-3 md:gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory -mx-5 px-5 md:mx-0 md:px-0 pb-2 md:pb-0 no-scrollbar">
           {cards.map((b, i) => {
             const isDance = b.key === 'dance';
             const Icon = isDance ? DanceIcon : BEYOND_ICON[b.key];
             const Tag = isDance ? 'a' : 'div';
             return (
               <Tag key={b.key} {...(isDance ? { href: bharatanatyam.site, target: '_blank', rel: 'noopener noreferrer', onClick: () => track('dance_site_open') } : {})}
-                className={`reveal group group/dance text-left rounded-[26px] overflow-hidden bg-paper/90 border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 flex flex-col ${isDance ? 'cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest' : ''}`}
+                className={`reveal group group/dance text-left shrink-0 w-[84%] sm:w-[60%] md:w-auto snap-start rounded-[26px] overflow-hidden bg-paper/90 border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 flex flex-col ${isDance ? 'cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest' : ''}`}
                 style={{ '--d': `${i * 90}ms` }}>
-                <span className={`relative block h-44 overflow-hidden ${isDance ? 'bg-gradient-to-br from-[#F4DDB0] via-[#EDC98A] to-[#C4873A]' : b.key === 'hike' ? 'bg-gradient-to-br from-[#DCE6D6] via-[#B9CBB1] to-[#2D5A3D]' : 'bg-gradient-to-br from-[#E1EAF4] via-[#C9D7E8] to-[#2F5F99]'}`}>
-                  <Icon className={`absolute text-white/85 transition-transform duration-700 group-hover:scale-110 ${isDance ? 'ghungroo right-5 bottom-8' : 'right-6 bottom-5 group-hover:-rotate-6'}`}
-                    width={isDance ? 150 : 84} height={isDance ? 80 : 84} />
-                  <span className="absolute left-5 top-5 text-[12px] font-semibold text-ink bg-paper/90 rounded-md px-2.5 py-1">{String(i + 1).padStart(2, '0')}</span>
+                <span className={`relative block h-24 md:h-28 overflow-hidden ${isDance ? 'bg-gradient-to-br from-[#F4DDB0] via-[#EDC98A] to-[#C4873A]' : b.key === 'hike' ? 'bg-gradient-to-br from-[#DCE6D6] via-[#B9CBB1] to-[#2D5A3D]' : 'bg-gradient-to-br from-[#E1EAF4] via-[#C9D7E8] to-[#2F5F99]'}`}>
+                  <Icon className={`absolute text-white/85 transition-transform duration-700 group-hover:scale-110 ${isDance ? 'ghungroo right-4 bottom-4' : 'right-5 bottom-3 group-hover:-rotate-6'}`}
+                    width={isDance ? 118 : 60} height={isDance ? 63 : 60} />
+                  <span className="absolute left-4 top-4 text-[11.5px] font-semibold text-ink bg-paper/90 rounded-md px-2 py-0.5">{String(i + 1).padStart(2, '0')}</span>
                 </span>
-                <span className="p-6 md:p-7 flex flex-col flex-1">
-                  <span className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-amber">{b.tag}</span>
-                  <span className="mt-2 font-serif font-semibold text-[23px] text-ink">{b.title}</span>
-                  <span className="mt-2 text-[15.5px] leading-[1.65] text-body"><Rich text={b.text} /></span>
+                <span className="p-5 flex flex-col flex-1">
+                  <span className="text-[11.5px] font-semibold uppercase tracking-[0.14em] text-amber">{b.tag}</span>
+                  <span className="mt-1 font-serif font-semibold text-[20px] text-ink">{b.title}</span>
+                  <span className="mt-1 text-[14.5px] leading-[1.6] text-body"><Rich text={b.text} /></span>
                   {isDance && (
-                    <span className="mt-auto pt-5 inline-flex items-center gap-2 text-[14.5px] font-semibold text-forest-deep">
+                    <span className="mt-auto pt-3 inline-flex items-center gap-2 text-[14px] font-semibold text-forest-deep">
                       Visit Routes &amp; Roots
                       <span className="w-7 h-7 rounded-full border border-forest/25 grid place-items-center transition-all duration-500 group-hover:bg-forest-deep group-hover:text-white"><ArrowUpRight size={15} /></span>
                     </span>
@@ -889,26 +893,26 @@ function CopyEmail() {
 
 function Contact() {
   return (
-    <section id="contact" className="relative py-24 md:py-32">
+    <section id="contact" className="relative pt-10 pb-14 md:pt-14 md:pb-20">
       <div className="max-w-[1100px] mx-auto px-5 md:px-10">
-        <div className="reveal relative rounded-[34px] overflow-hidden bg-forest-deep text-white px-7 py-14 md:px-16 md:py-20 shadow-lift">
+        <div className="reveal relative rounded-[34px] overflow-hidden bg-forest-deep text-white px-6 py-9 md:px-12 md:py-12 shadow-lift">
           <div className="absolute -right-32 -top-32 w-[420px] h-[420px] rounded-full bg-aspen/25 blur-3xl" />
           <div className="absolute -left-24 -bottom-40 w-[380px] h-[380px] rounded-full bg-[#4E7A5A]/40 blur-3xl" />
           <div className="absolute inset-0 opacity-[0.07]" style={{ background: 'repeating-radial-gradient(circle at 85% 20%, #fff 0 1px, transparent 1px 30px)' }} />
           <div className="relative">
-            <p className="text-[13px] font-semibold tracking-[0.18em] uppercase text-aspen mb-4">Contact</p>
-            <h2 className="font-serif font-bold text-[clamp(2.1rem,4.2vw,3.5rem)] leading-[1.08] max-w-2xl">Let’s take your next product to launch.</h2>
-            <p className="mt-5 text-[17px] leading-[1.7] text-white/80 max-w-xl">
+            <p className="text-[12.5px] font-semibold tracking-[0.18em] uppercase text-aspen mb-2">Contact</p>
+            <h2 className="font-serif font-bold text-[clamp(1.8rem,3.4vw,2.8rem)] leading-[1.1] max-w-2xl">Let’s take your next product to launch.</h2>
+            <p className="mt-3 text-[16px] leading-[1.65] text-white/80 max-w-xl">
               I’m looking for <strong className={ON_DARK}>Technical Program Manager</strong> roles where releases, devices and people come together.
             </p>
-            <div className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-3">
+            <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3">
               <a href={`mailto:${site.email}`} onClick={() => track('email_click', { from: 'contact' })}
                 className="inline-flex items-center gap-3 font-serif text-[clamp(1.2rem,2.4vw,1.75rem)] text-white border-b-2 border-aspen/70 pb-1 hover:border-aspen transition-colors break-all">
                 <Mail size={22} className="shrink-0" /> {site.email}
               </a>
               <CopyEmail />
             </div>
-            <div className="mt-10 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3">
               <a href={site.linkedin} target="_blank" rel="noopener noreferrer" onClick={() => track('linkedin_click', { from: 'contact' })}
                 className="inline-flex items-center gap-2 rounded-full bg-white text-forest-deep px-5 py-3 text-[15px] font-semibold hover:bg-aspen-soft hover:-translate-y-0.5 transition-all"><Linkedin size={17} /> LinkedIn</a>
               <a href={site.resume} target="_blank" rel="noopener noreferrer" onClick={() => track('resume_open', { from: 'contact' })}

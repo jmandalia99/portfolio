@@ -153,17 +153,6 @@ export const journey = [
     ],
     tools: ['Verification & validation', 'ADAS', 'Telematics'],
   },
-  {
-    year: '2017',
-    period: 'Jul 2017 – May 2021',
-    place: 'Vadodara, India',
-    role: 'B.E. Electrical Engineering',
-    org: 'The Maharaja Sayajirao University of Baroda',
-    theme: 'Electrical engineering foundation',
-    summary: 'Graduated with **CGPA 8.72 / 10** — my foundation for devices, control systems and embedded electronics.',
-    points: [],
-    tools: ['Electrical engineering', 'Embedded systems'],
-  },
 ];
 
 export const research = {
