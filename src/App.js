@@ -809,7 +809,7 @@ function DanceModal({ open, onClose }) {
             </ol>
           </div>
           <div>
-            <p className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-bark">What I’m learning now</p>
+            <p className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-bark">What I’m doing now</p>
             <ul className="mt-4 space-y-2.5">
               {d.learning.map(([k, v]) => (
                 <li key={k} className="rounded-2xl bg-[#FBF4E6] border border-amber/15 px-4 py-3">
@@ -821,7 +821,6 @@ function DanceModal({ open, onClose }) {
           </div>
         </div>
         <div className="px-6 sm:px-9 pb-8 flex flex-wrap items-center gap-4 justify-between border-t border-line pt-6">
-          <p className="text-[15px] italic font-serif text-bark">{d.closing}</p>
           <div className="flex flex-wrap gap-3">
           <Button href={d.instagram.url} variant="ghost" external onClick={() => track('instagram_click', { from: 'dance_story' })}><Instagram size={17} /> {d.instagram.handle}</Button>
           {d.tool && (

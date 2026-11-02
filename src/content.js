@@ -473,12 +473,10 @@ export const bharatanatyam = {
     },
   ],
   learning: [
-    ['Alarippu', 'the opening piece of a recital, in Tisra Jaati Eka Tala'],
-    ['Carnatic tala system', 'the 35 Suladi Sapta talas, jaati, gati, and the three speeds'],
-    ['Hasta viniyoga', 'the shlokas that give each hand gesture its meanings'],
-    ['Choreography', 'setting my own short pieces, mixing abhinaya and pure dance'],
+    ['Learning', 'back in class with Artgharana, building my foundation step by step'],
+    ['Understanding taal', 'how the Carnatic tala system works — talas, jaati, gati, and the three speeds'],
+    ['Dance + technology', 'finding ways to connect Bharatanatyam with technology, starting with a taal practice tool'],
   ],
-  closing: 'I’m also curious about where dance and technology meet.',
   instagram: { handle: '@routes._.roots', url: 'https://www.instagram.com/routes._.roots/' },
   // Set this to the page path once the taal practice tool is added, e.g. '/taal/'.
   tool: null,
