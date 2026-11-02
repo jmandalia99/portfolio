@@ -6,6 +6,11 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 84px;
 }
+/* smooth-scroll library */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
 
 body {
   margin: 0;
@@ -33,12 +38,11 @@ body {
 .blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(70px);
   will-change: transform;
 }
-.blob-gold { width: 46vw; height: 46vw; background: rgba(212, 152, 30, 0.27); top: -12vw; right: -8vw; animation: drift1 19s ease-in-out infinite alternate; }
-.blob-forest { width: 40vw; height: 40vw; background: rgba(45, 90, 61, 0.19); bottom: -14vw; left: -10vw; animation: drift2 23s ease-in-out infinite alternate; }
-.blob-sky { width: 30vw; height: 30vw; background: rgba(47, 95, 153, 0.13); top: 38%; left: 34%; animation: drift3 27s ease-in-out infinite alternate; }
+.blob-gold { width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(212, 152, 30, 0.30) 0%, rgba(212, 152, 30, 0) 68%); top: -20vw; right: -16vw; animation: drift1 19s ease-in-out infinite alternate; }
+.blob-forest { width: 54vw; height: 54vw; background: radial-gradient(circle, rgba(45, 90, 61, 0.22) 0%, rgba(45, 90, 61, 0) 68%); bottom: -20vw; left: -16vw; animation: drift2 23s ease-in-out infinite alternate; }
+.blob-sky { width: 42vw; height: 42vw; background: radial-gradient(circle, rgba(47, 95, 153, 0.15) 0%, rgba(47, 95, 153, 0) 68%); top: 34%; left: 30%; animation: drift3 27s ease-in-out infinite alternate; }
 
 @keyframes drift1 { to { transform: translate(-14vw, 18vh) scale(1.15); } }
 @keyframes drift2 { to { transform: translate(18vw, -16vh) scale(1.1); } }

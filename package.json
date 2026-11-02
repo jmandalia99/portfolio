@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://www.jinalmandalia.com",
   "dependencies": {
+    "lenis": "^1.1.13",
     "lucide-react": "^0.263.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

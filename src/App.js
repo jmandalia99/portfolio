@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import Lenis from 'lenis';
 import {
   ArrowDown, ArrowUpRight, Mail, Linkedin, Github, FileText, X, ChevronDown,
   MapPin, Award, Trophy, GraduationCap, Mountain, Compass, Image as ImageIcon, Film,
@@ -41,6 +42,36 @@ function useSectionTracking() {
 }
 
 /* ─────────────── hooks ─────────────── */
+
+// Smooth, eased wheel scrolling. Skipped for people who prefer reduced motion.
+function useSmoothScroll() {
+  useEffect(() => {
+    if (reducedMotion()) return undefined;
+    const lenis = new Lenis({ lerp: 0.1 });
+    window.__lenis = lenis;
+    let id = requestAnimationFrame(function raf(t) { lenis.raf(t); id = requestAnimationFrame(raf); });
+    // in-page links (#journey, #top …) glide instead of jumping
+    const onClick = (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey) return;
+      const a = e.target.closest && e.target.closest('a[href^="#"]');
+      if (!a) return;
+      const hash = a.getAttribute('href');
+      const el = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
+      if (!el) return;
+      e.preventDefault();
+      lenis.scrollTo(hash === '#top' ? 0 : el, { offset: -84, duration: 1.2 });
+    };
+    document.addEventListener('click', onClick);
+    return () => { document.removeEventListener('click', onClick); cancelAnimationFrame(id); lenis.destroy(); window.__lenis = null; };
+  }, []);
+}
+
+// Lock the page behind menus and pop-ups (works with smooth scrolling too).
+function lockScroll(on) {
+  document.body.style.overflow = on ? 'hidden' : '';
+  const l = window.__lenis;
+  if (l) { if (on) l.stop(); else l.start(); }
+}
 
 function useRevealAll() {
   useEffect(() => {
@@ -101,7 +132,7 @@ function Button({ href, onClick, children, variant = 'solid', external, ...rest 
   const base = 'inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-[15px] font-semibold transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-parchment';
   const styles = variant === 'solid'
     ? 'bg-forest-deep text-white shadow-[0_10px_24px_-10px_rgba(31,68,50,.7)] hover:bg-forest hover:-translate-y-0.5 hover:shadow-[0_16px_30px_-12px_rgba(31,68,50,.7)]'
-    : 'bg-paper/70 text-ink border border-line hover:border-forest/40 hover:-translate-y-0.5 hover:bg-paper backdrop-blur';
+    : 'bg-paper/70 text-ink border border-line hover:border-forest/40 hover:-translate-y-0.5 hover:bg-paper';
   return (
     <a href={href} onClick={onClick} className={`${base} ${styles}`}
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} {...rest}>
@@ -171,7 +202,7 @@ function Header() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
+    lockScroll(open);
     if (!open) return undefined;
     const onKey = (e) => { if (e.key === 'Escape') { setOpen(false); if (btnRef.current) btnRef.current.focus(); } };
     document.addEventListener('keydown', onKey);
@@ -183,21 +214,22 @@ function Header() {
   const go = (e, id) => {
     e.preventDefault();
     setOpen(false);
-    document.body.style.overflow = '';
+    lockScroll(false);
     requestAnimationFrame(() => {
       const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
+      if (el && window.__lenis) window.__lenis.scrollTo(el, { offset: -84, duration: 1.2 });
+      else if (el) el.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
       try { window.history.replaceState(null, '', `#${id}`); } catch (err) { /* ignore */ }
     });
   };
 
   return (
     <>
-      <header className={`fixed top-0 inset-x-0 z-[58] transition-all duration-500 ${scrolled && !open ? 'bg-parchment/80 backdrop-blur-xl border-b border-line/70' : 'bg-transparent border-b border-transparent'}`}>
+      <header className={`fixed top-0 inset-x-0 z-[58] transition-all duration-500 ${scrolled ? 'bg-parchment/80 backdrop-blur-xl border-b border-line/70' : 'bg-transparent border-b border-transparent'}`}>
         <div className="max-w-[1240px] mx-auto px-5 md:px-10 h-[72px] flex items-center justify-between">
           <Logo />
           <button ref={btnRef} onClick={toggle} aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} aria-controls="site-menu"
-            className={`group inline-flex items-center gap-2.5 rounded-full pl-4 pr-3 py-2 text-[14.5px] font-semibold border transition-all duration-300 ${open ? 'bg-forest-deep text-white border-forest-deep' : 'bg-paper/80 backdrop-blur text-ink border-line hover:border-forest/40 hover:-translate-y-0.5 shadow-card'}`}>
+            className={`group inline-flex items-center gap-2.5 rounded-full pl-4 pr-3 py-2 text-[14.5px] font-semibold border transition-all duration-300 ${open ? 'bg-forest-deep text-white border-forest-deep' : 'bg-paper/90 text-ink border-line hover:border-forest/40 hover:-translate-y-0.5 shadow-card'}`}>
             {open ? 'Close' : 'Menu'}
             <span className="relative w-5 h-5 grid place-items-center">
               <span className={`absolute h-[2px] w-[18px] rounded-full bg-current transition-all duration-300 ${open ? 'rotate-45' : '-translate-y-[4px]'}`} />
@@ -208,36 +240,30 @@ function Header() {
       </header>
 
       <div id="site-menu" role="dialog" aria-modal="true" aria-label="Site menu"
-        className={`fixed inset-0 z-[57] transition-[opacity,visibility] duration-500 ${open ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
-        <div className="absolute inset-0 bg-parchment/95 backdrop-blur-xl" onClick={() => setOpen(false)} />
-        <div className="absolute -right-40 -top-40 w-[520px] h-[520px] rounded-full bg-aspen/20 blur-3xl pointer-events-none" />
-        <div className="absolute -left-40 -bottom-40 w-[460px] h-[460px] rounded-full bg-forest/15 blur-3xl pointer-events-none" />
-        <div className="relative h-full overflow-y-auto">
-          <div className="max-w-[1240px] mx-auto px-5 md:px-10 pt-28 pb-12 grid lg:grid-cols-[1.4fr_1fr] gap-12">
-            <nav aria-label="Main" className="grid sm:grid-cols-2 gap-x-10">
-              {NAV.map(([id, label], i) => (
-                <a key={id} href={`#${id}`} onClick={(e) => go(e, id)}
-                  className={`group/link flex items-baseline gap-4 py-3.5 border-b border-line/80 transition-all duration-500 ${open ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-                  style={{ transitionDelay: open ? `${80 + i * 45}ms` : '0ms' }}>
-                  <span className="text-[13px] font-semibold text-amber tabular w-7">{String(i + 1).padStart(2, '0')}</span>
-                  <span className={`font-serif text-[clamp(1.6rem,3.2vw,2.4rem)] leading-tight transition-all duration-300 group-hover/link:translate-x-1.5 ${active === id ? 'text-forest-deep' : 'text-ink group-hover/link:text-forest-deep'}`}>{label}</span>
-                  {active === id && <span className="ml-auto self-center w-2 h-2 rounded-full bg-aspen" aria-label="current section" />}
-                </a>
-              ))}
-            </nav>
-            <aside className={`transition-all duration-700 ${open ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: open ? '260ms' : '0ms' }}>
-              <div className="rounded-[26px] bg-paper/80 border border-line shadow-card p-7">
-                <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-amber">Get in touch</p>
-                <a href={`mailto:${site.email}`} onClick={() => track('email_click', { from: 'menu' })} className="mt-3 block font-serif text-[20px] text-ink break-all hover:text-forest-deep">{site.email}</a>
-                <div className="mt-6 flex flex-wrap gap-2.5">
-                  <Button href={site.resume} external onClick={() => track('resume_open', { from: 'menu' })}><FileText size={16} /> Resume</Button>
-                  <Button href={site.linkedin} variant="ghost" external onClick={() => track('linkedin_click', { from: 'menu' })}><Linkedin size={16} /> LinkedIn</Button>
-                </div>
-                <p className="mt-6 flex items-center gap-2 text-[14px] text-muted"><MapPin size={15} /> {site.location}</p>
-              </div>
-            </aside>
+        className={`fixed inset-0 z-[57] ${open ? 'visible' : 'invisible pointer-events-none'}`}>
+        <div className={`absolute inset-0 bg-[#1C1A17]/25 transition-opacity duration-500 ${open ? 'opacity-100' : 'opacity-0'}`} onClick={() => setOpen(false)} />
+        <aside className={`absolute top-0 right-0 h-full w-[min(340px,86vw)] bg-paper border-l border-line shadow-lift flex flex-col transition-transform duration-500 ease-[cubic-bezier(.2,.7,.2,1)] ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+          <nav aria-label="Main" data-lenis-prevent className="flex-1 overflow-y-auto px-6 pt-[84px] pb-4">
+            {NAV.map(([id, label], i) => (
+              <a key={id} href={`#${id}`} onClick={(e) => go(e, id)}
+                className={`group/link flex items-center gap-3 py-2.5 border-b border-line/70 transition-colors ${active === id ? 'text-forest-deep' : 'text-ink hover:text-forest-deep'}`}>
+                <span className="text-[11.5px] font-semibold text-amber tabular w-5">{String(i + 1).padStart(2, '0')}</span>
+                <span className="font-serif text-[19px] leading-snug transition-transform duration-300 group-hover/link:translate-x-1">{label}</span>
+                {active === id && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-aspen" aria-label="current section" />}
+              </a>
+            ))}
+          </nav>
+          <div className="px-6 py-5 border-t border-line bg-parchment/60">
+            <a href={`mailto:${site.email}`} onClick={() => track('email_click', { from: 'menu' })} className="block text-[14.5px] font-medium text-ink break-all hover:text-forest-deep">{site.email}</a>
+            <div className="mt-3 flex gap-2">
+              <a href={site.resume} target="_blank" rel="noopener noreferrer" onClick={() => track('resume_open', { from: 'menu' })}
+                className="inline-flex items-center gap-1.5 rounded-full bg-forest-deep text-white px-3.5 py-2 text-[13.5px] font-semibold hover:bg-forest transition-colors"><FileText size={14} /> Resume</a>
+              <a href={site.linkedin} target="_blank" rel="noopener noreferrer" onClick={() => track('linkedin_click', { from: 'menu' })}
+                className="inline-flex items-center gap-1.5 rounded-full border border-line bg-paper px-3.5 py-2 text-[13.5px] font-semibold text-ink hover:border-forest/40 transition-colors"><Linkedin size={14} /> LinkedIn</a>
+            </div>
+            <p className="mt-3 flex items-center gap-1.5 text-[13px] text-muted"><MapPin size={13} /> {site.location}</p>
           </div>
-        </div>
+        </aside>
       </div>
     </>
   );
@@ -279,7 +305,7 @@ function Hero() {
         <div>
           <div className="reveal flex flex-wrap gap-2.5 mb-8 max-w-[520px]">
             {hero.tags.map((t) => (
-              <span key={t} className="px-3 md:px-3.5 py-1.5 rounded-full border border-line bg-paper/60 backdrop-blur text-[12.5px] md:text-[13.5px] text-body">{t}</span>
+              <span key={t} className="px-3 md:px-3.5 py-1.5 rounded-full border border-line bg-paper/80 text-[12.5px] md:text-[13.5px] text-body">{t}</span>
             ))}
           </div>
           <h1 className="reveal font-serif font-bold text-ink leading-[1.04] tracking-[-0.02em] text-[clamp(2.6rem,4.15vw,3.95rem)] lg:whitespace-nowrap" style={{ '--d': '80ms' }}>
@@ -351,7 +377,7 @@ function Numbers() {
         <p className="reveal text-[13px] font-semibold tracking-[0.18em] uppercase text-amber mb-6">By the numbers</p>
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-5">
           {numbers.map((s, i) => (
-            <div key={s.label} className={`reveal group rounded-[22px] bg-paper/75 backdrop-blur border border-line/80 p-5 md:p-6 shadow-card hover:shadow-lift hover:-translate-y-1 transition-all duration-500 ${i === numbers.length - 1 ? 'col-span-2 lg:col-span-1' : ''}`} style={{ '--d': `${i * 80}ms` }}>
+            <div key={s.label} className={`reveal group rounded-[22px] bg-paper/90 border border-line/80 p-5 md:p-6 shadow-card hover:shadow-lift hover:-translate-y-1 transition-all duration-500 ${i === numbers.length - 1 ? 'col-span-2 lg:col-span-1' : ''}`} style={{ '--d': `${i * 80}ms` }}>
               <div className="font-serif font-bold text-ink text-[clamp(1.9rem,2.6vw,2.5rem)] leading-none tracking-[-0.02em]">
                 <CountUp {...s} />
               </div>
@@ -379,7 +405,7 @@ function About() {
           </div>
         </div>
         <aside className="reveal lg:pt-24" style={{ '--d': '120ms' }}>
-          <div className="lg:sticky lg:top-28 rounded-[26px] bg-paper/80 backdrop-blur border border-line/80 shadow-card p-7">
+          <div className="lg:sticky lg:top-28 rounded-[26px] bg-paper/90 border border-line/80 shadow-card p-7">
             <p className="font-serif text-[22px] text-ink mb-5">At a glance</p>
             <dl className="divide-y divide-line">
               {about.glance.map(({ k, v }) => (
@@ -407,8 +433,8 @@ function JourneyItem({ item, open, onToggle, index }) {
     <li className="reveal relative grid grid-cols-[52px_1fr] md:grid-cols-[150px_1fr] gap-4 md:gap-8" style={{ '--d': `${index * 50}ms` }}>
       {/* rail */}
       <div className="relative">
-        <span className={`block font-serif font-bold tabular leading-none text-[20px] md:text-[56px] tracking-[-0.03em] transition-colors duration-500 pt-7 md:pt-5 ${open ? 'text-amber' : 'text-[#D9CDBB]'}`}>{item.year}</span>
-        <span className={`absolute right-[-13.5px] md:right-[-21.5px] top-[33px] md:top-[34px] w-[11px] h-[11px] rounded-full border-2 transition-all duration-500 ${open ? 'bg-aspen border-aspen scale-125' : 'bg-parchment border-[#C9BBA6]'}`} />
+        <span className={`block font-serif font-bold tabular leading-none text-[20px] md:text-[56px] tracking-[-0.03em] transition-colors duration-500 pt-7 md:pt-5 ${open ? 'text-amber' : 'text-[#A88A62]'}`}>{item.year}</span>
+        <span className={`absolute right-[-13.5px] md:right-[-21.5px] top-[33px] md:top-[34px] w-[11px] h-[11px] rounded-full border-2 transition-all duration-500 ${open ? 'bg-aspen border-aspen scale-125' : 'bg-parchment border-[#A88A62]'}`} />
       </div>
       {/* card */}
       <div className={`mb-5 rounded-[22px] border transition-all duration-500 ${open ? 'bg-paper border-line shadow-lift' : 'bg-paper/60 border-line/70 shadow-card hover:bg-paper hover:-translate-y-0.5'}`}>
@@ -478,7 +504,7 @@ function Journey() {
           </button>
         </div>
         <ol className="relative">
-          <span className="absolute left-[60px] md:left-[166px] top-6 bottom-10 w-px bg-gradient-to-b from-[#D9CDBB] via-[#D9CDBB] to-transparent" aria-hidden="true" />
+          <span className="absolute left-[60px] md:left-[166px] top-6 bottom-10 w-px bg-gradient-to-b from-[#C9B591] via-[#C9B591] to-transparent" aria-hidden="true" />
           {journey.map((item, i) => (
             <JourneyItem key={item.period + item.role} item={item} index={i} open={open.has(i)} onToggle={() => { if (!open.has(i)) track('journey_open', { role: `${item.role} — ${item.org}` }); toggle(i); }} />
           ))}
@@ -500,7 +526,7 @@ function Research() {
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
         <SectionHead kicker="Research · M.S. thesis" title={research.title}>{research.subtitle}</SectionHead>
 
-        <div className="reveal rounded-[30px] bg-paper/80 backdrop-blur border border-line shadow-lift overflow-hidden">
+        <div className="reveal rounded-[30px] bg-paper/90 border border-line shadow-lift overflow-hidden">
           <div className="grid lg:grid-cols-[1fr_1.15fr]">
             <div className="p-7 md:p-10 bg-gradient-to-br from-forest-deep to-[#284F37] text-white relative overflow-hidden">
               <div className="absolute -right-24 -top-24 w-72 h-72 rounded-full border border-white/10" />
@@ -570,17 +596,16 @@ function ProjectModal({ project, onClose }) {
     if (!project) return undefined;
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    lockScroll(true);
     if (closeRef.current) closeRef.current.focus();
-    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
+    return () => { document.removeEventListener('keydown', onKey); lockScroll(false); };
   }, [project, onClose]);
   if (!project) return null;
   const Icon = PROJECT_ICON[project.icon] || Sparkles;
   return createPortal(
     <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="project-title">
       <div className="absolute inset-0 bg-[#1C1A17]/40 backdrop-blur-sm fade-in" onClick={onClose} />
-      <div className="relative w-full sm:max-w-[680px] max-h-[88vh] overflow-y-auto rounded-t-[28px] sm:rounded-[28px] bg-paper shadow-lift pop-in">
+      <div data-lenis-prevent className="relative w-full sm:max-w-[680px] max-h-[88vh] overflow-y-auto rounded-t-[28px] sm:rounded-[28px] bg-paper shadow-lift pop-in">
         <div className={`relative px-6 sm:px-9 pt-8 pb-7 bg-gradient-to-br ${PROJECT_TINT[project.type]}`}>
           <button ref={closeRef} onClick={onClose} aria-label="Close"
             className="absolute right-5 top-5 w-10 h-10 rounded-full bg-paper/80 text-ink grid place-items-center hover:bg-paper transition-colors"><X size={19} /></button>
@@ -649,7 +674,7 @@ function Projects() {
             const Icon = PROJECT_ICON[p.icon] || Sparkles;
             return (
               <button key={`${tab}-${p.title}`} onClick={() => { setOpenIdx(p.i); track('project_open', { project_name: p.title }); }}
-                className="fade-up group text-left rounded-[24px] bg-paper/80 backdrop-blur border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 flex flex-col overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                className="fade-up group text-left rounded-[24px] bg-paper/90 border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 flex flex-col overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
                 style={{ animationDelay: `${k * 60}ms` }}>
                 <span className={`relative h-28 bg-gradient-to-br ${PROJECT_TINT[p.type]} overflow-hidden`}>
                   <span className="absolute -right-8 -top-8 w-36 h-36 rounded-full border border-current opacity-[0.12] transition-transform duration-700 group-hover:scale-125" />
@@ -684,27 +709,29 @@ function Projects() {
 /* ─────────────── skills ─────────────── */
 
 function Skills() {
+  const [g, setG] = useState(0);
+  const group = skills[g];
   return (
-    <section id="skills" className="relative py-20 md:py-28">
+    <section id="skills" className="relative py-16 md:py-20">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
         <SectionHead kicker="Skills & tools" title="What I bring to a program" />
-        <div className="md:columns-2 gap-5">
-          {skills.map((g, gi) => (
-            <div key={g.group} className="reveal group/card break-inside-avoid mb-5 rounded-[24px] bg-paper/75 backdrop-blur border border-line/80 shadow-card hover:shadow-lift transition-shadow duration-500 p-6 md:p-7" style={{ '--d': `${gi * 70}ms` }}>
-              <div className="flex items-center justify-between mb-5">
-                <h3 className="font-serif text-[21px] font-semibold text-ink">{g.group}</h3>
-                <span className="text-[13px] text-muted tabular">{g.items.length}</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {g.items.map((name) => (
-                  <span key={name}
-                    className="text-[14px] px-3 py-[7px] rounded-[7px] border bg-parchment border-line text-body transition-all duration-300 hover:-translate-y-0.5 hover:bg-forest-soft hover:border-forest/25 hover:text-forest-deep cursor-default">
-                    {name}
-                  </span>
-                ))}
-              </div>
+        <div className="reveal rounded-[24px] bg-paper/90 border border-line/80 shadow-card overflow-hidden md:grid md:grid-cols-[310px_1fr]">
+          <div className="flex md:flex-col gap-1 p-2 md:p-3 overflow-x-auto md:overflow-visible border-b md:border-b-0 md:border-r border-line/80 bg-parchment/60" role="tablist" aria-label="Skill groups">
+            {skills.map((x, i) => (
+              <button key={x.group} role="tab" aria-selected={g === i} onClick={() => setG(i)}
+                className={`shrink-0 text-left flex items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-[14.5px] font-semibold transition-colors ${g === i ? 'bg-forest-deep text-white' : 'text-body hover:bg-paper'}`}>
+                <span className="whitespace-nowrap">{x.group}</span>
+                <span className={`text-[12px] tabular ${g === i ? 'text-white/70' : 'text-muted'}`}>{x.items.length}</span>
+              </button>
+            ))}
+          </div>
+          <div key={group.group} className="p-5 md:p-7 fade-up" role="tabpanel">
+            <div className="flex flex-wrap gap-2">
+              {group.items.map((name) => (
+                <span key={name} className="text-[14px] px-3 py-[6px] rounded-[7px] border bg-parchment border-line text-body">{name}</span>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>
@@ -717,10 +744,10 @@ function Education() {
   return (
     <section id="education" className="relative py-20 md:py-28">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
-        <SectionHead kicker="Education" title="Engineering roots, computer science depth" />
+        <SectionHead kicker="Education" title="From electrical engineering to computer science" />
         <div className="grid md:grid-cols-2 gap-5">
           {education.map((e, i) => (
-            <div key={e.degree} className="reveal group relative rounded-[26px] bg-paper/80 backdrop-blur border border-line/80 shadow-card p-7 md:p-9 overflow-hidden hover:shadow-lift transition-all duration-500" style={{ '--d': `${i * 80}ms` }}>
+            <div key={e.degree} className="reveal group relative rounded-[26px] bg-paper/90 border border-line/80 shadow-card p-7 md:p-9 overflow-hidden hover:shadow-lift transition-all duration-500" style={{ '--d': `${i * 80}ms` }}>
               <GraduationCap className="absolute -right-6 -bottom-6 text-forest/[0.06] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6" size={170} />
               <p className="text-[13.5px] text-muted tabular">{e.period}</p>
               <h3 className="mt-2 font-serif font-bold text-[26px] text-ink leading-tight">{e.degree}</h3>
@@ -752,7 +779,7 @@ function Certifications() {
             const Tag = c.link ? 'a' : 'div';
             return (
               <Tag key={c.name} {...(c.link ? { href: c.link, target: '_blank', rel: 'noopener noreferrer', onClick: () => track('certificate_open', { certificate: c.name }) } : {})}
-                className={`reveal group rounded-[20px] bg-paper/75 backdrop-blur border border-line/80 p-6 shadow-card transition-all duration-500 flex gap-4 ${c.link ? 'hover:shadow-lift hover:-translate-y-1 cursor-pointer' : ''}`}
+                className={`reveal group rounded-[20px] bg-paper/90 border border-line/80 p-6 shadow-card transition-all duration-500 flex gap-4 ${c.link ? 'hover:shadow-lift hover:-translate-y-1 cursor-pointer' : ''}`}
                 style={{ '--d': `${i * 60}ms` }}>
                 <span className="shrink-0 w-11 h-11 rounded-xl bg-forest-soft text-forest-deep grid place-items-center"><Award size={20} /></span>
                 <span className="min-w-0 flex-1">
@@ -826,7 +853,7 @@ function Beyond() {
             const Tag = isDance ? 'a' : 'div';
             return (
               <Tag key={b.key} {...(isDance ? { href: bharatanatyam.site, target: '_blank', rel: 'noopener noreferrer', onClick: () => track('dance_site_open') } : {})}
-                className={`reveal group group/dance text-left rounded-[26px] overflow-hidden bg-paper/80 backdrop-blur border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 flex flex-col ${isDance ? 'cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest' : ''}`}
+                className={`reveal group group/dance text-left rounded-[26px] overflow-hidden bg-paper/90 border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 flex flex-col ${isDance ? 'cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest' : ''}`}
                 style={{ '--d': `${i * 90}ms` }}>
                 <span className={`relative block h-44 overflow-hidden ${isDance ? 'bg-gradient-to-br from-[#F4DDB0] via-[#EDC98A] to-[#C4873A]' : b.key === 'hike' ? 'bg-gradient-to-br from-[#DCE6D6] via-[#B9CBB1] to-[#2D5A3D]' : 'bg-gradient-to-br from-[#E1EAF4] via-[#C9D7E8] to-[#2F5F99]'}`}>
                   <Icon className={`absolute text-white/85 transition-transform duration-700 group-hover:scale-110 ${isDance ? 'ghungroo right-5 bottom-8' : 'right-6 bottom-5 group-hover:-rotate-6'}`}
@@ -917,6 +944,7 @@ function Contact() {
 export default function App() {
   useRevealAll();
   useSectionTracking();
+  useSmoothScroll();
   return (
     <div className="relative min-h-screen font-sans text-body overflow-x-clip">
       <LivingBackground />
