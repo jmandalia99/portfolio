@@ -36,13 +36,13 @@ body {
   filter: blur(70px);
   will-change: transform;
 }
-.blob-gold { width: 46vw; height: 46vw; background: rgba(217, 164, 41, 0.20); top: -12vw; right: -8vw; animation: drift1 26s ease-in-out infinite alternate; }
-.blob-forest { width: 40vw; height: 40vw; background: rgba(45, 90, 61, 0.13); bottom: -14vw; left: -10vw; animation: drift2 32s ease-in-out infinite alternate; }
-.blob-sky { width: 30vw; height: 30vw; background: rgba(47, 95, 153, 0.09); top: 38%; left: 34%; animation: drift3 38s ease-in-out infinite alternate; }
+.blob-gold { width: 46vw; height: 46vw; background: rgba(212, 152, 30, 0.27); top: -12vw; right: -8vw; animation: drift1 13s ease-in-out infinite alternate; }
+.blob-forest { width: 40vw; height: 40vw; background: rgba(45, 90, 61, 0.19); bottom: -14vw; left: -10vw; animation: drift2 16s ease-in-out infinite alternate; }
+.blob-sky { width: 30vw; height: 30vw; background: rgba(47, 95, 153, 0.13); top: 38%; left: 34%; animation: drift3 19s ease-in-out infinite alternate; }
 
-@keyframes drift1 { to { transform: translate(-9vw, 12vh) scale(1.12); } }
-@keyframes drift2 { to { transform: translate(12vw, -10vh) scale(1.08); } }
-@keyframes drift3 { to { transform: translate(-14vw, 8vh) scale(0.9); } }
+@keyframes drift1 { to { transform: translate(-14vw, 18vh) scale(1.15); } }
+@keyframes drift2 { to { transform: translate(18vw, -16vh) scale(1.1); } }
+@keyframes drift3 { to { transform: translate(-20vw, 12vh) scale(0.88); } }
 
 /* concentric "ripples" that follow the pointer */
 .ripples {
@@ -50,12 +50,11 @@ body {
   inset: -20%;
   background: repeating-radial-gradient(
     circle at var(--rx, 68%) var(--ry, 42%),
-    rgba(107, 74, 50, 0.07) 0 1px,
+    rgba(107, 74, 50, 0.10) 0 1px,
     transparent 1px 34px
   );
   -webkit-mask-image: radial-gradient(circle at var(--rx, 68%) var(--ry, 42%), #000 0%, rgba(0,0,0,.55) 22%, transparent 48%);
           mask-image: radial-gradient(circle at var(--rx, 68%) var(--ry, 42%), #000 0%, rgba(0,0,0,.55) 22%, transparent 48%);
-  transition: background-position 0.2s;
 }
 .spotlight {
   position: absolute;
@@ -63,7 +62,7 @@ body {
   height: 560px;
   margin: -280px 0 0 -280px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(217, 164, 41, 0.16), transparent 62%);
+  background: radial-gradient(circle, rgba(212, 152, 30, 0.22), transparent 62%);
   transform: translate3d(var(--mx, -999px), var(--my, -999px), 0);
   transition: opacity 0.4s;
 }
@@ -104,6 +103,11 @@ body {
 @keyframes popIn { from { opacity: 0; transform: translateY(24px) scale(0.98); } to { opacity: 1; transform: none; } }
 .pop-in { animation: popIn 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 
+/* ghungroo bells swing when the dance card is hovered */
+.ghungroo .bell { transform-box: view-box; }
+.group\/dance:hover .ghungroo .bell { animation: swing 0.9s ease-in-out infinite alternate; }
+@keyframes swing { from { transform: rotate(-9deg); } to { transform: rotate(9deg); } }
+
 /* scroll cue */
 @keyframes wheel { 0% { transform: translateY(0); opacity: 1; } 70% { transform: translateY(10px); opacity: 0; } 100% { opacity: 0; } }
 .wheel { animation: wheel 1.8s ease-in-out infinite; }
@@ -112,7 +116,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .blob, .wheel, .fade-up, .fade-in, .pop-in { animation: none; }
+  .blob, .wheel, .fade-up, .fade-in, .pop-in, .ghungroo .bell { animation: none !important; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .acc { transition: none; }
 }

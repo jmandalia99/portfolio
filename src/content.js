@@ -12,7 +12,7 @@ export const site = {
   github: 'https://github.com/jmandalia99',
   // Put a new resume at public/resume.pdf (same name) to update it.
   resume: '/resume.pdf',
-  photo: '/images/jinal-portrait.jpg',
+  photo: '/images/jinal-golden-gate.jpg',
 };
 
 export const hero = {
@@ -451,24 +451,48 @@ export const recognition = [
   { title: 'MG Astor — CSI Rank #1', tag: 'Contributor', by: 'Resolved nationwide infotainment & telematics issues behind the brand’s No. 1 Customer Satisfaction Index ranking' },
 ];
 
+// The big Bharatanatyam card in "Beyond work".
+export const bharatanatyam = {
+  title: 'Bharatanatyam',
+  tag: '6 years of training',
+  intro:
+    'Bharatanatyam is the classical dance I grew up with. It taught me discipline, rhythm, and how to tell a story without words — and after a long break, I’m back in training.',
+  journey: [
+    {
+      when: 'Childhood · 6 years',
+      what: 'Trained from 1st to 6th standard and took the Gandharva Mahavidyalaya exams through Bruhad Gujarat Sangeet Samiti, Ahmedabad, reaching the Visharad Pratham level.',
+    },
+    {
+      when: 'School years',
+      what: 'Kept dancing through school, performing prayer dances up to 10th standard.',
+    },
+    {
+      when: '2026 · Back to training',
+      what: 'Restarted with Artgharana, working toward completing my Visharad.',
+    },
+  ],
+  learning: [
+    ['Alarippu', 'the opening piece of a recital, in Tisra Jaati Eka Tala'],
+    ['Carnatic tala system', 'the 35 Suladi Sapta talas, jaati, gati, and the three speeds'],
+    ['Hasta viniyoga', 'the shlokas that give each hand gesture its meanings'],
+    ['Choreography', 'setting my own short pieces, mixing abhinaya and pure dance'],
+  ],
+  closing: 'I’m also curious about where dance and technology meet.',
+  // Set this to the page path once the taal practice tool is added, e.g. '/taal/'.
+  tool: null,
+};
+
 export const beyond = [
-  {
-    key: 'dance',
-    title: 'Bharatanatyam',
-    tag: '6 years completed',
-    text: 'Six years of training in this classical Indian dance. It taught me discipline, rhythm, and how to tell a story without words.',
-  },
   {
     key: 'hike',
     title: 'Hiking',
     tag: 'Mountain trails',
-    text: 'Trails, national parks, and long views — the photo at the top of this page was taken on one of them.',
+    text: 'Trails, national parks, and long views — the mountains are my favorite way to reset.',
   },
   {
     key: 'travel',
     title: 'Visiting new places',
     tag: 'Always planning the next one',
     text: 'New cities, coastlines, and cultures. Seeing how other places work is how I recharge.',
-    image: '/images/travel.jpg',
   },
 ];

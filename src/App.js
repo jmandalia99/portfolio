@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import {
   site, hero, numbers, about, journey, research, projects, skills, education,
-  certifications, recognition, beyond,
+  certifications, recognition, beyond, bharatanatyam,
 } from './content';
 
 const NAV = [
@@ -119,11 +119,11 @@ function LivingBackground() {
     if (!el || reducedMotion()) return undefined;
     let tx = window.innerWidth * 0.68, ty = window.innerHeight * 0.42, cx = tx, cy = ty, raf = 0, running = false;
     const loop = () => {
-      cx += (tx - cx) * 0.06; cy += (ty - cy) * 0.06;
+      cx += (tx - cx) * 0.16; cy += (ty - cy) * 0.16;
       el.style.setProperty('--mx', `${cx}px`);
       el.style.setProperty('--my', `${cy}px`);
-      el.style.setProperty('--rx', `${(cx / window.innerWidth) * 100 * 0.6 + 40 * 0.4 + 12}%`);
-      el.style.setProperty('--ry', `${(cy / window.innerHeight) * 100 * 0.6 + 16}%`);
+      el.style.setProperty('--rx', `${15 + (cx / window.innerWidth) * 70}%`);
+      el.style.setProperty('--ry', `${12 + (cy / window.innerHeight) * 76}%`);
       if (Math.abs(tx - cx) > 0.5 || Math.abs(ty - cy) > 0.5) raf = requestAnimationFrame(loop); else running = false;
     };
     const onMove = (e) => {
@@ -258,7 +258,7 @@ function Hero() {
           <div ref={cardRef} className="relative transition-transform duration-500 ease-out will-change-transform">
             <div className="absolute -inset-4 md:-inset-5 rounded-[36px] bg-gradient-to-br from-[#EFE2CB] via-[#E7E2D2] to-[#CFD8C8] shadow-lift" />
             <div className="relative rounded-[26px] overflow-hidden aspect-[3/4] bg-[#cfd8c8]">
-              <img ref={imgRef} src={site.photo} alt="Jinal Mandalia hiking among golden aspens below mountain peaks"
+              <img ref={imgRef} src={site.photo} alt="Jinal Mandalia in front of the Golden Gate Bridge"
                 className="w-full h-full object-cover object-[50%_45%] will-change-transform" style={{ transform: 'scale(1.02)' }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
             </div>
@@ -755,7 +755,7 @@ function DanceIcon(props) {
     <svg viewBox="0 0 120 64" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" {...props}>
       <path d="M6 14 Q60 40 114 14" />
       {bells.map(([x, y]) => (
-        <g key={x}>
+        <g key={x} className="bell" style={{ transformOrigin: `${x}px ${y}px`, animationDelay: `${(x % 40) * 6}ms` }}>
           <line x1={x} y1={y} x2={x} y2={y + 4} />
           <circle cx={x} cy={y + 11} r="6.5" />
           <path d={`M${x - 3} ${y + 13} h6`} />
@@ -765,23 +765,76 @@ function DanceIcon(props) {
   );
 }
 
-const BEYOND_ICON = { dance: DanceIcon, hike: Mountain, travel: Compass };
+const BEYOND_ICON = { hike: Mountain, travel: Compass };
 
 function Beyond() {
+  const d = bharatanatyam;
+  const [step, setStep] = useState(d.journey.length - 1);
   return (
     <section id="beyond" className="relative py-20 md:py-28">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
         <SectionHead kicker="Beyond work" title="What keeps me curious" />
-        <div className="grid md:grid-cols-3 gap-5">
+
+        {/* Bharatanatyam feature */}
+        <div className="reveal group/dance relative rounded-[30px] overflow-hidden border border-amber/25 shadow-lift bg-gradient-to-br from-[#FBF1DE] via-[#F8E6C4] to-[#F1D3A1]">
+          <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full border border-amber/20" />
+          <div className="absolute -right-10 -top-10 w-52 h-52 rounded-full border border-amber/20" />
+          <div className="relative grid lg:grid-cols-[1.15fr_1fr]">
+            <div className="p-7 md:p-10">
+              <div className="flex items-center gap-3">
+                <span className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-amber">01 · {d.tag}</span>
+              </div>
+              <h3 className="mt-3 font-serif font-bold text-[clamp(1.9rem,3.2vw,2.6rem)] leading-tight text-ink">{d.title}</h3>
+              <p className="mt-4 text-[16.5px] leading-[1.7] text-body max-w-xl">{d.intro}</p>
+
+              <p className="mt-8 text-[12.5px] font-semibold uppercase tracking-[0.14em] text-bark">My dance journey</p>
+              <ol className="mt-4 relative">
+                <span className="absolute left-[7px] top-2 bottom-2 w-px bg-amber/30" aria-hidden="true" />
+                {d.journey.map((j, i) => (
+                  <li key={j.when}>
+                    <button onMouseEnter={() => setStep(i)} onFocus={() => setStep(i)} onClick={() => setStep(i)}
+                      className="w-full text-left grid grid-cols-[22px_1fr] gap-3 py-2.5 focus:outline-none">
+                      <span className={`relative mt-1 w-[15px] h-[15px] rounded-full border-2 transition-all duration-300 ${step === i ? 'bg-amber border-amber scale-110' : 'bg-[#FBF1DE] border-amber/50'}`} />
+                      <span>
+                        <span className={`block text-[15px] font-semibold transition-colors ${step === i ? 'text-ink' : 'text-bark/80'}`}>{j.when}</span>
+                        <span className={`block text-[15px] leading-[1.6] transition-all duration-500 ${step === i ? 'text-body opacity-100' : 'text-body/70 opacity-80'}`}>{j.what}</span>
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="relative p-7 md:p-10 lg:border-l border-t lg:border-t-0 border-amber/20 bg-paper/40 backdrop-blur-sm flex flex-col">
+              <DanceIcon className="ghungroo text-amber/80 w-[190px] h-[100px] -ml-1" aria-hidden="true" />
+              <p className="mt-4 text-[12.5px] font-semibold uppercase tracking-[0.14em] text-bark">What I’m learning now</p>
+              <ul className="mt-4 space-y-3">
+                {d.learning.map(([k, v]) => (
+                  <li key={k} className="rounded-2xl bg-paper/80 border border-amber/15 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card">
+                    <span className="block font-serif font-semibold text-[17px] text-ink">{k}</span>
+                    <span className="block text-[14.5px] leading-snug text-body mt-0.5">{v}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 text-[15px] italic font-serif text-bark">{d.closing}</p>
+              {d.tool && (
+                <a href={d.tool} target="_blank" rel="noopener noreferrer" onClick={() => track('taal_tool_open')}
+                  className="mt-5 self-start inline-flex items-center gap-2 rounded-full bg-forest-deep text-white px-5 py-3 text-[15px] font-semibold hover:bg-forest hover:-translate-y-0.5 transition-all">
+                  Try my taal practice tool <ArrowUpRight size={17} />
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-5 grid md:grid-cols-2 gap-5">
           {beyond.map((b, i) => {
             const Icon = BEYOND_ICON[b.key];
             return (
-              <div key={b.key} className="reveal group rounded-[26px] overflow-hidden bg-paper/80 backdrop-blur border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 flex flex-col" style={{ '--d': `${i * 90}ms` }}>
-                <div className={`relative h-44 overflow-hidden ${b.key === 'dance' ? 'bg-gradient-to-br from-[#F4DDB0] via-[#EDC98A] to-[#C4873A]' : b.key === 'hike' ? 'bg-gradient-to-br from-[#DCE6D6] via-[#B9CBB1] to-[#2D5A3D]' : 'bg-sky-soft'}`}>
-                  {b.image
-                    ? <img src={b.image} alt="" loading="lazy" className="w-full h-full object-cover object-[50%_30%] transition-transform duration-700 group-hover:scale-[1.06]" />
-                    : <Icon className={`absolute text-white/85 transition-transform duration-700 group-hover:scale-110 ${b.key === 'dance' ? 'right-5 bottom-8 group-hover:rotate-3' : 'right-6 bottom-5 group-hover:-rotate-6'}`} width={b.key === 'dance' ? 150 : 84} height={b.key === 'dance' ? 80 : 84} />}
-                  <span className="absolute left-5 top-5 text-[12px] font-semibold text-ink bg-paper/90 rounded-md px-2.5 py-1">{String(i + 1).padStart(2, '0')}</span>
+              <div key={b.key} className="reveal group rounded-[26px] overflow-hidden bg-paper/80 backdrop-blur border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 grid grid-cols-[120px_1fr] sm:grid-cols-[160px_1fr]" style={{ '--d': `${(i + 1) * 90}ms` }}>
+                <div className={`relative overflow-hidden ${b.key === 'hike' ? 'bg-gradient-to-br from-[#DCE6D6] via-[#B9CBB1] to-[#2D5A3D]' : 'bg-gradient-to-br from-[#E1EAF4] via-[#C9D7E8] to-[#2F5F99]'}`}>
+                  <Icon className="absolute right-4 bottom-4 text-white/85 transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6" width={64} height={64} />
+                  <span className="absolute left-4 top-4 text-[12px] font-semibold text-ink bg-paper/90 rounded-md px-2.5 py-1">{String(i + 2).padStart(2, '0')}</span>
                 </div>
                 <div className="p-6 md:p-7">
                   <p className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-amber">{b.tag}</p>
