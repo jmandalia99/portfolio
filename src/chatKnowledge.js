@@ -167,7 +167,7 @@ export const topics = [
     chip: 'How much experience?',
     keys: ['!experience', 'years', 'how long', 'senior', 'seniority', 'level'],
     answer:
-      '**About 4 years**: MG Motor (2021–2024, trainee to Deputy Manager), Matter Motor Works (2024), and Phase Technologies (since May 2026) — plus research and teaching at UNR since 2025.',
+      '**About 4 years**: MG Motor (2021–2024, trainee to Deputy Manager), Matter Motor Works (2024), and Phase Technologies (since May 2026) — plus research at UNR since 2025 and two semesters as a teaching assistant.',
     follow: ['releases', 'now', 'tpm'],
   },
   {

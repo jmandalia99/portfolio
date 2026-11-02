@@ -11,8 +11,11 @@ Photos are in `public/images/`, the resume is `public/resume.pdf` (keep the same
 ### "Ask about me" chat
 Its answers are in **`src/chatKnowledge.js`** — one block per topic: the words people might type
 (`keys`), the `answer`, and follow-up buttons (`follow`). It runs in the browser, free, with no AI service.
-Questions it couldn't answer show up in GA as the `chat_unanswered` event (register `question` as a
-custom dimension to read them) — add a topic for anything people keep asking.
+Every typed question is sent to GA (emails and long numbers removed): answered ones as `chat_ask`
+(with `topic` and `question`), unanswered ones as `chat_unanswered` (with `question`). Register `question`
+and `topic` as custom dimensions once, then read them in Reports → Engagement → Events → `chat_ask`.
+Visitors are anonymous — GA shows city, device and traffic source (e.g. your `?r=` links), not names.
+The little mouse that opens the chat is `src/Mascot.js`.
 
 ## Publish changes
 ```bash

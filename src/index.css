@@ -127,6 +127,21 @@ body {
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
+/* chat mascot: gentle breathing, blinking, an ear twitch, a tail swish; waves on hover */
+.mascot-live .m-bob { animation: mBob 3.2s ease-in-out infinite; }
+.mascot-live .m-eyes { transform-box: view-box; transform-origin: 60px 64px; animation: mBlink 4.6s infinite; }
+.mascot-live .m-ear-l { transform-box: view-box; transform-origin: 40px 46px; animation: mEar 7s infinite; }
+.mascot-live .m-tail { transform-box: view-box; transform-origin: 84px 106px; animation: mTail 2.2s ease-in-out infinite alternate; }
+.m-head { transform-box: view-box; transform-origin: 60px 100px; transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.m-paw { transform-box: view-box; transform-origin: 42px 104px; }
+.mascot-btn:hover .m-head, .mascot-btn:focus-visible .m-head { transform: rotate(-7deg); }
+.mascot-btn:hover .m-paw, .mascot-btn:focus-visible .m-paw { animation: mWave 0.42s ease-in-out 4 alternate; }
+@keyframes mBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2.5px); } }
+@keyframes mBlink { 0%, 92%, 100% { transform: scaleY(1); } 94% { transform: scaleY(0.12); } }
+@keyframes mEar { 0%, 84%, 100% { transform: rotate(0); } 87% { transform: rotate(-13deg); } 90% { transform: rotate(5deg); } 93% { transform: rotate(0); } }
+@keyframes mTail { from { transform: rotate(-7deg); } to { transform: rotate(9deg); } }
+@keyframes mWave { from { transform: rotate(0); } to { transform: rotate(-38deg) translateY(-5px); } }
+
 /* chat typing dots */
 @keyframes typing { 0%, 80%, 100% { transform: translateY(0); opacity: 0.45; } 40% { transform: translateY(-4px); opacity: 1; } }
 .typing-dot { animation: typing 1s ease-in-out infinite; }
@@ -135,7 +150,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .blob, .cue-dot, .typing-dot, .fade-up, .fade-in, .pop-in, .ghungroo .bell { animation: none !important; }
+  .blob, .cue-dot, .typing-dot, .fade-up, .fade-in, .pop-in, .ghungroo .bell, .mascot-live *, .m-paw { animation: none !important; }
   .flipper { transition: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .acc { transition: none; }

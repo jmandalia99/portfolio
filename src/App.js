@@ -491,9 +491,7 @@ function Journey() {
     <section id="journey" className="relative py-20 md:py-28">
       <div className="max-w-[1100px] mx-auto px-5 md:px-10">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHead kicker="My journey" title="From the test bench to the release plan">
-            Newest first — open any chapter for the details.
-          </SectionHead>
+          <SectionHead kicker="My journey" title="From the test bench to the release plan" />
           <button onClick={() => setOpen(allOpen ? new Set() : new Set(journey.map((_, i) => i)))}
             className="reveal mb-14 text-[14px] font-semibold text-forest-deep border border-forest/25 rounded-full px-4 py-2 hover:bg-forest-soft transition-colors">
             {allOpen ? 'Collapse all' : 'Expand all'}
@@ -633,9 +631,7 @@ function Projects() {
   return (
     <section id="projects" className="relative py-20 md:py-28">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
-        <SectionHead kicker="Projects" title="Things I’ve built along the way">
-          Open any project for the details, code and papers.
-        </SectionHead>
+        <SectionHead kicker="Projects" title="Things I’ve built along the way" />
 
         <div className="reveal mb-8">
           <div className="relative grid grid-cols-2 gap-1 sm:gap-0 sm:inline-grid sm:grid-cols-none sm:grid-flow-col sm:auto-cols-fr p-1 rounded-2xl bg-[#F1EADF] border border-line" role="tablist" aria-label="Filter projects">

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Sparkles, X, ArrowUp } from 'lucide-react';
+import { X, ArrowUp } from 'lucide-react';
 import { Rich, richLength } from './Rich';
 import { greeting, starters, fallback, findTopic, topicById } from './chatKnowledge';
-import { site } from './content';
+import Mascot from './Mascot';
 
 const track = (name, params = {}) => {
   try { if (window.gtag) window.gtag('event', name, params); } catch (e) { /* ignore */ }
@@ -26,8 +26,26 @@ export default function Chat() {
   const inputRef = useRef(null);
   const launcherRef = useRef(null);
   const timers = useRef([]);
+  const [bubble, setBubble] = useState(false);
 
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
+
+  // the mouse says hello once per visit, then goes quiet
+  useEffect(() => {
+    let seen = false;
+    try { seen = sessionStorage.getItem('jm_hello') === '1'; } catch (e) { /* ignore */ }
+    if (seen) return undefined;
+    let a = 0, b = 0;
+    const hello = (wait, stay) => {
+      a = setTimeout(() => { setBubble(true); try { sessionStorage.setItem('jm_hello', '1'); } catch (e) { /* ignore */ } }, wait);
+      b = setTimeout(() => setBubble(false), wait + stay);
+    };
+    // phones: wait until the visitor has scrolled past the top, so the bubble never covers the buttons
+    const onScroll = () => { if (window.scrollY > 700) { window.removeEventListener('scroll', onScroll); hello(400, 5000); } };
+    if (small()) window.addEventListener('scroll', onScroll, { passive: true });
+    else hello(2500, 7000);
+    return () => { clearTimeout(a); clearTimeout(b); window.removeEventListener('scroll', onScroll); };
+  }, []);
 
   // keep the newest message in view
   useEffect(() => {
@@ -44,7 +62,7 @@ export default function Chat() {
     return () => { clearTimeout(t); document.removeEventListener('keydown', onKey); if (small()) lockPage(false); };
   }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const openChat = () => { setOpen(true); track('chat_open'); };
+  const openChat = () => { setOpen(true); setBubble(false); track('chat_open'); };
   const close = () => { setOpen(false); if (launcherRef.current) setTimeout(() => launcherRef.current && launcherRef.current.focus(), 50); };
 
   const reply = (text, follow) => {
@@ -73,7 +91,10 @@ export default function Chat() {
     setMsgs((m) => [...m, { from: 'me', text: q }]);
     const t = chipId ? topicById(chipId) : findTopic(q);
     if (t) {
-      track('chat_ask', { topic: t.id, how });
+      // typed questions are sent too (emails and long numbers removed), so you can read what people ask
+      const p = { topic: t.id, how };
+      if (how === 'typed') p.question = q.replace(/\S+@\S+/g, '[email]').replace(/\d{4,}/g, '#').slice(0, 95);
+      track('chat_ask', p);
       reply(t.answer, t.follow);
     } else {
       // remember what people ask that the chat can't answer yet (no emails or numbers)
@@ -88,21 +109,26 @@ export default function Chat() {
 
   return (
     <>
-      <button ref={launcherRef} onClick={openChat} aria-haspopup="dialog" aria-expanded={open}
-        className={`fixed z-[55] right-3 bottom-3 sm:right-6 sm:bottom-6 inline-flex items-center gap-2 rounded-full bg-forest-deep text-white pl-2.5 pr-3.5 py-2 sm:pl-3.5 sm:pr-4 sm:py-3 text-[13.5px] sm:text-[14.5px] font-semibold shadow-[0_14px_30px_-12px_rgba(31,68,50,.75)] hover:bg-forest hover:-translate-y-0.5 transition-all duration-300 ${open ? 'opacity-0 pointer-events-none translate-y-2' : 'opacity-100'}`}>
-        <span className="relative grid place-items-center w-6 h-6 rounded-full bg-aspen text-ink">
-          <Sparkles size={14} />
-          <span className="absolute inset-0 rounded-full bg-aspen animate-ping opacity-40" />
-        </span>
-        Ask about me
-      </button>
+      <div className={`fixed z-[55] right-3 bottom-3 sm:right-6 sm:bottom-6 flex items-end gap-2 transition-all duration-300 ${open ? 'opacity-0 pointer-events-none translate-y-3' : 'opacity-100'}`}>
+        {bubble && (
+          <div onClick={openChat} aria-hidden="true"
+            className="mb-[52px] sm:mb-[60px] -mr-3 cursor-pointer rounded-2xl rounded-br-md bg-paper border border-line shadow-lift px-3.5 py-2.5 text-[13.5px] leading-snug text-ink max-w-[190px] pop-in">
+            Hi! Ask me anything about <strong className="font-semibold">Jinal</strong>
+          </div>
+        )}
+        <button ref={launcherRef} onClick={openChat} aria-haspopup="dialog" aria-expanded={open} aria-label="Ask about Jinal — open chat"
+          onMouseEnter={() => setBubble(true)} onMouseLeave={() => setBubble(false)}
+          className="mascot-btn relative w-[66px] h-[66px] sm:w-[76px] sm:h-[76px] rounded-full bg-paper border border-line shadow-[0_14px_30px_-12px_rgba(60,45,30,.55)] grid place-items-center hover:-translate-y-1 transition-transform duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2">
+          <Mascot className="w-[54px] h-[54px] sm:w-[62px] sm:h-[62px] mt-1" />
+        </button>
+      </div>
 
       {open && <div className="fixed inset-0 z-[56] bg-[#1C1A17]/30 sm:hidden fade-in" onClick={() => close()} aria-hidden="true" />}
       {open && (
         <div role="dialog" aria-modal={small() ? 'true' : 'false'} aria-label="Ask about Jinal"
           className="fixed z-[56] inset-x-2 bottom-2 h-[min(82svh,640px)] sm:inset-x-auto sm:right-6 sm:bottom-6 sm:w-[390px] sm:h-[min(600px,calc(100vh-120px))] rounded-[24px] bg-paper border border-line shadow-[0_30px_60px_-20px_rgba(40,30,20,.45)] flex flex-col overflow-hidden pop-in">
           <div className="flex items-center gap-3 px-4 py-3.5 border-b border-line bg-parchment/70">
-            <img src={site.photo} alt="" className="w-10 h-10 rounded-full object-cover object-[50%_30%] border border-line" />
+            <span className="w-11 h-11 rounded-full bg-paper border border-line grid place-items-center shrink-0"><Mascot still className="w-9 h-9 mt-0.5" /></span>
             <div className="min-w-0 flex-1">
               <p className="font-serif font-semibold text-[16.5px] text-ink leading-tight">Ask about Jinal</p>
               <p className="text-[12.5px] text-muted leading-tight mt-0.5 flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#4CAF6E]" /> Answers from her resume &amp; this site</p>

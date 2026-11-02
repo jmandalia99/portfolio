@@ -42,12 +42,12 @@ export const about = {
   lines: [
     'Started in **Electrical Engineering**, then grew at **MG Motor** from testing features to **leading infotainment & telematics releases**.',
     'Defined the **OTA update program** at Matter Motor Works; now I own delivery of the **Phase Connect app**.',
-    'Finishing an **M.S. in Computer Science** at UNR — researching **cheaper cloud AI** and teaching **135 students** as a TA.',
+    'Finishing an **M.S. in Computer Science** at UNR, researching how to make **cloud AI cheaper to run**.',
   ],
   glance: [
     { k: 'Now', v: 'Phase Technologies' },
     { k: 'Studying', v: 'M.S. CS · UNR · Dec 2026' },
-    { k: 'Teaching', v: 'Graduate TA · 135 students' },
+    { k: 'Based in', v: 'Rapid City, SD' },
     { k: 'Looking for', v: 'Technical Program Manager roles' },
   ],
 };
@@ -75,7 +75,7 @@ export const journey = [
     place: 'Reno, NV',
     role: 'Graduate Teaching Assistant',
     org: 'University of Nevada, Reno',
-    theme: 'Teaching 135 students in hands-on labs',
+    theme: 'Taught 135 students in hands-on labs',
     summary: 'Led hands-on lab sessions for **135 undergraduates** across two courses.',
     stats: [
       ['135', 'students'],
