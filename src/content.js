@@ -12,7 +12,7 @@ export const site = {
   github: 'https://github.com/jmandalia99',
   // Put a new resume at public/resume.pdf (same name) to update it.
   resume: '/resume.pdf',
-  photo: '/images/hero.jpg',
+  photo: '/images/jinal-portrait.jpg',
 };
 
 export const hero = {
@@ -48,6 +48,7 @@ export const about = {
   glance: [
     { k: 'Now', v: 'Software Developer, Phase Technologies' },
     { k: 'Studying', v: 'M.S. Computer Science, UNR · Dec 2026' },
+    { k: 'Teaching', v: 'Graduate TA · 135 students in labs' },
     { k: 'Focus', v: 'Releases, validation & connected devices' },
     { k: 'Looking for', v: 'Technical Program Manager roles' },
   ],
@@ -75,6 +76,27 @@ export const journey = [
   },
   {
     year: '2025',
+    period: 'Fall 2025 & Spring 2026',
+    place: 'Reno, NV',
+    role: 'Graduate Teaching Assistant',
+    org: 'University of Nevada, Reno',
+    theme: 'Teaching 135 students in hands-on labs',
+    summary:
+      'Alongside my research, I led hands-on lab sessions for 135 undergraduate students across two courses.',
+    stats: [
+      ['135', 'students'],
+      ['90', 'in ENGR 100'],
+      ['45', 'in Physics I'],
+    ],
+    points: [
+      'ENGR 100 — Introduction to Engineering (Fall 2025): guided 90 first-year students through hands-on design labs spanning Computer Science, Mechanical, Chemical, and Biomedical Engineering.',
+      'Applied Physics (Spring 2026): led Physics I lab sessions on mechanics and thermodynamics for 45 students, mentoring them in hands-on troubleshooting.',
+      'Explained complex ideas through interactive demonstrations, and encouraged interdisciplinary thinking and problem solving.',
+    ],
+    tools: ['Teaching', 'Mentoring', 'Lab leadership', 'Communication'],
+  },
+  {
+    year: '2025',
     period: 'Jan 2025 – Present',
     place: 'Reno, NV',
     role: 'AI/ML Researcher',
@@ -88,8 +110,6 @@ export const journey = [
       'Ran multi-model evaluations (3 Gemini models × 60 images × 4 strategies); failure reviews caught a model bias and a frame-selection method that dropped key diagnostic frames, which led to a redesigned selector.',
       'Trained LSTM, CNN, and FNN models on labeled CAN traffic to detect intrusions in vehicle networks (95.1% accuracy).',
       'Built a multi-layer guardrail system that defends large language models against prompt-injection and jailbreak attacks (88.7% attack mitigation), and a framework for evaluating LLM security.',
-      'Graduate Teaching Assistant, ENGR 100 (Fall 2025): guided 90 first-year engineering students through hands-on design labs.',
-      'Graduate Teaching Assistant, Applied Physics (Spring 2026): led Physics I lab sessions for 45 students.',
     ],
     tools: ['Python', 'PyTorch', 'Gemini API', 'Evaluation design', 'Computer vision', 'LLM security'],
   },

@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import {
   ArrowDown, ArrowUpRight, Mail, Linkedin, Github, FileText, Menu, X, ChevronDown,
   MapPin, Award, Trophy, GraduationCap, Mountain, Compass, Image as ImageIcon, Film,
-  Video, Sparkles, Shield, Target, Microscope, Car, Cloud, Cpu, Plus,
+  Video, Sparkles, Shield, Target, Microscope, Car, Cloud, Cpu, Plus, Copy, Check,
 } from 'lucide-react';
 import {
   site, hero, numbers, about, journey, research, projects, skills, education,
@@ -22,9 +22,23 @@ const NAV = [
   ['contact', 'Contact'],
 ];
 
-const track = (name) => {
-  try { if (window.gtag) window.gtag('event', name, { event_category: 'engagement' }); } catch (e) { /* ignore */ }
+// Sends an event to Google Analytics (see README for what each one means).
+const track = (name, params = {}) => {
+  try { if (window.gtag) window.gtag('event', name, params); } catch (e) { /* ignore */ }
 };
+
+// Fires section_<id> once per visit when a visitor scrolls a section into view.
+function useSectionTracking() {
+  useEffect(() => {
+    if (!('IntersectionObserver' in window)) return undefined;
+    const seen = new Set();
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting && !seen.has(e.target.id)) { seen.add(e.target.id); track(`section_${e.target.id}`); }
+    }), { threshold: 0.25 });
+    NAV.forEach(([id]) => { const el = document.getElementById(id); if (el) io.observe(el); });
+    return () => io.disconnect();
+  }, []);
+}
 
 /* ─────────────── hooks ─────────────── */
 
@@ -199,7 +213,7 @@ function Hero() {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         const p = Math.min(window.scrollY / 700, 1);
-        if (imgRef.current) imgRef.current.style.transform = `scale(${1.04 + p * 0.12}) translateY(${p * 14}px)`;
+        if (imgRef.current) imgRef.current.style.transform = `scale(${1.02 + p * 0.07}) translateY(${p * 8}px)`;
       });
     };
     onScroll();
@@ -236,7 +250,7 @@ function Hero() {
           </p>
           <div className="reveal mt-9 flex flex-wrap gap-3.5" style={{ '--d': '300ms' }}>
             <Button href="#journey">Explore My Journey <ArrowDown size={17} /></Button>
-            <Button href={site.resume} variant="ghost" external onClick={() => track('resume_open')}>View My Resume</Button>
+            <Button href={site.resume} variant="ghost" external onClick={() => track('resume_open', { from: 'hero' })}>View My Resume</Button>
           </div>
         </div>
 
@@ -245,7 +259,7 @@ function Hero() {
             <div className="absolute -inset-4 md:-inset-5 rounded-[36px] bg-gradient-to-br from-[#EFE2CB] via-[#E7E2D2] to-[#CFD8C8] shadow-lift" />
             <div className="relative rounded-[26px] overflow-hidden aspect-[3/4] bg-[#cfd8c8]">
               <img ref={imgRef} src={site.photo} alt="Jinal Mandalia hiking among golden aspens below mountain peaks"
-                className="w-full h-full object-cover object-[50%_40%] will-change-transform" style={{ transform: 'scale(1.04)' }} />
+                className="w-full h-full object-cover object-[50%_45%] will-change-transform" style={{ transform: 'scale(1.02)' }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
             </div>
             <div className="absolute -left-4 md:-left-9 bottom-8 bg-paper rounded-2xl shadow-lift px-4 py-3 flex items-center gap-3 border border-line/60">
@@ -333,7 +347,7 @@ function About() {
               ))}
             </dl>
             <div className="mt-6 flex flex-wrap gap-2.5">
-              <Button href={`mailto:${site.email}`} onClick={() => track('email_click')}><Mail size={16} /> Get in touch</Button>
+              <Button href={`mailto:${site.email}`} onClick={() => track('email_click', { from: 'about' })}><Mail size={16} /> Get in touch</Button>
             </div>
           </div>
         </aside>
@@ -374,7 +388,7 @@ function JourneyItem({ item, open, onToggle, index }) {
             <div className="px-4 md:px-7 pb-7">
               <p className="text-[16px] leading-[1.7] text-ink">{item.summary}</p>
               {item.stats && (
-                <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
+                <div className={`mt-5 grid gap-2.5 ${item.stats.length > 3 ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-6' : 'grid-cols-3 max-w-md'}`}>
                   {item.stats.map(([v, l]) => (
                     <div key={l} className="rounded-xl bg-amber-soft/60 border border-amber/20 px-3 py-3 text-center">
                       <div className="font-serif font-bold text-ink text-[19px] leading-none tabular">{v}</div>
@@ -423,7 +437,7 @@ function Journey() {
         <ol className="relative">
           <span className="absolute left-[60px] md:left-[166px] top-6 bottom-10 w-px bg-gradient-to-b from-[#D9CDBB] via-[#D9CDBB] to-transparent" aria-hidden="true" />
           {journey.map((item, i) => (
-            <JourneyItem key={item.period + item.role} item={item} index={i} open={open.has(i)} onToggle={() => toggle(i)} />
+            <JourneyItem key={item.period + item.role} item={item} index={i} open={open.has(i)} onToggle={() => { if (!open.has(i)) track('journey_open', { role: `${item.role} — ${item.org}` }); toggle(i); }} />
           ))}
         </ol>
       </div>
@@ -465,7 +479,7 @@ function Research() {
                 {research.stages.map((st, i) => {
                   const Icon = STAGE_ICON[st.key];
                   return (
-                    <button key={st.key} role="tab" aria-selected={stage === i} onClick={() => setStage(i)}
+                    <button key={st.key} role="tab" aria-selected={stage === i} onClick={() => { setStage(i); track('research_stage', { stage: st.label }); }}
                       className={`relative z-10 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 py-3 px-2 text-[13.5px] sm:text-[14.5px] font-semibold transition-colors ${stage === i ? 'text-forest-deep' : 'text-muted hover:text-ink'}`}>
                       <Icon size={17} /> {st.label}
                     </button>
@@ -547,8 +561,8 @@ function ProjectModal({ project, onClose }) {
           </div>
           {(project.github || project.paper) && (
             <div className="mt-7 pt-6 border-t border-line flex flex-wrap gap-3">
-              {project.github && <Button href={project.github} external onClick={() => track('project_github')}><Github size={16} /> View code</Button>}
-              {project.paper && <Button href={project.paper} variant="ghost" external onClick={() => track('project_paper')}><FileText size={16} /> Read the paper</Button>}
+              {project.github && <Button href={project.github} external onClick={() => track('project_github', { project_name: project.title })}><Github size={16} /> View code</Button>}
+              {project.paper && <Button href={project.paper} variant="ghost" external onClick={() => track('project_paper', { project_name: project.title })}><FileText size={16} /> Read the paper</Button>}
             </div>
           )}
         </div>
@@ -578,7 +592,7 @@ function Projects() {
             {PROJECT_TABS.map(([k, label]) => {
               const n = k === 'all' ? projects.length : projects.filter((p) => p.type === k).length;
               return (
-                <button key={k} role="tab" aria-selected={tab === k} onClick={() => setTab(k)}
+                <button key={k} role="tab" aria-selected={tab === k} onClick={() => { setTab(k); track('project_filter', { filter: label }); }}
                   className={`relative z-10 whitespace-nowrap px-3 sm:px-5 py-2.5 rounded-xl text-[13.5px] sm:text-[14px] font-semibold transition-colors ${tab === k ? 'text-forest-deep bg-paper shadow-card sm:bg-transparent sm:shadow-none' : 'text-muted hover:text-ink'}`}>
                   {label} <span className="ml-1 text-[12px] font-medium opacity-70 tabular">{n}</span>
                 </button>
@@ -591,7 +605,7 @@ function Projects() {
           {list.map((p, k) => {
             const Icon = PROJECT_ICON[p.icon] || Sparkles;
             return (
-              <button key={`${tab}-${p.title}`} onClick={() => { setOpenIdx(p.i); track('project_open'); }}
+              <button key={`${tab}-${p.title}`} onClick={() => { setOpenIdx(p.i); track('project_open', { project_name: p.title }); }}
                 className="fade-up group text-left rounded-[24px] bg-paper/80 backdrop-blur border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 flex flex-col overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
                 style={{ animationDelay: `${k * 60}ms` }}>
                 <span className={`relative h-28 bg-gradient-to-br ${PROJECT_TINT[p.type]} overflow-hidden`}>
@@ -694,7 +708,7 @@ function Certifications() {
           {certifications.map((c, i) => {
             const Tag = c.link ? 'a' : 'div';
             return (
-              <Tag key={c.name} {...(c.link ? { href: c.link, target: '_blank', rel: 'noopener noreferrer' } : {})}
+              <Tag key={c.name} {...(c.link ? { href: c.link, target: '_blank', rel: 'noopener noreferrer', onClick: () => track('certificate_open', { certificate: c.name }) } : {})}
                 className={`reveal group rounded-[20px] bg-paper/75 backdrop-blur border border-line/80 p-6 shadow-card transition-all duration-500 flex gap-4 ${c.link ? 'hover:shadow-lift hover:-translate-y-1 cursor-pointer' : ''}`}
                 style={{ '--d': `${i * 60}ms` }}>
                 <span className="shrink-0 w-11 h-11 rounded-xl bg-forest-soft text-forest-deep grid place-items-center"><Award size={20} /></span>
@@ -785,6 +799,27 @@ function Beyond() {
 
 /* ─────────────── contact ─────────────── */
 
+function CopyEmail() {
+  const [done, setDone] = useState(false);
+  const copy = async () => {
+    let ok = false;
+    try { await navigator.clipboard.writeText(site.email); ok = true; } catch (e) {
+      try {
+        const t = document.createElement('textarea'); t.value = site.email; t.setAttribute('readonly', '');
+        t.style.position = 'fixed'; t.style.opacity = '0'; document.body.appendChild(t); t.select();
+        ok = document.execCommand('copy'); document.body.removeChild(t);
+      } catch (err) { ok = false; }
+    }
+    if (ok) { setDone(true); track('email_copy'); setTimeout(() => setDone(false), 2000); }
+  };
+  return (
+    <button onClick={copy} aria-live="polite"
+      className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[13.5px] font-semibold border transition-all ${done ? 'bg-aspen text-ink border-aspen' : 'border-white/30 text-white/90 hover:bg-white/10'}`}>
+      {done ? <><Check size={15} /> Copied</> : <><Copy size={15} /> Copy</>}
+    </button>
+  );
+}
+
 function Contact() {
   return (
     <section id="contact" className="relative py-24 md:py-32">
@@ -799,16 +834,19 @@ function Contact() {
             <p className="mt-5 text-[17px] leading-[1.7] text-white/80 max-w-xl">
               I’m looking for Technical Program Manager roles where releases, devices, and people all need to come together. I’d love to hear from you.
             </p>
-            <a href={`mailto:${site.email}`} onClick={() => track('email_click')}
-              className="mt-9 inline-flex items-center gap-3 font-serif text-[clamp(1.2rem,2.4vw,1.75rem)] text-white border-b-2 border-aspen/70 pb-1 hover:border-aspen transition-colors break-all">
-              <Mail size={22} className="shrink-0" /> {site.email}
-            </a>
+            <div className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-3">
+              <a href={`mailto:${site.email}`} onClick={() => track('email_click', { from: 'contact' })}
+                className="inline-flex items-center gap-3 font-serif text-[clamp(1.2rem,2.4vw,1.75rem)] text-white border-b-2 border-aspen/70 pb-1 hover:border-aspen transition-colors break-all">
+                <Mail size={22} className="shrink-0" /> {site.email}
+              </a>
+              <CopyEmail />
+            </div>
             <div className="mt-10 flex flex-wrap gap-3">
-              <a href={site.linkedin} target="_blank" rel="noopener noreferrer" onClick={() => track('linkedin_click')}
+              <a href={site.linkedin} target="_blank" rel="noopener noreferrer" onClick={() => track('linkedin_click', { from: 'contact' })}
                 className="inline-flex items-center gap-2 rounded-full bg-white text-forest-deep px-5 py-3 text-[15px] font-semibold hover:bg-aspen-soft hover:-translate-y-0.5 transition-all"><Linkedin size={17} /> LinkedIn</a>
-              <a href={site.resume} target="_blank" rel="noopener noreferrer" onClick={() => track('resume_open')}
+              <a href={site.resume} target="_blank" rel="noopener noreferrer" onClick={() => track('resume_open', { from: 'contact' })}
                 className="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-3 text-[15px] font-semibold hover:bg-white/10 hover:-translate-y-0.5 transition-all"><FileText size={17} /> Resume</a>
-              <a href={site.github} target="_blank" rel="noopener noreferrer"
+              <a href={site.github} target="_blank" rel="noopener noreferrer" onClick={() => track('github_click', { from: 'contact' })}
                 className="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-3 text-[15px] font-semibold hover:bg-white/10 hover:-translate-y-0.5 transition-all"><Github size={17} /> GitHub</a>
             </div>
           </div>
@@ -822,6 +860,7 @@ function Contact() {
 
 export default function App() {
   useRevealAll();
+  useSectionTracking();
   return (
     <div className="relative min-h-screen font-sans text-body overflow-x-clip">
       <LivingBackground />
