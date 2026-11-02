@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   ArrowDown, ArrowUpRight, Mail, Linkedin, Github, FileText, Menu, X, ChevronDown,
   MapPin, Award, Trophy, GraduationCap, Mountain, Compass, Image as ImageIcon, Film,
-  Video, Star, Sparkles,
+  Video, Sparkles, Shield, Target, Microscope, Car, Cloud, Cpu, Plus,
 } from 'lucide-react';
 import {
-  site, hero, numbers, about, journey, research, skills, education,
+  site, hero, numbers, about, journey, research, projects, skills, education,
   certifications, recognition, beyond,
 } from './content';
 
@@ -13,6 +14,7 @@ const NAV = [
   ['about', 'About'],
   ['journey', 'My Journey'],
   ['research', 'Research'],
+  ['projects', 'Projects'],
   ['skills', 'Skills'],
   ['education', 'Education'],
   ['certifications', 'Certifications'],
@@ -159,7 +161,7 @@ function Header() {
     <header className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled || open ? 'bg-parchment/80 backdrop-blur-xl border-b border-line/70' : 'bg-transparent border-b border-transparent'}`}>
       <div className="max-w-[1240px] mx-auto px-5 md:px-10 h-[72px] flex items-center justify-between">
         <Logo />
-        <nav className="hidden lg:flex items-center gap-1" aria-label="Main">
+        <nav className="hidden xl:flex items-center gap-1" aria-label="Main">
           {NAV.map(([id, label]) => (
             <a key={id} href={`#${id}`}
               className={`relative px-3 py-2 text-[14.5px] font-medium transition-colors duration-300 ${active === id ? 'text-forest-deep' : 'text-body hover:text-ink'}`}>
@@ -168,11 +170,11 @@ function Header() {
             </a>
           ))}
         </nav>
-        <button className="lg:hidden p-2 -mr-2 text-ink" onClick={() => setOpen(!open)} aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open}>
+        <button className="xl:hidden p-2 -mr-2 text-ink" onClick={() => setOpen(!open)} aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open}>
           {open ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
-      <div className={`lg:hidden overflow-hidden transition-[max-height] duration-500 ${open ? 'max-h-[100vh]' : 'max-h-0'}`}>
+      <div className={`xl:hidden overflow-hidden transition-[max-height] duration-500 ${open ? 'max-h-[100vh]' : 'max-h-0'}`}>
         <nav className="px-5 pb-8 pt-2 flex flex-col" aria-label="Mobile">
           {NAV.map(([id, label]) => (
             <a key={id} href={`#${id}`} onClick={() => setOpen(false)}
@@ -485,20 +487,139 @@ function Research() {
           </div>
         </div>
 
-        <div className="mt-8 grid md:grid-cols-2 gap-5">
-          {research.other.map((p, i) => (
-            <a key={p.title} href={p.link} target="_blank" rel="noopener noreferrer"
-              className="reveal group rounded-[22px] bg-paper/70 backdrop-blur border border-line/80 p-6 md:p-7 shadow-card hover:shadow-lift hover:-translate-y-1 transition-all duration-500 flex flex-col"
-              style={{ '--d': `${i * 80}ms` }}>
-              <span className="flex items-start justify-between gap-4">
-                <span className="font-serif text-[20px] font-semibold text-ink leading-snug">{p.title}</span>
-                <span className="shrink-0 w-9 h-9 rounded-full border border-line grid place-items-center text-body group-hover:bg-ink group-hover:text-white group-hover:border-ink transition-all"><Github size={16} /></span>
-              </span>
-              <span className="mt-3 text-[15.5px] leading-[1.65] text-body">{p.text}</span>
-            </a>
-          ))}
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────── projects ─────────────── */
+
+const PROJECT_ICON = { shield: Shield, target: Target, microscope: Microscope, car: Car, sparkles: Sparkles, cloud: Cloud, cpu: Cpu };
+const PROJECT_TABS = [
+  ['all', 'All'],
+  ['ai', 'AI & Research'],
+  ['auto', 'Automotive & Embedded'],
+  ['cloud', 'GenAI & Cloud'],
+];
+const PROJECT_TINT = {
+  ai: 'from-[#E3EBDF] via-[#EEF1E6] to-[#F7F1E5] text-forest-deep',
+  auto: 'from-[#F6E7C1] via-[#F8EDD5] to-[#FBF4E6] text-bark',
+  cloud: 'from-[#E1EAF4] via-[#ECF0F3] to-[#F8F4EC] text-sky',
+};
+
+function ProjectModal({ project, onClose }) {
+  const closeRef = useRef(null);
+  useEffect(() => {
+    if (!project) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    if (closeRef.current) closeRef.current.focus();
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
+  }, [project, onClose]);
+  if (!project) return null;
+  const Icon = PROJECT_ICON[project.icon] || Sparkles;
+  return createPortal(
+    <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="project-title">
+      <div className="absolute inset-0 bg-[#1C1A17]/40 backdrop-blur-sm fade-in" onClick={onClose} />
+      <div className="relative w-full sm:max-w-[680px] max-h-[88vh] overflow-y-auto rounded-t-[28px] sm:rounded-[28px] bg-paper shadow-lift pop-in">
+        <div className={`relative px-6 sm:px-9 pt-8 pb-7 bg-gradient-to-br ${PROJECT_TINT[project.type]}`}>
+          <button ref={closeRef} onClick={onClose} aria-label="Close"
+            className="absolute right-5 top-5 w-10 h-10 rounded-full bg-paper/80 text-ink grid place-items-center hover:bg-paper transition-colors"><X size={19} /></button>
+          <span className="w-12 h-12 rounded-2xl bg-paper/80 grid place-items-center shadow-card"><Icon size={22} /></span>
+          <p className="mt-5 text-[12.5px] font-semibold uppercase tracking-[0.14em] text-amber">{project.label}</p>
+          <h3 id="project-title" className="mt-2 font-serif font-bold text-[26px] sm:text-[30px] leading-tight text-ink pr-8">{project.title}</h3>
+          <p className="mt-4 inline-block rounded-lg bg-paper/85 px-3 py-1.5 text-[14.5px] font-semibold text-ink">{project.impact}</p>
+        </div>
+        <div className="px-6 sm:px-9 py-7">
+          <p className="text-[16px] leading-[1.7] text-ink">{project.short}</p>
+          <ul className="mt-5 space-y-3">
+            {project.points.map((pt) => (
+              <li key={pt} className="grid grid-cols-[18px_1fr] text-[15.5px] leading-[1.65] text-body">
+                <span className="mt-[10px] w-[7px] h-[7px] rounded-[2px] bg-forest/70 rotate-45" />
+                <span>{pt}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {project.tech.map((t) => <span key={t} className="text-[12.5px] px-2.5 py-1 rounded-md bg-forest-soft/70 text-forest-deep border border-forest/10">{t}</span>)}
+          </div>
+          {(project.github || project.paper) && (
+            <div className="mt-7 pt-6 border-t border-line flex flex-wrap gap-3">
+              {project.github && <Button href={project.github} external onClick={() => track('project_github')}><Github size={16} /> View code</Button>}
+              {project.paper && <Button href={project.paper} variant="ghost" external onClick={() => track('project_paper')}><FileText size={16} /> Read the paper</Button>}
+            </div>
+          )}
         </div>
       </div>
+    </div>,
+    document.body
+  );
+}
+
+function Projects() {
+  const [tab, setTab] = useState('all');
+  const [openIdx, setOpenIdx] = useState(null);
+  const tabIndex = PROJECT_TABS.findIndex(([k]) => k === tab);
+  const list = projects.map((p, i) => ({ ...p, i })).filter((p) => tab === 'all' || p.type === tab);
+  const close = React.useCallback(() => setOpenIdx(null), []);
+  return (
+    <section id="projects" className="relative py-20 md:py-28">
+      <div className="max-w-[1240px] mx-auto px-5 md:px-10">
+        <SectionHead kicker="Projects" title="Things I’ve built along the way">
+          Research, automotive security, generative AI, and embedded work. Open any project for the details, code, and papers.
+        </SectionHead>
+
+        <div className="reveal mb-8">
+          <div className="relative grid grid-cols-2 gap-1 sm:gap-0 sm:inline-grid sm:grid-cols-none sm:grid-flow-col sm:auto-cols-fr p-1 rounded-2xl bg-[#F1EADF] border border-line" role="tablist" aria-label="Filter projects">
+            <span className="hidden sm:block absolute top-1 bottom-1 left-1 rounded-xl bg-paper shadow-card transition-transform duration-500 ease-[cubic-bezier(.2,.7,.2,1)]"
+              style={{ width: `calc((100% - 0.5rem) / ${PROJECT_TABS.length})`, transform: `translateX(${tabIndex * 100}%)` }} />
+            {PROJECT_TABS.map(([k, label]) => {
+              const n = k === 'all' ? projects.length : projects.filter((p) => p.type === k).length;
+              return (
+                <button key={k} role="tab" aria-selected={tab === k} onClick={() => setTab(k)}
+                  className={`relative z-10 whitespace-nowrap px-3 sm:px-5 py-2.5 rounded-xl text-[13.5px] sm:text-[14px] font-semibold transition-colors ${tab === k ? 'text-forest-deep bg-paper shadow-card sm:bg-transparent sm:shadow-none' : 'text-muted hover:text-ink'}`}>
+                  {label} <span className="ml-1 text-[12px] font-medium opacity-70 tabular">{n}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {list.map((p, k) => {
+            const Icon = PROJECT_ICON[p.icon] || Sparkles;
+            return (
+              <button key={`${tab}-${p.title}`} onClick={() => { setOpenIdx(p.i); track('project_open'); }}
+                className="fade-up group text-left rounded-[24px] bg-paper/80 backdrop-blur border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 flex flex-col overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                style={{ animationDelay: `${k * 60}ms` }}>
+                <span className={`relative h-28 bg-gradient-to-br ${PROJECT_TINT[p.type]} overflow-hidden`}>
+                  <span className="absolute -right-8 -top-8 w-36 h-36 rounded-full border border-current opacity-[0.12] transition-transform duration-700 group-hover:scale-125" />
+                  <span className="absolute -right-2 -top-2 w-24 h-24 rounded-full border border-current opacity-[0.12] transition-transform duration-700 group-hover:scale-125" />
+                  <span className="absolute left-6 bottom-5 w-12 h-12 rounded-2xl bg-paper/85 grid place-items-center shadow-card transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-105"><Icon size={22} /></span>
+                  <span className="absolute right-5 bottom-5 text-[12.5px] font-semibold text-ink bg-paper/85 rounded-md px-2.5 py-1">{p.impact}</span>
+                </span>
+                <span className="p-6 flex flex-col flex-1">
+                  <span className="text-[12px] font-semibold uppercase tracking-[0.14em] text-amber">{p.label}</span>
+                  <span className="mt-2 font-serif font-semibold text-[20px] leading-snug text-ink">{p.title}</span>
+                  <span className="mt-2 text-[15px] leading-[1.6] text-body">{p.short}</span>
+                  <span className="mt-auto pt-5 flex items-center justify-between">
+                    <span className="flex gap-1.5 text-muted">
+                      {p.github && <Github size={16} aria-label="Code on GitHub" />}
+                      {p.paper && <FileText size={16} aria-label="Paper" />}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-forest-deep">
+                      Details <span className="w-7 h-7 rounded-full border border-forest/25 grid place-items-center transition-all duration-500 group-hover:bg-forest-deep group-hover:text-white group-hover:rotate-90"><Plus size={15} /></span>
+                    </span>
+                  </span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      <ProjectModal project={openIdx === null ? null : projects[openIdx]} onClose={close} />
     </section>
   );
 }
@@ -506,38 +627,28 @@ function Research() {
 /* ─────────────── skills ─────────────── */
 
 function Skills() {
-  const [coreOnly, setCoreOnly] = useState(false);
   return (
     <section id="skills" className="relative py-20 md:py-28">
       <div className="max-w-[1240px] mx-auto px-5 md:px-10">
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHead kicker="Skills & tools" title="What I bring to a program" />
-          <div className="reveal mb-14 inline-flex p-1 rounded-xl bg-[#F1EADF] border border-line text-[14px] font-semibold">
-            <button onClick={() => setCoreOnly(false)} className={`px-4 py-2 rounded-lg transition-all ${!coreOnly ? 'bg-paper shadow-card text-ink' : 'text-muted'}`}>All skills</button>
-            <button onClick={() => setCoreOnly(true)} className={`px-4 py-2 rounded-lg transition-all flex items-center gap-1.5 ${coreOnly ? 'bg-paper shadow-card text-ink' : 'text-muted'}`}><Star size={14} className="fill-aspen text-aspen" /> Core strengths</button>
-          </div>
-        </div>
+        <SectionHead kicker="Skills & tools" title="What I bring to a program" />
         <div className="md:columns-2 gap-5">
           {skills.map((g, gi) => (
-            <div key={g.group} className="reveal break-inside-avoid mb-5 rounded-[24px] bg-paper/75 backdrop-blur border border-line/80 shadow-card p-6 md:p-7" style={{ '--d': `${gi * 70}ms` }}>
+            <div key={g.group} className="reveal group/card break-inside-avoid mb-5 rounded-[24px] bg-paper/75 backdrop-blur border border-line/80 shadow-card hover:shadow-lift transition-shadow duration-500 p-6 md:p-7" style={{ '--d': `${gi * 70}ms` }}>
               <div className="flex items-center justify-between mb-5">
                 <h3 className="font-serif text-[21px] font-semibold text-ink">{g.group}</h3>
-                <span className="text-[13px] text-muted tabular">{(coreOnly ? g.items.filter((x) => x[1]) : g.items).length}</span>
+                <span className="text-[13px] text-muted tabular">{g.items.length}</span>
               </div>
               <div className="flex flex-wrap gap-2">
-                {g.items.filter(([, star]) => !coreOnly || star).map(([name, star]) => (
+                {g.items.map((name) => (
                   <span key={name}
-                    className={`fade-up text-[14px] px-3 py-[7px] rounded-[7px] border transition-all duration-300 hover:-translate-y-0.5 ${
-                      star ? 'bg-forest-soft border-forest/20 text-forest-deep font-medium' : 'bg-parchment border-line text-body'
-                    }`}>
-                    {star && <span className="text-aspen mr-1.5" aria-hidden="true">★</span>}{name}
+                    className="text-[14px] px-3 py-[7px] rounded-[7px] border bg-parchment border-line text-body transition-all duration-300 hover:-translate-y-0.5 hover:bg-forest-soft hover:border-forest/25 hover:text-forest-deep cursor-default">
+                    {name}
                   </span>
                 ))}
               </div>
             </div>
           ))}
         </div>
-        <p className="reveal mt-1 text-[14px] text-muted"><span className="text-aspen">★</span> Core strengths</p>
       </div>
     </section>
   );
@@ -559,6 +670,11 @@ function Education() {
               <p className="mt-1 text-[16px] font-medium text-forest-deep">{e.school}</p>
               <p className="mt-5 inline-block rounded-lg bg-aspen-soft/70 border border-aspen/30 px-3 py-1.5 text-[14.5px] font-semibold text-ink">{e.score}</p>
               <p className="mt-5 text-[15.5px] leading-[1.65] text-body max-w-md">{e.note}</p>
+              {e.focus && (
+                <div className="relative mt-5 flex flex-wrap gap-2">
+                  {e.focus.map((f) => <span key={f} className="text-[13px] px-2.5 py-1 rounded-md bg-forest-soft/70 text-forest-deep border border-forest/10">{f}</span>)}
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -716,6 +832,7 @@ export default function App() {
         <About />
         <Journey />
         <Research />
+        <Projects />
         <Skills />
         <Education />
         <Certifications />
