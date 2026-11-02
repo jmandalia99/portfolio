@@ -730,7 +730,7 @@ function Certifications() {
             <p className="text-[13px] font-semibold tracking-[0.18em] uppercase text-amber mb-3">Recognition</p>
             <h3 className="font-serif font-bold text-ink text-[clamp(1.7rem,2.8vw,2.3rem)] leading-tight">Moments I’m proud of</h3>
           </div>
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-2 gap-5">
             {recognition.map((r, i) => (
               <div key={r.title} className="reveal relative rounded-[24px] p-7 bg-gradient-to-br from-[#FBF1DE] to-[#F6E5C6] border border-amber/25 shadow-card hover:shadow-lift hover:-translate-y-1 transition-all duration-500" style={{ '--d': `${i * 80}ms` }}>
                 <span className="w-11 h-11 rounded-xl bg-paper/80 text-amber grid place-items-center shadow-card"><Trophy size={20} /></span>
