@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carnatic Taal — The Complete System & Practice</title>
+<meta name="description" content="Learn and practise the Carnatic tala system: 3 angas, 5 jatis, 7 Suladi Sapta talas, 35 cycles, 5 gatis and 3 speeds — with a practice player. By Jinal Mandalia.">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- Google Analytics (same property as jinalmandalia.com; ?me=1 opt-out is shared) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VRVWW9YJ"></script>
+<script>(function(){var ID='G-P9VRVWW9YJ';try{if(localStorage.getItem('jm_owner')==='1')window['ga-disable-'+ID]=true;}catch(e){}window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',ID);})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#efe4c9;          /* palm-leaf parchment */
+    --panel:#e8dcbc;
+    --panel2:#e1d3ad;
+    --ink:#37271a;          /* deep sepia ink */
+    --dim:#6d5941;
+    --faint:#977f5c;
+    --maroon:#8c2f28;       /* temple red / kumkum — sam */
+    --maroon-soft:#e6cfc0;
+    --gold:#9a7112;         /* antique gold */
+    --gold-soft:#e6d6a8;
+    --green:#2c6152;        /* peacock / temple green */
+    --green-soft:#cfe0d3;
+    --line:#cdb689;
+    --line2:#b49a67;
+    --disp:'Cormorant Garamond',Georgia,serif;
+    --body:'EB Garamond',Georgia,serif;
+    --mono:'Space Mono',monospace;
+    --r:10px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);
+    font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;
+    background-image:linear-gradient(rgba(180,154,103,.06) 1px,transparent 1px);
+    background-size:100% 30px;
+  }
+  .frame{max-width:1000px;margin:0 auto;padding:22px}
+  .sheet{border:1px solid var(--line2);box-shadow:inset 0 0 0 5px var(--bg), inset 0 0 0 6px var(--line);background:transparent}
+  .wrap{padding:0 34px}
+
+  /* ornaments */
+  .orn{display:flex;align-items:center;justify-content:center;gap:16px;color:var(--gold);margin:0 0 6px}
+  .orn::before,.orn::after{content:"";height:1px;width:70px;background:linear-gradient(90deg,transparent,var(--line2))}
+  .orn::after{background:linear-gradient(90deg,var(--line2),transparent)}
+  .divider{text-align:center;color:var(--gold);font-size:20px;letter-spacing:.6em;padding:14px 0;opacity:.8}
+
+  /* HERO */
+  header{padding:56px 0 40px;text-align:center;border-bottom:1px double var(--line2)}
+  .supra{font-family:var(--mono);font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);margin:0 0 20px}
+  h1{font-family:var(--disp);font-weight:500;font-size:clamp(46px,9vw,88px);line-height:.98;margin:0;letter-spacing:.005em;font-style:italic;color:var(--ink)}
+  h1 b{font-style:normal;font-weight:600}
+  .sub{max-width:600px;margin:26px auto 0;color:var(--dim);font-size:19px}
+  .anga-legend{display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin-top:34px;font-size:15px;color:var(--dim);font-family:var(--mono);letter-spacing:.02em}
+  .anga-legend div{display:flex;align-items:center;gap:9px;font-size:12.5px}
+  .d{width:15px;height:15px;border-radius:50%;flex:none}
+  .d.sam{background:var(--maroon)}
+  .d.clap{background:var(--ink)}
+  .d.wave{background:transparent;border:2px solid var(--dim)}
+  .d.fing{width:8px;height:8px;background:var(--gold)}
+
+  section{padding:50px 0;border-bottom:1px solid var(--line)}
+  section:last-of-type{border-bottom:none}
+  .kick{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin:0 0 8px;text-align:center}
+  h2{font-family:var(--disp);font-weight:500;font-size:clamp(30px,5vw,46px);margin:0 0 12px;text-align:center;font-style:italic}
+  .lede{color:var(--dim);max-width:680px;margin:0 auto 30px;text-align:center;font-size:18px}
+  h3{font-family:var(--disp);font-weight:600;font-size:24px;margin:0 0 4px}
+
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px;text-align:center}
+  .card .sym{font-family:var(--mono);font-size:32px;color:var(--maroon);margin-bottom:6px}
+  .card p{margin:8px 0 0;font-size:16px;color:var(--dim)}
+  .card .cnt{font-family:var(--mono);font-size:12px;color:var(--green);margin-top:12px;letter-spacing:.02em}
+
+  .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--panel)}
+  table{width:100%;border-collapse:collapse;min-width:520px}
+  th,td{text-align:left;padding:13px 18px;border-bottom:1px solid var(--line);vertical-align:middle}
+  thead th{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);background:var(--panel2)}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:var(--panel2)}
+  .jname{font-family:var(--disp);font-size:22px;font-weight:600}
+  .jcount{font-family:var(--mono);font-weight:700;color:var(--maroon);font-size:16px}
+  .jbol{font-family:var(--mono);font-size:13px;color:var(--green)}
+  td small{color:var(--faint);font-family:var(--mono);font-size:11px}
+
+  .sapta{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .st{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:14px}
+  .st .nm{font-family:var(--disp);font-size:24px;font-weight:600}
+  .st .an{font-family:var(--mono);font-size:11.5px;color:var(--dim);margin-top:2px}
+  .st .sig{font-family:var(--mono);font-size:20px;color:var(--maroon);letter-spacing:.14em;white-space:nowrap}
+
+  /* multiplication chain */
+  .chain{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 22px;text-align:center;min-width:120px}
+  .stat .big{font-family:var(--disp);font-size:42px;font-weight:600;color:var(--maroon);line-height:1}
+  .stat .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-top:6px}
+  .stat.hero .big{color:var(--gold);font-size:56px}
+  .times{font-family:var(--disp);font-size:30px;color:var(--green);font-style:italic}
+
+  /* gati/jaati box analogy */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .cbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+  .cbox .tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--maroon)}
+  .cbox h3{margin-top:6px}
+  .boxrow{display:flex;gap:5px;margin-top:16px;flex-wrap:wrap}
+  .bx{width:30px;height:30px;border:1.5px solid var(--line2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--faint);background:var(--bg)}
+  .bx.on{border-color:var(--green);background:var(--green-soft)}
+  .bx .mb{display:flex;gap:2px;flex-wrap:wrap;width:16px;justify-content:center}
+  .mb i{width:4px;height:4px;border-radius:50%;background:var(--green);display:block}
+
+  /* 35 GRID */
+  .gridwrap{overflow-x:auto}
+  .grid35{border-collapse:separate;border-spacing:6px;min-width:600px;margin:0 auto}
+  .grid35 th{background:transparent;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);padding:6px;text-align:center}
+  .grid35 .rowh{font-family:var(--disp);font-size:19px;font-weight:600;color:var(--ink);text-align:left;text-transform:none;letter-spacing:0;white-space:nowrap;padding-right:14px}
+  .cell{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 6px;text-align:center;cursor:pointer;transition:.15s;min-width:66px}
+  .cell:hover{border-color:var(--maroon);background:var(--panel2)}
+  .cell .b{font-family:var(--disp);font-weight:600;font-size:24px;color:var(--maroon)}
+  .cell .t{font-family:var(--mono);font-size:9px;color:var(--faint);margin-top:2px}
+  .cell.sel{border-color:var(--gold);background:var(--gold-soft);box-shadow:0 0 0 1px var(--gold)}
+  .cell.adi{outline:1.5px dashed var(--green);outline-offset:-4px}
+
+  /* PRACTICE */
+  .practice{background:var(--panel);border:1px solid var(--line2);border-radius:var(--r);padding:28px}
+  .selrow{display:flex;flex-wrap:wrap;gap:22px}
+  .selgrp label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
+  .opts{display:flex;flex-wrap:wrap;gap:6px}
+  .opt{font-family:var(--body);font-size:16px;padding:5px 14px;border-radius:100px;background:var(--bg);border:1px solid var(--line);color:var(--dim);cursor:pointer;transition:.15s}
+  .opt:hover{color:var(--ink);border-color:var(--line2)}
+  .opt.on{background:var(--maroon-soft);border-color:var(--maroon);color:var(--maroon)}
+  .selgrp.gati .opt.on{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .info{display:flex;flex-wrap:wrap;gap:8px 24px;margin:24px 0 2px;font-family:var(--mono);font-size:12.5px;color:var(--dim)}
+  .info b{color:var(--green)}
+  .pname{font-family:var(--disp);font-size:36px;font-weight:600;font-style:italic;margin:20px 0 0}
+
+  .track{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-top:18px}
+  .beat{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:34px}
+  .beat .num{font-family:var(--mono);font-size:10px;color:var(--faint)}
+  .beat .mk{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:.1s;border:2px solid transparent}
+  .beat .lab{font-family:var(--mono);font-size:8.5px;color:var(--faint);text-align:center;min-height:11px;text-transform:uppercase;letter-spacing:.04em}
+  .beat .syl{font-family:var(--mono);font-size:9px;color:var(--green);text-align:center;line-height:1.3;min-height:12px;max-width:60px}
+  .beat.sam .mk{background:var(--maroon);box-shadow:0 0 0 4px var(--maroon-soft)}
+  .beat.clap .mk{background:var(--ink)}
+  .beat.wave .mk{background:transparent;border-color:var(--dim)}
+  .beat.finger .mk{background:transparent}
+  .beat.finger .mk::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold)}
+  .beat.active .mk{transform:scale(1.35)}
+  .beat.active .num{color:var(--ink)}
+  .beat.active .syl{color:var(--maroon)}
+
+  .controls{display:flex;flex-wrap:wrap;align-items:flex-end;gap:18px;margin-top:26px}
+  .play{font-family:var(--body);font-weight:500;font-size:17px;padding:10px 26px;border-radius:100px;border:1px solid var(--maroon);cursor:pointer;background:var(--maroon);color:#f6ead0;transition:.15s}
+  .play:hover{filter:brightness(1.1)}
+  .speedsel .opt.on{background:var(--gold-soft);border-color:var(--gold);color:var(--gold)}
+  .tempo{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+  .tempo input{accent-color:var(--maroon)}
+  .sndbox{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;color:var(--dim);cursor:pointer}
+  .readout{margin-top:20px;padding:16px 20px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);font-family:var(--mono);font-size:15px;color:var(--maroon);line-height:1.7;text-align:center}
+
+  .note{background:var(--panel);border-left:3px solid var(--gold);border-radius:0 var(--r) var(--r) 0;padding:16px 22px;margin-top:26px;font-size:16px;color:var(--dim)}
+  .note b{color:var(--ink)}
+
+  .speeds{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .sp{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;text-align:center}
+  .sp .k{font-family:var(--mono);font-size:10.5px;color:var(--maroon);letter-spacing:.12em}
+  .sp .big{font-family:var(--disp);font-size:30px;font-weight:600;font-style:italic;margin:4px 0}
+  .sp p{margin:0;font-size:15px;color:var(--dim)}
+  .sp .ex{font-family:var(--mono);font-size:12px;color:var(--green);margin-top:12px;word-spacing:2px}
+
+  .homelink{display:inline-flex;align-items:center;gap:8px;margin:0 0 10px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--dim);text-decoration:none}
+  .homelink:hover{color:var(--maroon)}
+  footer a{color:var(--dim)}
+  footer a:hover{color:var(--maroon)}
+  footer{padding:40px 0 30px;text-align:center;color:var(--faint);font-family:var(--mono);font-size:12px;letter-spacing:.04em}
+
+  @media(max-width:760px){
+    .three,.sapta,.speeds,.compare{grid-template-columns:1fr}
+    .wrap{padding:0 18px}
+    body{font-size:16px}
+  }
+  @media(prefers-reduced-motion:reduce){.beat .mk,.beat.active .mk{transition:none;transform:none}}
+  @media print{
+    body{background:#fff}
+    .sheet{box-shadow:none;border:1px solid #999}
+    .practice,.controls,.readout{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="frame"><a class="homelink" href="/">← Jinal Mandalia</a><div class="sheet"><div class="wrap">
+
+<header>
+  <p class="supra">The complete system · Suladi Sapta Tala</p>
+  <div class="orn">❋</div>
+  <h1><i>Keep the</i> <b>tala.</b><br><i>Fill the</i> <b>beats.</b></h1>
+  <p class="sub">The whole of Carnatic rhythm grows from three hand-actions, five jatis, and seven talas — thirty-five cycles, each played in five gatis, giving one hundred and seventy-five. Here is all of it, with a player to practise any one in three speeds.</p>
+  <div class="anga-legend">
+    <div><span class="d sam"></span> Sam</div>
+    <div><span class="d clap"></span> Clap · tali</div>
+    <div><span class="d wave"></span> Wave · visarjita</div>
+    <div><span class="d fing"></span> Finger count</div>
+  </div>
+</header>
+
+<!-- ANGA -->
+<section>
+  <p class="kick">Building blocks · anga</p>
+  <h2>Three parts make every tala</h2>
+  <p class="lede">A tala is spelled with the hand. Every one of the seven talas is just a sequence of these three units — and only the Laghu changes length.</p>
+  <div class="three">
+    <div class="card"><div class="sym">I</div><h3>Laghu</h3><p>A clap, then finger-counts. Its length equals the jaati (3 – 9).</p><div class="cnt">clap + (jaati − 1) fingers</div></div>
+    <div class="card"><div class="sym">O</div><h3>Drutam</h3><p>A clap, then a wave — palm flipped up. Always two beats.</p><div class="cnt">clap + wave = 2</div></div>
+    <div class="card"><div class="sym">U</div><h3>Anudrutam</h3><p>A single clap. Always one beat.</p><div class="cnt">clap = 1</div></div>
+  </div>
+</section>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<!-- 5 JATIS -->
+<section>
+  <p class="kick">Five jatis · the Laghu length</p>
+  <h2>Five ways to count a Laghu</h2>
+  <p class="lede">The jaati sets how long the Laghu is — which sets the length of the whole cycle. Each jaati also has its own sollukattu, spoken syllables you'll use again for gati.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Jaati</th><th>Count</th><th>Sollukattu</th><th>Split</th></tr></thead>
+      <tbody>
+        <tr><td class="jname">Tisra</td><td class="jcount">3</td><td class="jbol">Ta&nbsp;Ki&nbsp;Ta</td><td><small>3</small></td></tr>
+        <tr><td class="jname">Chatusra</td><td class="jcount">4</td><td class="jbol">Ta&nbsp;Ka&nbsp;Dhi&nbsp;Mi</td><td><small>4</small></td></tr>
+        <tr><td class="jname">Khanda</td><td class="jcount">5</td><td class="jbol">Ta&nbsp;Ka&nbsp;Ta&nbsp;Ki&nbsp;Ta</td><td><small>2+3</small></td></tr>
+        <tr><td class="jname">Misra</td><td class="jcount">7</td><td class="jbol">Ta&nbsp;Ki&nbsp;Ta&nbsp;Ta&nbsp;Ka&nbsp;Dhi&nbsp;Mi</td><td><small>3+4</small></td></tr>
+        <tr><td class="jname">Sankeerna</td><td class="jcount">9</td><td class="jbol">Ta&nbsp;Ka&nbsp;Dhi&nbsp;Mi&nbsp;Ta&nbsp;Ka&nbsp;Ta&nbsp;Ki&nbsp;Ta</td><td><small>4+5</small></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<!-- 7 TALAS -->
+<section>
+  <p class="kick">Seven talas · Suladi Sapta</p>
+  <h2>The seven anga patterns</h2>
+  <p class="lede">Each taal has a fixed anga sequence. The Laghu (I) inside it stretches with the jaati — that is how one taal becomes five.</p>
+  <div class="sapta">
+    <div class="st"><div><div class="nm">Dhruva</div><div class="an">Laghu Drutam Laghu Laghu</div></div><div class="sig">I O I I</div></div>
+    <div class="st"><div><div class="nm">Matya</div><div class="an">Laghu Drutam Laghu</div></div><div class="sig">I O I</div></div>
+    <div class="st"><div><div class="nm">Rupaka</div><div class="an">Drutam Laghu</div></div><div class="sig">O I</div></div>
+    <div class="st"><div><div class="nm">Jhampa</div><div class="an">Laghu Anudrutam Drutam</div></div><div class="sig">I U O</div></div>
+    <div class="st"><div><div class="nm">Triputa</div><div class="an">Laghu Drutam Drutam</div></div><div class="sig">I O O</div></div>
+    <div class="st"><div><div class="nm">Ata</div><div class="an">Laghu Laghu Drutam Drutam</div></div><div class="sig">I I O O</div></div>
+    <div class="st"><div><div class="nm">Eka</div><div class="an">Laghu</div></div><div class="sig">I</div></div>
+  </div>
+</section>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<!-- MULTIPLICATION CHAIN -->
+<section>
+  <p class="kick">How the numbers grow</p>
+  <h2>Seven becomes one hundred and seventy-five</h2>
+  <p class="lede">Each layer multiplies the last. Structure first (jaati), then texture (gati), then tempo (kaala).</p>
+  <div class="chain">
+    <div class="stat"><div class="big">7</div><div class="lab">Talas</div></div>
+    <div class="times">×5</div>
+    <div class="stat"><div class="big">5</div><div class="lab">Jatis</div></div>
+    <div class="times">=</div>
+    <div class="stat"><div class="big">35</div><div class="lab">Talas</div></div>
+    <div class="times">×5</div>
+    <div class="stat"><div class="big">5</div><div class="lab">Gatis</div></div>
+    <div class="times">=</div>
+    <div class="stat hero"><div class="big">175</div><div class="lab">In all</div></div>
+  </div>
+  <div class="note" style="text-align:center;border-left:none;border-top:3px solid var(--gold);border-radius:var(--r)"><b>And then speed:</b> each of the 175 can be recited in three kaalas (speeds) — ×1, ×2, ×4. Structure, texture, tempo: three independent dials.</div>
+</section>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<!-- GATI vs JAATI -->
+<section>
+  <p class="kick">The key distinction · jaati vs gati</p>
+  <h2>Same names, different jobs</h2>
+  <p class="lede">Both use the same five names — Tisra to Sankeerna — and that is exactly why they confuse. But one shapes the cycle; the other fills each beat.</p>
+  <div class="compare">
+    <div class="cbox">
+      <div class="tag">Jaati — the structure</div>
+      <h3>How many boxes</h3>
+      <p style="margin:8px 0 0;color:var(--dim)">Sets the Laghu length, so it decides how many beats are in the row. Change the jaati and the whole cycle grows or shrinks.</p>
+      <div class="boxrow">
+        <div class="bx">1</div><div class="bx">2</div><div class="bx">3</div><div class="bx">4</div><div class="bx">5</div>
+      </div>
+      <p style="margin:12px 0 0;font-family:var(--mono);font-size:12px;color:var(--faint)">↑ more boxes = longer tala</p>
+    </div>
+    <div class="cbox">
+      <div class="tag">Gati / Nadai — the texture</div>
+      <h3>What's inside each box</h3>
+      <p style="margin:8px 0 0;color:var(--dim)">Subdivides every beat into equal pulses. The number of boxes never changes — only how densely each one is filled.</p>
+      <div class="boxrow">
+        <div class="bx on"><span class="mb"><i></i><i></i><i></i></span></div>
+        <div class="bx on"><span class="mb"><i></i><i></i><i></i></span></div>
+        <div class="bx on"><span class="mb"><i></i><i></i><i></i></span></div>
+      </div>
+      <p style="margin:12px 0 0;font-family:var(--mono);font-size:12px;color:var(--faint)">↑ tisra gati = 3 pulses per box</p>
+    </div>
+  </div>
+  <div class="note"><b>In one line:</b> Jaati sets the <i>shape</i> — how many beats. Gati sets the <i>sollukattu flavour</i> — which pattern colours the beats (Ta Ki Ta vs Ta Ka Dhi Mi …). The three speeds set the <i>density</i> — one, two, or four syllables per beat, flowing across the cycle and returning on sam.</div>
+</section>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<!-- 35 GRID -->
+<section>
+  <p class="kick">The 35 · every tala, every jaati</p>
+  <h2>Choose a cycle</h2>
+  <p class="lede">Numbers are total beats (aksharas) per cycle. The dashed cell is Adi. Tap any cell to load it into the player below — then pick a gati and speed to reach all 175.</p>
+  <div class="gridwrap"><table class="grid35" id="grid35"></table></div>
+</section>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<!-- PRACTICE -->
+<section>
+  <p class="kick">Practise · all 175, in three speeds</p>
+  <h2>The practice player</h2>
+  <p class="lede">Set the structure with Tala and Jaati, the texture with Gati, and the tempo with Speed. Keep the tala with your hand as the beats light up and the syllables sound.</p>
+  <div class="practice">
+    <div class="selrow">
+      <div class="selgrp"><label>Tala</label><div class="opts" id="talaOpts"></div></div>
+      <div class="selgrp"><label>Jaati — cycle length</label><div class="opts" id="jaatiOpts"></div></div>
+      <div class="selgrp gati"><label>Gati — beat subdivision</label><div class="opts" id="gatiOpts"></div></div>
+    </div>
+
+    <div class="pname" id="pName">Adi Tala</div>
+    <div class="info">
+      <span>Anga: <b id="iAnga">I O O</b></span>
+      <span>Beats: <b id="iBeats">8</b></span>
+      <span>Jaati: <b id="iJaati">Chatusra</b></span>
+      <span>Gati: <b id="iGati">Chatusra</b></span>
+      <span>Sub-beats/cycle: <b id="iTotal">32</b></span>
+    </div>
+
+    <div class="track" id="track"></div>
+
+    <div class="controls">
+      <button class="play" id="playBtn">▶ Play</button>
+      <div class="selgrp" style="margin:0"><label>Speed · kaala</label>
+        <div class="speedsel opts" id="speedSel">
+          <button class="opt on" data-s="1">1st ×1</button>
+          <button class="opt" data-s="2">2nd ×2</button>
+          <button class="opt" data-s="4">3rd ×4</button>
+        </div>
+      </div>
+      <label class="tempo">Tempo <input type="range" id="tempo" min="40" max="150" value="66"> <span id="bpm">66</span></label>
+      <label class="sndbox"><input type="checkbox" id="snd" checked> sound</label>
+    </div>
+
+    <div class="readout" id="readout"></div>
+  </div>
+</section>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<!-- 3 SPEEDS -->
+<section>
+  <p class="kick">Concept · trikaala</p>
+  <h2>What "three speeds" means</h2>
+  <p class="lede">Your hand keeps the same tala at the same tempo. What changes is how many syllables flow through each beat — doubling each speed. Example: chatusra gati.</p>
+  <div class="speeds">
+    <div class="sp"><div class="k">FIRST SPEED</div><div class="big">Prathama</div><p>One syllable per beat.</p><div class="ex">Ta · Ka · Dhi · Mi</div></div>
+    <div class="sp"><div class="k">SECOND SPEED</div><div class="big">Dvitiya</div><p>Two per beat, flowing on.</p><div class="ex">TaKa · DhiMi · TaKa · DhiMi</div></div>
+    <div class="sp"><div class="k">THIRD SPEED</div><div class="big">Tritiya</div><p>Four per beat — full and alive.</p><div class="ex">TaKaDhiMi · ×4</div></div>
+  </div>
+  <div class="note"><b>Three dials, never confused:</b> the <b>jaati</b> sets how many beats, the <b>gati</b> sets the subdivision inside a beat, and the <b>speed</b> doubles how fast you fill. Adi stays 8 beats through all of them — everything else happens inside that frame.</div>
+</section>
+
+<div class="divider">◈ ◈ ◈</div>
+
+<!-- CHAPU -->
+<section>
+  <p class="kick">Outside the seven · chapu</p>
+  <h2>Chapu talas</h2>
+  <p class="lede">These sit outside the 175. They have no anga — just clap-based counting — yet they are everywhere in padams, javalis and lighter pieces.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Tala</th><th>Beats</th><th>Split</th><th>Where it lives</th></tr></thead>
+      <tbody>
+        <tr><td class="jname">Khanda Chapu</td><td class="jcount">5</td><td class="jbol">2 + 3</td><td style="color:var(--dim)">Padam, javali</td></tr>
+        <tr><td class="jname">Misra Chapu</td><td class="jcount">7</td><td class="jbol">3 + 4</td><td style="color:var(--dim)">Very common; kritis, javalis</td></tr>
+        <tr><td class="jname">Sankeerna Chapu</td><td class="jcount">9</td><td class="jbol">4 + 5</td><td style="color:var(--dim)">Rare</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="orn" style="margin:40px 0 0">❋</div>
+<footer>Carnatic taal — three angas · five jatis · seven talas · five gatis · one hundred and seventy-five cycles. The sam always comes home.<br><br>Made by <a href="/">Jinal Mandalia</a> · <a href="https://www.instagram.com/routes._.roots/" target="_blank" rel="noopener noreferrer">@routes._.roots</a></footer>
+
+</div></div></div>
+
+<script>
+const TALAS={
+  dhruva:{name:'Dhruva',anga:['L','D','L','L'],sym:'I O I I'},
+  matya:{name:'Matya',anga:['L','D','L'],sym:'I O I'},
+  rupaka:{name:'Rupaka',anga:['D','L'],sym:'O I'},
+  jhampa:{name:'Jhampa',anga:['L','U','D'],sym:'I U O'},
+  triputa:{name:'Triputa',anga:['L','D','D'],sym:'I O O'},
+  ata:{name:'Ata',anga:['L','L','D','D'],sym:'I I O O'},
+  eka:{name:'Eka',anga:['L'],sym:'I'},
+};
+const TALA_ORDER=['dhruva','matya','rupaka','jhampa','triputa','ata','eka'];
+const JATIS={
+  tisra:{name:'Tisra',count:3,sollu:['Ta','Ki','Ta']},
+  chatusra:{name:'Chatusra',count:4,sollu:['Ta','Ka','Dhi','Mi']},
+  khanda:{name:'Khanda',count:5,sollu:['Ta','Ka','Ta','Ki','Ta']},
+  misra:{name:'Misra',count:7,sollu:['Ta','Ki','Ta','Ta','Ka','Dhi','Mi']},
+  sankeerna:{name:'Sankeerna',count:9,sollu:['Ta','Ka','Dhi','Mi','Ta','Ka','Ta','Ki','Ta']},
+};
+const JATI_ORDER=['tisra','chatusra','khanda','misra','sankeerna'];
+
+/* aksharas from tala. Laghu LENGTH comes from the jaati; the Laghu's syllables come
+   from the GATI sollukattu (so gati flavours the bols, jaati sets the count).
+   Drutam -> Ta Ka, Anudrutam -> Ta. When gati = jaati this is the classic form. */
+function genBeats(tk,jk){
+  const anga=TALAS[tk].anga,L=JATIS[jk].count,beats=[];
+  anga.forEach(a=>{
+    if(a==='L'){beats.push({t:'clap'});for(let i=1;i<L;i++)beats.push({t:'finger'});}
+    else if(a==='D'){beats.push({t:'clap'});beats.push({t:'wave'});}
+    else{beats.push({t:'clap'});}
+  });
+  if(beats.length)beats[0].t='sam';
+  return beats;
+}
+/* the GATI sollukattu flows continuously across the whole cycle, restarting on sam.
+   Each beat holds `perBeat` (= the speed: 1/2/4) consecutive syllables of the gati phrase. */
+function beatFlow(i,perBeat,gs){const gl=gs.length,out=[];for(let j=0;j<perBeat;j++)out.push(gs[(i*perBeat+j)%gl]);return out;}
+
+/* ---- 35 GRID ---- */
+const grid=document.getElementById('grid35');
+let head='<tr><th></th>'+JATI_ORDER.map(j=>`<th>${JATIS[j].name}<br>(${JATIS[j].count})</th>`).join('')+'</tr>';
+let rows='';
+TALA_ORDER.forEach(tk=>{
+  let r=`<tr><th class="rowh">${TALAS[tk].name}</th>`;
+  JATI_ORDER.forEach(jk=>{
+    const n=genBeats(tk,jk).length, isAdi=(tk==='triputa'&&jk==='chatusra');
+    r+=`<td class="cell${isAdi?' adi':''}" data-t="${tk}" data-j="${jk}"><div class="b">${n}</div><div class="t">${isAdi?'ADI':''}</div></td>`;
+  });
+  rows+=r+'</tr>';
+});
+grid.innerHTML=head+rows;
+grid.querySelectorAll('.cell').forEach(c=>c.onclick=()=>{selectTala(c.dataset.t);selectJaati(c.dataset.j);markGrid();document.querySelector('.practice').scrollIntoView({behavior:'smooth',block:'center'});});
+
+/* ---- SELECTORS ---- */
+let curT='triputa',curJ='chatusra',curG='chatusra',curSpeed=1;
+const talaOpts=document.getElementById('talaOpts'),jaatiOpts=document.getElementById('jaatiOpts'),gatiOpts=document.getElementById('gatiOpts');
+TALA_ORDER.forEach(tk=>{const b=document.createElement('button');b.className='opt';b.textContent=TALAS[tk].name;b.dataset.t=tk;b.onclick=()=>{selectTala(tk);markGrid();};talaOpts.appendChild(b);});
+JATI_ORDER.forEach(jk=>{const b=document.createElement('button');b.className='opt';b.textContent=JATIS[jk].name;b.dataset.j=jk;b.onclick=()=>{selectJaati(jk);markGrid();};jaatiOpts.appendChild(b);});
+JATI_ORDER.forEach(gk=>{const b=document.createElement('button');b.className='opt';b.textContent=JATIS[gk].name;b.dataset.g=gk;b.onclick=()=>selectGati(gk);gatiOpts.appendChild(b);});
+
+function selectTala(tk){curT=tk;[...talaOpts.children].forEach(b=>b.classList.toggle('on',b.dataset.t===tk));render();}
+function selectJaati(jk){curJ=jk;[...jaatiOpts.children].forEach(b=>b.classList.toggle('on',b.dataset.j===jk));selectGati(jk);}
+function selectGati(gk){curG=gk;[...gatiOpts.children].forEach(b=>b.classList.toggle('on',b.dataset.g===gk));render();}
+function markGrid(){grid.querySelectorAll('.cell').forEach(c=>c.classList.toggle('sel',c.dataset.t===curT&&c.dataset.j===curJ));}
+
+const speedSel=document.getElementById('speedSel');
+speedSel.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{curSpeed=+b.dataset.s;[...speedSel.children].forEach(x=>x.classList.toggle('on',x===b));render();if(playing){stop(true);play();}});
+
+/* ---- RENDER ---- */
+const track=document.getElementById('track'),pName=document.getElementById('pName'),readout=document.getElementById('readout');
+let beats=[];
+function render(){
+  stop();
+  beats=genBeats(curT,curJ);
+  const isAdi=(curT==='triputa'&&curJ==='chatusra');
+  pName.textContent=TALAS[curT].name+(isAdi?' (Adi)':'')+' Tala';
+  document.getElementById('iAnga').textContent=TALAS[curT].sym;
+  document.getElementById('iBeats').textContent=beats.length;
+  document.getElementById('iJaati').textContent=JATIS[curJ].name;
+  document.getElementById('iGati').textContent=JATIS[curG].name;
+  const gs=JATIS[curG].sollu,m=curSpeed,perBeat=m,total=beats.length*perBeat;
+  document.getElementById('iTotal').textContent=total;
+  track.innerHTML='';
+  beats.forEach((b,i)=>{
+    const el=document.createElement('div');
+    el.className='beat '+b.t;
+    const lab=b.t==='sam'?'sam':b.t==='clap'?'clap':b.t==='wave'?'wave':'·';
+    const cell=beatFlow(i,perBeat,gs);
+    const syl=perBeat<=6?cell.join(' '):`${cell.slice(0,3).join(' ')}… ×${perBeat}`;
+    el.innerHTML=`<span class="num">${i+1}</span><span class="mk"></span><span class="lab">${lab}</span><span class="syl">${syl}</span>`;
+    track.appendChild(el);
+  });
+  const line=beats.map((b,i)=>beatFlow(i,perBeat,gs).join('')).join(' · ');
+  const spName=curSpeed===1?'1st':curSpeed===2?'2nd':'3rd';
+  const body=total<=56?`<b style="color:var(--maroon)">${line}</b>`:`<span style="color:var(--dim)">${perBeat} syllables per beat, flowing across the cycle</span>`;
+  readout.innerHTML=`<span style="color:var(--dim)">${JATIS[curG].name} gati · ${spName} speed · sollukattu flows across all ${beats.length} beats:</span><br>${body}<br><span style="color:var(--dim)">${beats.length} beats × ${perBeat} = <b style="color:var(--green)">${total}</b> sub-beats per cycle</span>`;
+}
+
+/* ---- AUDIO ---- */
+let ac=null;
+function tick(kind){
+  if(!document.getElementById('snd').checked)return;
+  try{
+    ac=ac||new(window.AudioContext||window.webkitAudioContext)();
+    const o=ac.createOscillator(),g=ac.createGain();
+    let f=kind==='sam'?660:kind==='clap'?440:kind==='wave'?300:kind==='sub'?780:500;
+    o.type=kind==='wave'?'sine':'triangle';o.frequency.value=f;
+    const vol=kind==='sam'?0.3:kind==='sub'?0.07:0.16;
+    g.gain.setValueAtTime(vol,ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+0.1);
+    o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+0.11);
+  }catch(e){}
+}
+
+/* ---- PLAY ---- */
+const playBtn=document.getElementById('playBtn'),tempo=document.getElementById('tempo'),bpm=document.getElementById('bpm');
+let playing=false,timer=null,tickIdx=0;
+tempo.oninput=()=>{bpm.textContent=tempo.value;if(playing){stop(true);play();}};
+function play(){
+  playing=true;playBtn.textContent='◼ Stop';
+  const subs=curSpeed; // syllables per beat = speed (1st=1, 2nd=2, 3rd=4)
+  const perBeat=60000/tempo.value;
+  const interval=perBeat/subs;
+  timer=setInterval(()=>{
+    const beatIdx=Math.floor(tickIdx/subs),subIdx=tickIdx%subs;
+    [...track.children].forEach(e=>e.classList.remove('active'));
+    const el=track.children[beatIdx];if(el)el.classList.add('active');
+    if(subIdx===0)tick(beats[beatIdx].t);else tick('sub');
+    tickIdx=(tickIdx+1)%(beats.length*subs);
+  },interval);
+}
+function stop(keep){playing=false;clearInterval(timer);playBtn.textContent='▶ Play';if(!keep)tickIdx=0;[...track.children].forEach(e=>e.classList.remove('active'));}
+playBtn.onclick=()=>{if(playing)stop();else{if(ac&&ac.resume)ac.resume();play();}};
+
+/* init */
+selectTala('triputa');selectJaati('chatusra');selectGati('chatusra');markGrid();
+</script>
+</body>
+</html>

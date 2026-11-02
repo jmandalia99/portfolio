@@ -22,13 +22,13 @@ export const hero = {
     'Automotive & Embedded Systems',
     'AI/ML Research',
   ],
-  headline: 'Technical Program Manager with a software engineering foundation — delivering connected products from firmware to cloud.',
+  headline: 'Technical program and release lead — delivering connected products from firmware to cloud.',
   intro:
-    'Nearly four years delivering vehicle software across firmware, apps, and cloud systems. Currently pursuing an M.S. in Computer Science while building mobile apps at Phase Technologies.',
+    'Nearly four years delivering connected-vehicle and device programs across firmware, apps, and cloud. Currently pursuing an M.S. in Computer Science while owning delivery of the Phase Connect app at Phase Technologies.',
 };
 
 export const numbers = [
-  { value: 4, prefix: '~', suffix: '', label: 'Years delivering device software' },
+  { value: 4, prefix: '~', suffix: '', label: 'Years in connected-vehicle & device programs' },
   { value: 22, suffix: '+', label: 'Software releases led at MG Motor' },
   { value: 20000, suffix: '+', label: 'Vehicles reached by those releases' },
   { value: 120, suffix: '+', label: 'Issues driven to closure' },
@@ -475,11 +475,15 @@ export const bharatanatyam = {
   learning: [
     ['Learning', 'back in class with Artgharana, building my foundation step by step'],
     ['Understanding taal', 'how the Carnatic tala system works — talas, jaati, gati, and the three speeds'],
-    ['Dance + technology', 'finding ways to connect Bharatanatyam with technology, starting with a taal practice tool'],
+    ['Dance + technology', 'building tools that bring technology into Bharatanatyam — try them below'],
   ],
   instagram: { handle: '@routes._.roots', url: 'https://www.instagram.com/routes._.roots/' },
-  // Set this to the page path once the taal practice tool is added, e.g. '/taal/'.
-  tool: null,
+  // Dance + technology tools (the HTML files live in public/<folder>/index.html).
+  tools: [
+    { title: 'Taal practice tool', text: 'All 35 Suladi Sapta talas with a player — pick tala, jaati, gati and speed, and keep time as the beats light up.', href: '/taal/' },
+    { title: 'Hasta Trainer', text: 'Record your own hastas on camera and build a personal hand-gesture model, right in the browser.', href: '/hasta-trainer/' },
+    { title: 'Hasta Performer', text: 'Show a hasta to the camera and see it recognised live, with its name and viniyoga.', href: '/hasta-performer/' },
+  ],
 };
 
 export const beyond = [

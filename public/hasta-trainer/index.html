@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HASTA Trainer — Record Your Hastas</title>
+<meta name="description" content="Record your own Bharatanatyam hastas with your camera and build a personal hand-gesture model. Everything runs in your browser. By Jinal Mandalia.">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VRVWW9YJ"></script>
+<script>(function(){var ID='G-P9VRVWW9YJ';try{if(localStorage.getItem('jm_owner')==='1')window['ga-disable-'+ID]=true;}catch(e){}window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',ID);})();</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Yatra+One&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100vw;height:100vh;overflow:hidden;background:#0a0700;color:#fdf6e3;font-family:'DM Sans',sans-serif}
+
+/* Layout: left panel + right camera */
+#app{display:flex;width:100%;height:100%;gap:0}
+
+/* ── LEFT PANEL ── */
+#panel{
+  width:380px;min-width:340px;height:100%;
+  background:#0f0a00;border-right:1px solid rgba(245,166,35,0.12);
+  display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;
+}
+#panelHead{
+  padding:20px 24px 16px;border-bottom:1px solid rgba(245,166,35,0.1);
+  flex-shrink:0;
+}
+#logoRow{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+#logo{font-family:'Yatra One',cursive;font-size:1.4rem;color:#f5a623;letter-spacing:.08em}
+#logoTag{font-size:.42rem;letter-spacing:.35em;color:rgba(245,166,35,0.35);text-transform:uppercase}
+#progress{margin-top:12px}
+#progressLabel{display:flex;justify-content:space-between;font-size:.55rem;color:rgba(245,166,35,0.5);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+#progressBar{height:3px;background:rgba(245,166,35,0.1);border-radius:2px;overflow:hidden}
+#progressFill{height:100%;background:linear-gradient(90deg,#f5a623,#e8510a);border-radius:2px;transition:width .4s ease;width:0%}
+
+/* Tabs */
+#tabs{display:flex;border-bottom:1px solid rgba(245,166,35,0.1);flex-shrink:0}
+.tab{flex:1;padding:10px;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,166,35,0.35);cursor:pointer;text-align:center;transition:.2s;border-bottom:2px solid transparent}
+.tab.active{color:#f5a623;border-bottom-color:#f5a623}
+
+/* Hasta list */
+#hastaList{flex:1;overflow-y:auto;padding:8px}
+#hastaList::-webkit-scrollbar{width:3px}
+#hastaList::-webkit-scrollbar-track{background:transparent}
+#hastaList::-webkit-scrollbar-thumb{background:rgba(245,166,35,0.2);border-radius:2px}
+
+.hItem{
+  display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:6px;
+  cursor:pointer;transition:.15s;margin-bottom:2px;
+  border:1px solid transparent;
+}
+.hItem:hover{background:rgba(245,166,35,0.06);border-color:rgba(245,166,35,0.1)}
+.hItem.active{background:rgba(245,166,35,0.1);border-color:rgba(245,166,35,0.25)}
+.hItem.done{border-left:2px solid #22c55e}
+.hItem.done .hStatus{color:#22c55e}
+.hNum{font-size:.5rem;color:rgba(245,166,35,0.3);min-width:22px;letter-spacing:.08em}
+.hDev{font-family:'Tiro Devanagari Sanskrit',serif;font-size:1rem;color:#f5a623;min-width:48px}
+.hRom{font-size:.65rem;color:rgba(253,246,227,0.65);flex:1}
+.hStatus{font-size:.55rem;color:rgba(253,246,227,0.25);text-align:right;min-width:32px}
+
+/* Recording area */
+#recArea{
+  border-top:1px solid rgba(245,166,35,0.1);padding:16px 20px;flex-shrink:0;
+  background:#0f0a00;
+}
+#recHastaName{font-family:'Yatra One',cursive;font-size:1.1rem;color:#f5a623;margin-bottom:2px}
+#recHastaRom{font-size:.55rem;color:rgba(253,246,227,0.5);letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px}
+#recHastaVin{font-size:.62rem;color:rgba(245,166,35,0.45);font-style:italic;margin-bottom:12px;line-height:1.5}
+#sampleDots{display:flex;gap:6px;margin-bottom:12px}
+.sDot{width:10px;height:10px;border-radius:50%;background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.3);transition:.2s}
+.sDot.filled{background:#f5a623;border-color:#f5a623;box-shadow:0 0 6px rgba(245,166,35,0.5)}
+#recBtn{
+  width:100%;padding:11px;background:rgba(245,166,35,0.1);
+  border:1px solid rgba(245,166,35,0.35);color:#f5a623;
+  font-family:'DM Sans',sans-serif;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  border-radius:4px;cursor:pointer;transition:.2s;
+}
+#recBtn:hover:not(:disabled){background:rgba(245,166,35,0.18);border-color:rgba(245,166,35,0.6)}
+#recBtn:disabled{opacity:.35;cursor:not-allowed}
+#recBtn.recording{background:rgba(255,80,80,0.15);border-color:rgba(255,80,80,0.5);color:#ff7070;animation:recPulse .8s ease-in-out infinite}
+@keyframes recPulse{0%,100%{opacity:1}50%{opacity:.6}}
+#recFeedback{font-size:.58rem;color:rgba(253,246,227,0.4);text-align:center;margin-top:7px;min-height:18px}
+
+/* Export */
+#exportArea{padding:12px 20px;border-top:1px solid rgba(245,166,35,0.1);flex-shrink:0}
+#exportBtn{
+  width:100%;padding:11px;
+  background:linear-gradient(135deg,rgba(245,166,35,0.2),rgba(232,81,10,0.2));
+  border:1px solid rgba(245,166,35,0.4);color:#f5a623;
+  font-family:'DM Sans',sans-serif;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  border-radius:4px;cursor:pointer;transition:.2s;
+}
+#exportBtn:hover{background:linear-gradient(135deg,rgba(245,166,35,0.3),rgba(232,81,10,0.3))}
+#exportBtn:disabled{opacity:.3;cursor:not-allowed}
+#exportCount{font-size:.5rem;color:rgba(245,166,35,0.4);text-align:center;margin-top:5px}
+
+/* ── RIGHT: CAMERA + CANVAS ── */
+#camWrap{flex:1;position:relative;overflow:hidden;background:#000}
+#cam{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);opacity:0;transition:opacity 1s}
+#cam.live{opacity:1}
+#cv{position:absolute;inset:0;width:100%;height:100%}
+
+/* Status bar overlay */
+#statusBar{
+  position:absolute;top:16px;right:16px;z-index:20;
+  display:flex;flex-direction:column;gap:5px;align-items:flex-end;
+  font-size:.48rem;letter-spacing:.12em;color:rgba(253,246,227,0.35);text-transform:uppercase;
+}
+.ds{display:flex;align-items:center;gap:6px}
+.dot{width:5px;height:5px;border-radius:50%;background:#1a1200;transition:all .3s}
+.dot.on{background:#f5a623;box-shadow:0 0 6px #f5a623}
+.dot.gr{background:#22c55e;box-shadow:0 0 6px #22c55e}
+
+/* Hand detected overlay */
+#handOverlay{
+  position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+  z-index:20;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;
+  color:rgba(245,166,35,0.5);text-align:center;pointer-events:none;
+  transition:opacity .3s;
+}
+
+/* Countdown ring */
+#countdown{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  z-index:30;pointer-events:none;display:none;
+  flex-direction:column;align-items:center;justify-content:center;
+  width:200px;height:200px;
+}
+#cdRingWrap{position:absolute;inset:0}
+#cdRingSvg{width:200px;height:200px;transform:rotate(-90deg)}
+#cdRingBg{fill:none;stroke:rgba(245,166,35,0.12);stroke-width:5}
+#cdRingFg{fill:none;stroke:#f5a623;stroke-width:5;stroke-linecap:round;
+  stroke-dasharray:565;stroke-dashoffset:0;
+  filter:drop-shadow(0 0 8px rgba(245,166,35,0.8))}
+#cdNumber{
+  position:relative;z-index:1;
+  font-family:'Yatra One',cursive;font-size:6rem;line-height:1;
+  color:rgba(245,166,35,0.95);text-shadow:0 0 40px rgba(245,166,35,0.5);
+}
+#cdLabel{
+  position:relative;z-index:1;
+  font-size:.52rem;letter-spacing:.35em;text-transform:uppercase;
+  color:rgba(245,166,35,0.5);margin-top:4px;
+}
+
+/* Flash */
+#flash{position:absolute;inset:0;z-index:25;background:#fff;opacity:0;pointer-events:none;transition:opacity .08s}
+#flash.on{opacity:0.7}
+
+/* Start overlay */
+#startOverlay{
+  position:absolute;inset:0;z-index:40;background:#0a0700;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
+  transition:opacity .8s;
+}
+#startOverlay.out{opacity:0;pointer-events:none}
+#st{font-family:'Yatra One',cursive;font-size:3.5rem;color:#f5a623;text-shadow:0 0 50px rgba(245,166,35,0.25);letter-spacing:.12em}
+#ss{font-family:'Tiro Devanagari Sanskrit',serif;font-size:1rem;color:rgba(245,166,35,0.45);letter-spacing:.12em}
+#ss2{font-size:.48rem;letter-spacing:.3em;color:rgba(245,166,35,0.25);text-transform:uppercase}
+.sbar{width:120px;height:1px;background:rgba(245,166,35,0.1);border-radius:2px;overflow:hidden}
+.sfill{height:100%;background:rgba(245,166,35,0.5);animation:ld 2s ease-in-out infinite}
+@keyframes ld{0%{width:0%;margin-left:0}50%{width:65%}100%{width:0%;margin-left:100%}}
+#sBtn{
+  background:transparent;border:1px solid rgba(245,166,35,0.4);color:rgba(245,166,35,0.8);
+  font-family:'DM Sans',sans-serif;font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;
+  padding:11px 28px;border-radius:3px;cursor:pointer;transition:.2s;
+}
+#sBtn:hover{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.7)}
+</style>
+</head>
+<body>
+<div id="startOverlay">
+  <div id="st">HASTA TRAINER</div>
+  <div id="ss">Hasta Recording Studio</div>
+  <div id="ss2">28 Asamyuta · 24 Samyuta · Personal Model</div>
+  <div class="sbar"><div class="sfill"></div></div>
+  <button id="sBtn">✦ BEGIN RECORDING ✦</button>
+  <div style="font-size:.4rem;opacity:.2;letter-spacing:.2em;text-transform:uppercase">Chrome · camera required · nothing leaves your device</div>
+  <div style="font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;margin-top:6px"><a href="/hasta-performer/" style="color:rgba(245,166,35,0.75);text-decoration:none;border-bottom:1px solid rgba(245,166,35,0.3)">Already have a model? Open Hasta Performer →</a></div>
+  <div style="font-size:.55rem;letter-spacing:.18em;text-transform:uppercase"><a href="/" style="color:rgba(245,166,35,0.75);text-decoration:none;border-bottom:1px solid rgba(245,166,35,0.3)">← Jinal Mandalia</a></div>
+</div>
+
+<div id="app">
+  <!-- LEFT PANEL -->
+  <div id="panel">
+    <div id="panelHead">
+      <div id="logoRow">
+        <div id="logo">HASTA</div>
+        <div>
+          <div style="font-size:.9rem;font-weight:500;letter-spacing:.05em">HASTA TRAINER</div>
+          <div id="logoTag">Personal Hasta Model Builder</div>
+        </div>
+      </div>
+      <div id="progress">
+        <div id="progressLabel">
+          <span>Progress</span>
+          <span id="progressText">0 / 52 hastas recorded</span>
+        </div>
+        <div id="progressBar"><div id="progressFill"></div></div>
+      </div>
+    </div>
+
+    <div id="tabs">
+      <div class="tab active" id="tabAsa" onclick="switchTab('asa')">☝ Asamyuta (28)</div>
+      <div class="tab" id="tabSam" onclick="switchTab('sam')">🙌 Samyuta (24)</div>
+    </div>
+
+    <div id="hastaList"></div>
+
+    <div id="recArea">
+      <div id="recHastaName">—</div>
+      <div id="recHastaRom">Select a hasta from the list</div>
+      <div id="recHastaVin"></div>
+      <div id="sampleDots">
+        <div class="sDot" id="d0"></div>
+        <div class="sDot" id="d1"></div>
+        <div class="sDot" id="d2"></div>
+        <div class="sDot" id="d3"></div>
+        <div class="sDot" id="d4"></div>
+      </div>
+      <button id="recBtn" disabled>● RECORD SAMPLE  (5s timer)</button>
+      <div id="recFeedback">Select a hasta to begin</div>
+    </div>
+
+    <div id="exportArea">
+      <button id="exportBtn" disabled onclick="exportModel()">⬇ EXPORT MODEL (hasta-model.json)</button>
+      <div id="exportCount">Record at least 3 samples per hasta to export</div>
+    </div>
+  </div>
+
+  <!-- RIGHT: CAMERA -->
+  <div id="camWrap">
+    <video id="cam" autoplay muted playsinline></video>
+    <canvas id="cv"></canvas>
+    <div id="flash"></div>
+    <div id="countdown">
+      <div id="cdRingWrap">
+        <svg id="cdRingSvg" viewBox="0 0 200 200">
+          <circle id="cdRingBg" cx="100" cy="100" r="90"/>
+          <circle id="cdRingFg" cx="100" cy="100" r="90"/>
+        </svg>
+      </div>
+      <div id="cdNumber">5</div>
+      <div id="cdLabel">Get ready…</div>
+    </div>
+    <div id="statusBar">
+      <div class="ds">CAMERA <span class="dot" id="dCam"></span></div>
+      <div class="ds">TRACKING <span class="dot" id="dTrack"></span></div>
+      <div class="ds">HAND <span class="dot" id="dHand"></span></div>
+    </div>
+    <div id="handOverlay">Position your hand clearly in frame</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════
+//  HASTA DATABASE
+// ═══════════════════════════════════════════════
+const ASAMYUTA=[
+  {key:'PATAKA',      n:1,  dev:'पताक',        rom:'Pataka',        lit:'Flag',               vin:'Clouds, forest, river, blessing, "Stop," the night',                  hands:1},
+  {key:'TRIPATAKA',   n:2,  dev:'त्रिपताक',   rom:'Tripataka',     lit:'Three-part Flag',    vin:'A crown, a tree, a lamp, a thunderbolt',                              hands:1},
+  {key:'ARDHAPATAKA', n:3,  dev:'अर्धपताक',   rom:'Ardhapataka',   lit:'Half Flag',          vin:'Tender leaves, bank of a river, a knife',                             hands:1},
+  {key:'KARTARIMUKHA',n:4,  dev:'कर्तरीमुख', rom:'Kartarimukha',  lit:'Scissors Face',      vin:'Separation, corner of an eye, death',                                 hands:1},
+  {key:'MAYURA',      n:5,  dev:'मयूर',        rom:'Mayura',        lit:'Peacock',            vin:"A peacock's neck, a bird, stroking the hair",                         hands:1},
+  {key:'ARDHACHANDRA',n:6,  dev:'अर्धचन्द्र', rom:'Ardhachandra',  lit:'Half Moon',          vin:'The moon, holding a spear, a dining plate',                           hands:1},
+  {key:'ARALA',       n:7,  dev:'अराल',        rom:'Arala',         lit:'Bent / Crooked',     vin:'Drinking nectar, poison, a violent wind',                             hands:1},
+  {key:'SHUKATUNDA',  n:8,  dev:'शुकतुण्ड',   rom:'Shukatundaka',  lit:"Parrot's Beak",      vin:'Shooting an arrow, a parrot, secrecy',                                hands:1},
+  {key:'MUSHTI',      n:9,  dev:'मुष्टि',      rom:'Mushti',        lit:'Fist',               vin:'Strength, wrestling, holding hair',                                    hands:1},
+  {key:'SHIKHARA',    n:10, dev:'शिखर',        rom:'Shikhara',      lit:'Peak / Spire',       vin:'A hero, a husband, a bow, a pillar',                                  hands:1},
+  {key:'KAPITTHA',    n:11, dev:'कपित्थ',      rom:'Kapittha',      lit:'Wood Apple',         vin:'Goddess Lakshmi, Saraswati, milking a cow',                           hands:1},
+  {key:'KATAKAMUKHA', n:12, dev:'कटकामुख',    rom:'Katakamukha',   lit:'Opening of a Link',  vin:'Picking flowers, holding a pearl necklace, a mirror',                 hands:1},
+  {key:'SUCHI',       n:13, dev:'सूचि',        rom:'Suchi',         lit:'Needle',             vin:'The number One, the Sun, a city, "You"',                              hands:1},
+  {key:'CHANDRAKALA', n:14, dev:'चन्द्रकला',  rom:'Chandrakala',   lit:'Digit of the Moon',  vin:"The face, the moon, Lord Shiva's crescent",                           hands:1},
+  {key:'PADMAKOSHA',  n:15, dev:'पद्मकोश',    rom:'Padmakosha',    lit:'Lotus Bud',          vin:'A fruit, a circular motion, a lotus flower',                          hands:1},
+  {key:'SARPASHIRSHA',n:16, dev:'सर्पशीर्ष',  rom:'Sarpashirsha',  lit:'Snake Head',         vin:'A cobra, sandalwood paste, splashing water',                          hands:1},
+  {key:'MRIGASHIRSHA',n:17, dev:'मृगशीर्ष',   rom:'Mrigashirsha',  lit:'Deer Head',          vin:'A deer, a female friend, calling, playing the flute',                 hands:1},
+  {key:'SIMHAMUKHA',  n:18, dev:'सिंहमुख',    rom:'Simhamukha',    lit:'Lion Face',          vin:'A lion, a rabbit, making medicine, a garland',                        hands:1},
+  {key:'KANGULA',     n:19, dev:'काङ्गुल',    rom:'Kangula',       lit:'Tail / Bell',        vin:'Small bells, a coconut, a little girl',                               hands:1},
+  {key:'ALAPADMA',    n:20, dev:'अलपद्म',     rom:'Alapadma',      lit:'Full-blown Lotus',   vin:'A blooming flower, beauty, a mirror',                                 hands:1},
+  {key:'CHATURA',     n:21, dev:'चतुर',        rom:'Chatura',       lit:'Four-sided',         vin:'Gold, copper, a little bit, an expert',                               hands:1},
+  {key:'BHRAMARA',    n:22, dev:'भ्रमर',       rom:'Bhramara',      lit:'Bee',                vin:'A honeybee, a parrot, a crane',                                       hands:1},
+  {key:'HAMSASYA',    n:23, dev:'हंसास्य',    rom:'Hamsasya',      lit:'Swan Beak',          vin:'A swan, tying a thread, painting',                                    hands:1},
+  {key:'HAMSAPAKSHA', n:24, dev:'हंसपक्ष',    rom:'Hamsapakshaka', lit:'Swan Wing',          vin:'Covering something, a bridge, the number six',                        hands:1},
+  {key:'SANDAMSHA',   n:25, dev:'संदंश',      rom:'Sandamsha',     lit:'Pincers',            vin:'Anxiety, the heart, counting',                                        hands:1},
+  {key:'MUKULA',      n:26, dev:'मुकुल',       rom:'Mukula',        lit:'Flower Bud',         vin:'Eating, a flower bud, the God of Love (Kamadeva)',                    hands:1},
+  {key:'TAMRACHUDA',  n:27, dev:'ताम्रचूड',   rom:'Tamrachuda',    lit:'Red-crested Cock',   vin:'A rooster, a crane, a crow',                                          hands:1},
+  {key:'TRISHULA',    n:28, dev:'त्रिशूल',    rom:'Trishula',      lit:'Trident',            vin:"The trident of Lord Shiva, the number three",                         hands:1},
+];
+const SAMYUTA=[
+  {key:'ANJALI',         n:1,  dev:'अञ्जलि',      rom:'Anjali',          lit:'Salutation',       vin:'Respect to Gods (above head), Gurus (at face), Elders (at chest)',  hands:2},
+  {key:'KAPOTA',         n:2,  dev:'कपोत',         rom:'Kapota',          lit:'Dove / Pigeon',    vin:'Respectful acceptance, conversation, cold / shivering',              hands:2},
+  {key:'KARKATA',        n:3,  dev:'कर्कट',        rom:'Karkata',         lit:'Crab',             vin:'Arrival of a crowd, blowing a conch, twisting the body',             hands:2},
+  {key:'SWASTIKA',       n:4,  dev:'स्वस्तिक',     rom:'Swastika',        lit:'Crossed',          vin:'Depicting a crocodile, a fearful state, an argument',                hands:2},
+  {key:'DOLA',           n:5,  dev:'डोल',          rom:'Dola',            lit:'Swing',            vin:'Start of a dance, a relaxed posture',                                hands:2},
+  {key:'PUSHPAPUTA',     n:6,  dev:'पुष्पपुट',     rom:'Pushpaputa',      lit:'Flower Casket',    vin:'Offering flowers to God, receiving fruits, carrying water',           hands:2},
+  {key:'UTSANGA',        n:7,  dev:'उत्सङ्ग',      rom:'Utsanga',         lit:'Embrace',          vin:'Showing shyness, modesty, hugging',                                  hands:2},
+  {key:'SHIVALINGA',     n:8,  dev:'शिवलिङ्ग',     rom:'Shivalinga',      lit:'Icon of Shiva',    vin:'Specifically used to represent Lord Shiva',                          hands:2},
+  {key:'KATAKAVARDHANA', n:9,  dev:'कटकवर्धन',    rom:'Katakavardhana',  lit:'Link of Increase', vin:'Coronation, worship, a wedding ceremony',                            hands:2},
+  {key:'KARTARISWASTIKA',n:10, dev:'कर्तरीस्वस्तिक',rom:'Kartari-Swastika',lit:'Crossed Scissors',vin:'Branches of trees, a hill, a peak',                                  hands:2},
+  {key:'SHAKATA',        n:11, dev:'शकट',          rom:'Shakata',         lit:'Cart / Demon',     vin:'Depicting a demon (Rakshasa) or a carriage',                         hands:2},
+  {key:'SHANKA',         n:12, dev:'शङ्ख',         rom:'Shanka',          lit:'Conch',            vin:'Representing a conch shell or ritualistic worship',                  hands:2},
+  {key:'CHAKRA',         n:13, dev:'चक्र',         rom:'Chakra',          lit:'Discus / Wheel',   vin:"Representing the Sudarshana Chakra (Lord Vishnu's weapon)",           hands:2},
+  {key:'SAMPUTA',        n:14, dev:'सम्पुट',       rom:'Samputa',         lit:'Casket / Box',     vin:'Hiding a secret, a small box, a golden vessel',                      hands:2},
+  {key:'PASHA',          n:15, dev:'पाश',          rom:'Pasha',           lit:'Noose / Cuffs',    vin:'A quarrel, a chain, a noose, a string',                              hands:2},
+  {key:'KILAKA',         n:16, dev:'किलक',         rom:'Kilaka',          lit:'Bond / Pivot',     vin:'Love, affection, a lighthearted conversation',                       hands:2},
+  {key:'MATSYA',         n:17, dev:'मत्स्य',       rom:'Matsya',          lit:'Fish',             vin:'Depicting a fish or the Matsya Avatar of Lord Vishnu',               hands:2},
+  {key:'KURMA',          n:18, dev:'कूर्म',         rom:'Kurma',           lit:'Tortoise',         vin:'Depicting a tortoise or the Kurma Avatar',                           hands:2},
+  {key:'VARAHA',         n:19, dev:'वराह',         rom:'Varaha',          lit:'Boar',             vin:'Depicting a wild boar or the Varaha Avatar',                         hands:2},
+  {key:'GARUDA',         n:20, dev:'गरुड',         rom:'Garuda',          lit:'Eagle',            vin:"Representing the giant eagle (Lord Vishnu's vehicle)",               hands:2},
+  {key:'NAGABANDHA',     n:21, dev:'नागबन्ध',      rom:'Nagabandha',      lit:'Serpent Bond',     vin:'A pair of snakes, a coil, a magical spell',                          hands:2},
+  {key:'KHATVA',         n:22, dev:'खट्वा',        rom:'Khatva',          lit:'Bed / Cot',        vin:'Representing a bed, a palanquin, a chair',                           hands:2},
+  {key:'BERUNDA',        n:23, dev:'बेरुण्ड',      rom:'Berunda',         lit:'Two-headed Bird',  vin:'A fierce two-headed bird or pair of birds',                          hands:2},
+  {key:'AVAHITTHA',      n:24, dev:'अवहित्थ',      rom:'Avahittha',       lit:'Disguise / Hidden',vin:"Showing shyness, a woman's waist, or secrecy",                       hands:2},
+];
+const ALL_HASTAS=[...ASAMYUTA,...SAMYUTA];
+
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+const SAMPLES_NEEDED=3, SAMPLES_MAX=5;
+let model={};        // key -> [[vec], [vec], ...]
+let currentTab='asa';
+let selectedKey=null;
+let isRecording=false;
+let currentHands=[];
+let countdownTimer=null;
+
+// ═══════════════════════════════════════════════
+//  CANVAS SETUP
+// ═══════════════════════════════════════════════
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d'),vid=document.getElementById('cam');
+function resize(){cv.width=cv.offsetWidth;cv.height=cv.offsetHeight;}
+window.addEventListener('resize',resize);
+
+// ═══════════════════════════════════════════════
+//  LANDMARK NORMALISATION
+//  Produces a rotation+scale invariant 42-dim vector
+//  from 21 hand landmarks
+// ═══════════════════════════════════════════════
+function normaliseLandmarks(lms){
+  // Centre on wrist (lm 0)
+  const ox=lms[0].x, oy=lms[0].y;
+  let pts=lms.map(l=>({x:l.x-ox, y:l.y-oy}));
+  // Scale: normalise by distance wrist→middle-finger-mcp (lm 9)
+  const scale=Math.hypot(pts[9].x,pts[9].y)||1;
+  pts=pts.map(p=>({x:p.x/scale, y:p.y/scale}));
+  // Flatten to vector
+  const vec=[];
+  for(const p of pts){vec.push(p.x);vec.push(p.y);}
+  return vec;
+}
+
+// For 2-hand samyuta: concatenate both normalised vectors
+// Make hand0 always the "left" (smaller x palm) for consistency
+function normaliseTwoHands(lms0, lms1){
+  const p0x=lms0[9].x, p1x=lms1[9].x;
+  const [a,b]=p0x<p1x?[lms0,lms1]:[lms1,lms0];
+  return [...normaliseLandmarks(a),...normaliseLandmarks(b)];
+}
+
+// ═══════════════════════════════════════════════
+//  COSINE SIMILARITY
+// ═══════════════════════════════════════════════
+function cosSim(a,b){
+  let dot=0,na=0,nb=0;
+  for(let i=0;i<a.length;i++){dot+=a[i]*b[i];na+=a[i]*a[i];nb+=b[i]*b[i];}
+  return dot/(Math.sqrt(na)*Math.sqrt(nb)||1);
+}
+
+// Average similarity of query vs all stored samples
+function avgSim(query, samples){
+  return samples.reduce((s,v)=>s+cosSim(query,v),0)/samples.length;
+}
+
+// ═══════════════════════════════════════════════
+//  UI BUILDERS
+// ═══════════════════════════════════════════════
+function buildList(){
+  const list=document.getElementById('hastaList');
+  list.innerHTML='';
+  const arr=currentTab==='asa'?ASAMYUTA:SAMYUTA;
+  arr.forEach(h=>{
+    const count=(model[h.key]||[]).length;
+    const done=count>=SAMPLES_NEEDED;
+    const div=document.createElement('div');
+    div.className='hItem'+(selectedKey===h.key?' active':'')+(done?' done':'');
+    div.id='hi_'+h.key;
+    div.innerHTML=`<span class="hNum">${h.n}.</span><span class="hDev">${h.dev}</span><span class="hRom">${h.rom}</span><span class="hStatus">${count>0?count+'✓':''}</span>`;
+    div.onclick=()=>selectHasta(h.key);
+    list.appendChild(div);
+  });
+}
+
+function selectHasta(key){
+  selectedKey=key;
+  const h=ALL_HASTAS.find(x=>x.key===key);
+  document.getElementById('recHastaName').textContent=h.dev+' — '+h.rom;
+  document.getElementById('recHastaRom').textContent=h.lit;
+  document.getElementById('recHastaVin').textContent=h.vin;
+  document.getElementById('recBtn').disabled=false;
+  document.getElementById('recFeedback').textContent =
+    h.hands === 2
+      ? 'Click Record → you have 5s to raise BOTH hands and form the hasta'
+      : 'Click Record → you have 5s to form the hasta with one hand';
+  updateDots();
+  buildList();
+  // Scroll item into view
+  const el=document.getElementById('hi_'+key);
+  if(el) el.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+
+function updateDots(){
+  const count=(model[selectedKey]||[]).length;
+  for(let i=0;i<5;i++){
+    document.getElementById('d'+i).className='sDot'+(i<count?' filled':'');
+  }
+}
+
+function updateProgress(){
+  const total=ALL_HASTAS.length;
+  const done=ALL_HASTAS.filter(h=>(model[h.key]||[]).length>=SAMPLES_NEEDED).length;
+  document.getElementById('progressText').textContent=`${done} / ${total} hastas recorded`;
+  document.getElementById('progressFill').style.width=`${(done/total)*100}%`;
+  const canExport=ALL_HASTAS.filter(h=>(model[h.key]||[]).length>=SAMPLES_NEEDED).length>0;
+  document.getElementById('exportBtn').disabled=!canExport;
+  const rdy=ALL_HASTAS.filter(h=>(model[h.key]||[]).length>=SAMPLES_NEEDED).length;
+  document.getElementById('exportCount').textContent=`${rdy} of ${total} hastas ready · ${total-rdy} remaining`;
+}
+
+function switchTab(tab){
+  currentTab=tab;
+  document.getElementById('tabAsa').className='tab'+(tab==='asa'?' active':'');
+  document.getElementById('tabSam').className='tab'+(tab==='sam'?' active':'');
+  buildList();
+}
+
+// ═══════════════════════════════════════════════
+//  RECORDING — 5-second timer, starts immediately
+// ═══════════════════════════════════════════════
+const COUNTDOWN_SECS = 5;
+const RING_FULL = 2 * Math.PI * 90; // circumference for r=90
+
+document.getElementById('recBtn').addEventListener('click', startRecord);
+
+function startRecord(){
+  if(isRecording || !selectedKey) return;
+  if((model[selectedKey]||[]).length >= SAMPLES_MAX){
+    document.getElementById('recFeedback').textContent = 'Max 5 samples reached for this hasta';
+    return;
+  }
+
+  isRecording = true;
+  document.getElementById('recBtn').disabled = true;
+  document.getElementById('recBtn').textContent = '⏱ GET INTO POSITION…';
+
+  // Show countdown UI
+  const cd = document.getElementById('countdown');
+  const cdNum = document.getElementById('cdNumber');
+  const cdLbl = document.getElementById('cdLabel');
+  const ring = document.getElementById('cdRingFg');
+  cd.style.display = 'flex';
+
+  let remaining = COUNTDOWN_SECS;
+  cdNum.textContent = remaining;
+  cdLbl.textContent = 'Form your hasta…';
+  ring.style.transition = 'none';
+  ring.style.strokeDashoffset = '0';
+
+  // Animate ring depleting each second
+  const STEP = RING_FULL / COUNTDOWN_SECS;
+
+  // Tick every second
+  let elapsed = 0;
+  countdownTimer = setInterval(() => {
+    elapsed++;
+    remaining = COUNTDOWN_SECS - elapsed;
+
+    // Ring depletes as time passes
+    ring.style.transition = 'stroke-dashoffset 0.85s linear';
+    ring.style.strokeDashoffset = String(STEP * elapsed);
+
+    if(remaining > 0){
+      cdNum.textContent = remaining;
+      cdLbl.textContent = remaining <= 2 ? 'Hold still!' : 'Form your hasta…';
+    } else {
+      clearInterval(countdownTimer);
+      cd.style.display = 'none';
+      captureNow();
+    }
+  }, 1000);
+}
+
+function captureNow(){
+  const h = ALL_HASTAS.find(x => x.key === selectedKey);
+  const needTwo = h.hands === 2;
+  let vec;
+
+  // Check hands at the moment of capture
+  if(needTwo && currentHands.length >= 2){
+    vec = normaliseTwoHands(currentHands[0], currentHands[1]);
+  } else if(!needTwo && currentHands.length >= 1){
+    vec = normaliseLandmarks(currentHands[0]);
+  } else {
+    // Missed — no hands at capture moment
+    endRecord(needTwo ? '⚠ Both hands not visible at capture — try again' : '⚠ Hand not visible at capture — try again');
+    return;
+  }
+
+  if(!model[selectedKey]) model[selectedKey] = [];
+  model[selectedKey].push(vec);
+
+  // Flash
+  const flash = document.getElementById('flash');
+  flash.classList.add('on');
+  setTimeout(() => flash.classList.remove('on'), 150);
+
+  const count = model[selectedKey].length;
+  endRecord(count >= SAMPLES_NEEDED
+    ? `✓ ${count} samples — looking great!`
+    : `✓ Sample ${count} saved · ${SAMPLES_NEEDED - count} more needed`);
+  updateDots();
+  updateProgress();
+  buildList();
+
+  // Auto-advance after minimum samples
+  if(count === SAMPLES_NEEDED){
+    setTimeout(() => autoAdvance(), 900);
+  }
+}
+
+function endRecord(msg){
+  isRecording = false;
+  const btn = document.getElementById('recBtn');
+  btn.disabled = false;
+  btn.className = '';
+  btn.textContent = '● RECORD SAMPLE  (5s timer)';
+  document.getElementById('recFeedback').textContent = msg;
+}
+
+function autoAdvance(){
+  const arr = currentTab==='asa' ? ASAMYUTA : SAMYUTA;
+  const idx = arr.findIndex(h => h.key === selectedKey);
+  if(idx >= 0 && idx < arr.length - 1){
+    selectHasta(arr[idx+1].key);
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  EXPORT MODEL
+// ═══════════════════════════════════════════════
+function exportModel(){
+  const export_data={
+    version:'1.0',
+    created:new Date().toISOString(),
+    description:'HASTA Personal Hasta Model — Routes & Roots',
+    hastas:{},
+  };
+  ALL_HASTAS.forEach(h=>{
+    if(model[h.key]&&model[h.key].length>0){
+      export_data.hastas[h.key]={
+        devanagari:h.dev, roman:h.rom, literal:h.lit, viniyoga:h.vin,
+        hands:h.hands, n:h.n, type:h.hands===1?'asamyuta':'samyuta',
+        samples:model[h.key]
+      };
+    }
+  });
+  const json=JSON.stringify(export_data,null,2);
+  const blob=new Blob([json],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='hasta-model.json';
+  a.click();
+  document.getElementById('recFeedback').innerHTML='✓ Model exported! Load it in <a href="/hasta-performer/" target="_blank" rel="noopener" style="color:#f5a623">HASTA Performer</a>.';
+}
+
+// ═══════════════════════════════════════════════
+//  DRAW CANVAS — skeleton + status
+// ═══════════════════════════════════════════════
+const SKEL=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[0,9],[9,10],[10,11],[11,12],[0,13],[13,14],[14,15],[15,16],[0,17],[17,18],[18,19],[19,20],[5,9],[9,13],[13,17]];
+const TIPS=[4,8,12,16,20];
+const FCOLS=['#f5a623','#00b4a6','#e8510a','#b06eff','#22c55e'];
+
+function drawFrame(){
+  ctx.clearRect(0,0,cv.width,cv.height);
+  if(!currentHands.length) return;
+  currentHands.forEach((lms,hi)=>{
+    // px conversion
+    const pts=lms.map(l=>({x:(1-l.x)*cv.width, y:l.y*cv.height}));
+    // Skeleton
+    ctx.save();
+    ctx.strokeStyle='rgba(245,166,35,0.3)';ctx.lineWidth=1.2;ctx.lineCap='round';
+    SKEL.forEach(([a,b])=>{ctx.beginPath();ctx.moveTo(pts[a].x,pts[a].y);ctx.lineTo(pts[b].x,pts[b].y);ctx.stroke();});
+    ctx.restore();
+    // Finger tip dots
+    TIPS.forEach((ti,fi)=>{
+      const p=pts[ti];
+      ctx.save();
+      ctx.beginPath();ctx.arc(p.x,p.y,6,0,Math.PI*2);
+      ctx.fillStyle=FCOLS[fi];ctx.shadowColor=FCOLS[fi];ctx.shadowBlur=10;
+      ctx.fill();ctx.restore();
+    });
+    // Palm dot
+    const palm=pts[9];
+    ctx.save();
+    ctx.beginPath();ctx.arc(palm.x,palm.y,4,0,Math.PI*2);
+    ctx.fillStyle='rgba(245,166,35,0.7)';ctx.fill();ctx.restore();
+  });
+}
+
+// ═══════════════════════════════════════════════
+//  MEDIAPIPE
+// ═══════════════════════════════════════════════
+function setDot(id,on){document.getElementById(id).className='dot'+(on?' on':'');}
+
+async function boot(){
+  const mp=new Hands({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/hands/${f}`});
+  mp.setOptions({maxNumHands:2,modelComplexity:1,minDetectionConfidence:0.75,minTrackingConfidence:0.7});
+  mp.onResults(r=>{
+    if(r.multiHandLandmarks&&r.multiHandLandmarks.length>0){
+      currentHands=r.multiHandLandmarks;
+      setDot('dHand',true);
+      document.getElementById('handOverlay').style.opacity='0';
+    } else {
+      currentHands=[];
+      setDot('dHand',false);
+      document.getElementById('handOverlay').style.opacity='1';
+    }
+    resize();
+    drawFrame();
+  });
+  setDot('dTrack',true);
+
+  let stream;
+  try{stream=await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1280},height:{ideal:720},facingMode:'user'},audio:false});}
+  catch(e){return;}
+  vid.srcObject=stream;
+  await new Promise(r2=>vid.onloadedmetadata=r2);
+  vid.play();vid.classList.add('live');
+  setDot('dCam',true);
+  resize();
+
+  const cam=new Camera(vid,{onFrame:async()=>{await mp.send({image:vid});},width:1280,height:720});
+  cam.start();
+
+  document.getElementById('startOverlay').classList.add('out');
+  setTimeout(()=>{document.getElementById('startOverlay').style.display='none';resize();},900);
+
+  buildList();
+  updateProgress();
+}
+
+document.getElementById('sBtn').addEventListener('click',boot);
+</script>
+</body>
+</html>

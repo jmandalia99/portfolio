@@ -820,13 +820,27 @@ function DanceModal({ open, onClose }) {
             </ul>
           </div>
         </div>
-        <div className="px-6 sm:px-9 pb-8 flex flex-wrap items-center gap-4 justify-between border-t border-line pt-6">
-          <div className="flex flex-wrap gap-3">
-          <Button href={d.instagram.url} variant="ghost" external onClick={() => track('instagram_click', { from: 'dance_story' })}><Instagram size={17} /> {d.instagram.handle}</Button>
-          {d.tool && (
-            <Button href={d.tool} external onClick={() => track('taal_tool_open')}>Try my taal practice tool <ArrowUpRight size={17} /></Button>
-          )}
+        {d.tools && d.tools.length > 0 && (
+          <div className="px-6 sm:px-9 pb-8">
+            <p className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-bark">My dance + tech tools</p>
+            <div className="mt-4 grid sm:grid-cols-3 gap-3">
+              {d.tools.map((tool) => (
+                <a key={tool.href} href={tool.href} target="_blank" rel="noopener noreferrer"
+                  onClick={() => track('dance_tool_open', { tool: tool.title })}
+                  className="group/tool rounded-2xl border border-forest/15 bg-forest-soft/50 p-4 flex flex-col hover:bg-forest-soft hover:-translate-y-0.5 hover:shadow-card transition-all">
+                  <span className="flex items-start justify-between gap-2">
+                    <span className="font-serif font-semibold text-[17px] text-ink leading-snug">{tool.title}</span>
+                    <ArrowUpRight size={17} className="shrink-0 text-forest-deep transition-transform group-hover/tool:translate-x-0.5 group-hover/tool:-translate-y-0.5" />
+                  </span>
+                  <span className="mt-1.5 text-[14px] leading-snug text-body">{tool.text}</span>
+                </a>
+              ))}
+            </div>
+            <p className="mt-3 text-[13px] text-muted">The hasta tools use your camera and need Chrome. Nothing is uploaded — everything runs on your device.</p>
           </div>
+        )}
+        <div className="px-6 sm:px-9 pb-8 flex flex-wrap items-center gap-4 justify-between border-t border-line pt-6">
+          <Button href={d.instagram.url} variant="ghost" external onClick={() => track('instagram_click', { from: 'dance_story' })}><Instagram size={17} /> {d.instagram.handle}</Button>
         </div>
       </div>
     </div>,
