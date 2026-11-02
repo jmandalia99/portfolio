@@ -464,7 +464,8 @@ JATI_ORDER.forEach(jk=>{const b=document.createElement('button');b.className='op
 JATI_ORDER.forEach(gk=>{const b=document.createElement('button');b.className='opt';b.textContent=JATIS[gk].name;b.dataset.g=gk;b.onclick=()=>selectGati(gk);gatiOpts.appendChild(b);});
 
 function selectTala(tk){curT=tk;[...talaOpts.children].forEach(b=>b.classList.toggle('on',b.dataset.t===tk));render();}
-function selectJaati(jk){curJ=jk;[...jaatiOpts.children].forEach(b=>b.classList.toggle('on',b.dataset.j===jk));selectGati(jk);}
+/* Gati is its own dial: changing tala or jaati never moves it. */
+function selectJaati(jk){curJ=jk;[...jaatiOpts.children].forEach(b=>b.classList.toggle('on',b.dataset.j===jk));render();}
 function selectGati(gk){curG=gk;[...gatiOpts.children].forEach(b=>b.classList.toggle('on',b.dataset.g===gk));render();}
 function markGrid(){grid.querySelectorAll('.cell').forEach(c=>c.classList.toggle('sel',c.dataset.t===curT&&c.dataset.j===curJ));}
 
