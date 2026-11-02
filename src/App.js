@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
-  ArrowDown, ArrowUpRight, Mail, Linkedin, Github, FileText, Menu, X, ChevronDown,
+  ArrowDown, ArrowUpRight, Mail, Linkedin, Github, FileText, X, ChevronDown,
   MapPin, Award, Trophy, GraduationCap, Mountain, Compass, Image as ImageIcon, Film,
-  Video, Sparkles, Shield, Target, Microscope, Car, Cloud, Cpu, Plus, Copy, Check, Instagram,
+  Video, Sparkles, Shield, Target, Microscope, Car, Cloud, Cpu, Plus, Copy, Check,
 } from 'lucide-react';
 import {
   site, hero, numbers, about, journey, research, projects, skills, education,
@@ -119,7 +119,7 @@ function LivingBackground() {
     if (!el || reducedMotion()) return undefined;
     let tx = window.innerWidth * 0.68, ty = window.innerHeight * 0.42, cx = tx, cy = ty, raf = 0, running = false;
     const loop = () => {
-      cx += (tx - cx) * 0.16; cy += (ty - cy) * 0.16;
+      cx += (tx - cx) * 0.1; cy += (ty - cy) * 0.1;
       el.style.setProperty('--mx', `${cx}px`);
       el.style.setProperty('--my', `${cy}px`);
       el.style.setProperty('--rx', `${15 + (cx / window.innerWidth) * 70}%`);
@@ -151,6 +151,7 @@ function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState('');
+  const btnRef = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -169,34 +170,76 @@ function Header() {
     return () => io.disconnect();
   }, []);
 
-  useEffect(() => { document.body.style.overflow = open ? 'hidden' : ''; }, [open]);
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (!open) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') { setOpen(false); if (btnRef.current) btnRef.current.focus(); } };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open]);
+
+  const toggle = () => { setOpen((o) => { if (!o) track('menu_open'); return !o; }); };
+  // Close the menu first, then scroll once the page is scrollable again.
+  const go = (e, id) => {
+    e.preventDefault();
+    setOpen(false);
+    document.body.style.overflow = '';
+    requestAnimationFrame(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
+      try { window.history.replaceState(null, '', `#${id}`); } catch (err) { /* ignore */ }
+    });
+  };
 
   return (
-    <header className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled || open ? 'bg-parchment/80 backdrop-blur-xl border-b border-line/70' : 'bg-transparent border-b border-transparent'}`}>
-      <div className="max-w-[1240px] mx-auto px-5 md:px-10 h-[72px] flex items-center justify-between">
-        <Logo />
-        <nav className="hidden xl:flex items-center gap-1" aria-label="Main">
-          {NAV.map(([id, label]) => (
-            <a key={id} href={`#${id}`}
-              className={`relative px-3 py-2 text-[14.5px] font-medium transition-colors duration-300 ${active === id ? 'text-forest-deep' : 'text-body hover:text-ink'}`}>
-              {label}
-              <span className={`absolute left-3 right-3 -bottom-0.5 h-[2px] rounded-full bg-aspen transition-transform duration-500 origin-left ${active === id ? 'scale-x-100' : 'scale-x-0'}`} />
-            </a>
-          ))}
-        </nav>
-        <button className="xl:hidden p-2 -mr-2 text-ink" onClick={() => setOpen(!open)} aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open}>
-          {open ? <X size={24} /> : <Menu size={24} />}
-        </button>
+    <>
+      <header className={`fixed top-0 inset-x-0 z-[58] transition-all duration-500 ${scrolled && !open ? 'bg-parchment/80 backdrop-blur-xl border-b border-line/70' : 'bg-transparent border-b border-transparent'}`}>
+        <div className="max-w-[1240px] mx-auto px-5 md:px-10 h-[72px] flex items-center justify-between">
+          <Logo />
+          <button ref={btnRef} onClick={toggle} aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} aria-controls="site-menu"
+            className={`group inline-flex items-center gap-2.5 rounded-full pl-4 pr-3 py-2 text-[14.5px] font-semibold border transition-all duration-300 ${open ? 'bg-forest-deep text-white border-forest-deep' : 'bg-paper/80 backdrop-blur text-ink border-line hover:border-forest/40 hover:-translate-y-0.5 shadow-card'}`}>
+            {open ? 'Close' : 'Menu'}
+            <span className="relative w-5 h-5 grid place-items-center">
+              <span className={`absolute h-[2px] w-[18px] rounded-full bg-current transition-all duration-300 ${open ? 'rotate-45' : '-translate-y-[4px]'}`} />
+              <span className={`absolute h-[2px] w-[18px] rounded-full bg-current transition-all duration-300 ${open ? '-rotate-45' : 'translate-y-[4px]'}`} />
+            </span>
+          </button>
+        </div>
+      </header>
+
+      <div id="site-menu" role="dialog" aria-modal="true" aria-label="Site menu"
+        className={`fixed inset-0 z-[57] transition-[opacity,visibility] duration-500 ${open ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
+        <div className="absolute inset-0 bg-parchment/95 backdrop-blur-xl" onClick={() => setOpen(false)} />
+        <div className="absolute -right-40 -top-40 w-[520px] h-[520px] rounded-full bg-aspen/20 blur-3xl pointer-events-none" />
+        <div className="absolute -left-40 -bottom-40 w-[460px] h-[460px] rounded-full bg-forest/15 blur-3xl pointer-events-none" />
+        <div className="relative h-full overflow-y-auto">
+          <div className="max-w-[1240px] mx-auto px-5 md:px-10 pt-28 pb-12 grid lg:grid-cols-[1.4fr_1fr] gap-12">
+            <nav aria-label="Main" className="grid sm:grid-cols-2 gap-x-10">
+              {NAV.map(([id, label], i) => (
+                <a key={id} href={`#${id}`} onClick={(e) => go(e, id)}
+                  className={`group/link flex items-baseline gap-4 py-3.5 border-b border-line/80 transition-all duration-500 ${open ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+                  style={{ transitionDelay: open ? `${80 + i * 45}ms` : '0ms' }}>
+                  <span className="text-[13px] font-semibold text-amber tabular w-7">{String(i + 1).padStart(2, '0')}</span>
+                  <span className={`font-serif text-[clamp(1.6rem,3.2vw,2.4rem)] leading-tight transition-all duration-300 group-hover/link:translate-x-1.5 ${active === id ? 'text-forest-deep' : 'text-ink group-hover/link:text-forest-deep'}`}>{label}</span>
+                  {active === id && <span className="ml-auto self-center w-2 h-2 rounded-full bg-aspen" aria-label="current section" />}
+                </a>
+              ))}
+            </nav>
+            <aside className={`transition-all duration-700 ${open ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: open ? '260ms' : '0ms' }}>
+              <div className="rounded-[26px] bg-paper/80 border border-line shadow-card p-7">
+                <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-amber">Get in touch</p>
+                <a href={`mailto:${site.email}`} onClick={() => track('email_click', { from: 'menu' })} className="mt-3 block font-serif text-[20px] text-ink break-all hover:text-forest-deep">{site.email}</a>
+                <div className="mt-6 flex flex-wrap gap-2.5">
+                  <Button href={site.resume} external onClick={() => track('resume_open', { from: 'menu' })}><FileText size={16} /> Resume</Button>
+                  <Button href={site.linkedin} variant="ghost" external onClick={() => track('linkedin_click', { from: 'menu' })}><Linkedin size={16} /> LinkedIn</Button>
+                </div>
+                <p className="mt-6 flex items-center gap-2 text-[14px] text-muted"><MapPin size={15} /> {site.location}</p>
+              </div>
+            </aside>
+          </div>
+        </div>
       </div>
-      <div className={`xl:hidden overflow-hidden transition-[max-height] duration-500 ${open ? 'max-h-[100vh]' : 'max-h-0'}`}>
-        <nav className="px-5 pb-8 pt-2 flex flex-col" aria-label="Mobile">
-          {NAV.map(([id, label]) => (
-            <a key={id} href={`#${id}`} onClick={() => setOpen(false)}
-              className="py-3.5 border-b border-line/70 font-serif text-[22px] text-ink">{label}</a>
-          ))}
-        </nav>
-      </div>
-    </header>
+    </>
   );
 }
 
@@ -767,91 +810,7 @@ function DanceIcon(props) {
 
 const BEYOND_ICON = { hike: Mountain, travel: Compass };
 
-function DanceModal({ open, onClose }) {
-  const d = bharatanatyam;
-  const closeRef = useRef(null);
-  useEffect(() => {
-    if (!open) return undefined;
-    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
-    document.addEventListener('keydown', onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    if (closeRef.current) closeRef.current.focus();
-    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
-  }, [open, onClose]);
-  if (!open) return null;
-  return createPortal(
-    <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="dance-title">
-      <div className="absolute inset-0 bg-[#1C1A17]/40 backdrop-blur-sm fade-in" onClick={onClose} />
-      <div className="relative w-full sm:max-w-[760px] max-h-[90vh] overflow-y-auto rounded-t-[28px] sm:rounded-[28px] bg-paper shadow-lift pop-in">
-        <div className="relative px-6 sm:px-9 pt-8 pb-7 bg-gradient-to-br from-[#FBF1DE] via-[#F8E6C4] to-[#F1D3A1] overflow-hidden">
-          <button ref={closeRef} onClick={onClose} aria-label="Close"
-            className="absolute right-5 top-5 z-10 w-10 h-10 rounded-full bg-paper/80 text-ink grid place-items-center hover:bg-paper transition-colors"><X size={19} /></button>
-          <DanceIcon className="ghungroo ghungroo-live text-amber/80 w-[170px] h-[90px] -ml-1" aria-hidden="true" />
-          <p className="mt-3 text-[12.5px] font-semibold uppercase tracking-[0.14em] text-amber">{d.tag}</p>
-          <h3 id="dance-title" className="mt-2 font-serif font-bold text-[28px] sm:text-[32px] leading-tight text-ink">{d.title}</h3>
-          <p className="mt-3 text-[16px] leading-[1.7] text-body max-w-xl">{d.intro}</p>
-        </div>
-        <div className="px-6 sm:px-9 py-7 grid sm:grid-cols-2 gap-8">
-          <div>
-            <p className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-bark">My dance journey</p>
-            <ol className="mt-4 relative">
-              <span className="absolute left-[7px] top-2 bottom-2 w-px bg-amber/30" aria-hidden="true" />
-              {d.journey.map((j) => (
-                <li key={j.when} className="grid grid-cols-[22px_1fr] gap-3 py-2.5">
-                  <span className="relative mt-1 w-[15px] h-[15px] rounded-full border-2 bg-paper border-amber" />
-                  <span>
-                    <span className="block text-[15px] font-semibold text-ink">{j.when}</span>
-                    <span className="block text-[15px] leading-[1.6] text-body">{j.what}</span>
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </div>
-          <div>
-            <p className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-bark">What I’m doing now</p>
-            <ul className="mt-4 space-y-2.5">
-              {d.learning.map(([k, v]) => (
-                <li key={k} className="rounded-2xl bg-[#FBF4E6] border border-amber/15 px-4 py-3">
-                  <span className="block font-serif font-semibold text-[16.5px] text-ink">{k}</span>
-                  <span className="block text-[14.5px] leading-snug text-body mt-0.5">{v}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-        {d.tools && d.tools.length > 0 && (
-          <div className="px-6 sm:px-9 pb-8">
-            <p className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-bark">My dance + tech tools</p>
-            <div className="mt-4 grid sm:grid-cols-3 gap-3">
-              {d.tools.map((tool) => (
-                <a key={tool.href} href={tool.href} target="_blank" rel="noopener noreferrer"
-                  onClick={() => track('dance_tool_open', { tool: tool.title })}
-                  className="group/tool rounded-2xl border border-forest/15 bg-forest-soft/50 p-4 flex flex-col hover:bg-forest-soft hover:-translate-y-0.5 hover:shadow-card transition-all">
-                  <span className="flex items-start justify-between gap-2">
-                    <span className="font-serif font-semibold text-[17px] text-ink leading-snug">{tool.title}</span>
-                    <ArrowUpRight size={17} className="shrink-0 text-forest-deep transition-transform group-hover/tool:translate-x-0.5 group-hover/tool:-translate-y-0.5" />
-                  </span>
-                  <span className="mt-1.5 text-[14px] leading-snug text-body">{tool.text}</span>
-                </a>
-              ))}
-            </div>
-            <p className="mt-3 text-[13px] text-muted">The hasta tools use your camera and need Chrome. Nothing is uploaded — everything runs on your device.</p>
-          </div>
-        )}
-        <div className="px-6 sm:px-9 pb-8 flex flex-wrap items-center gap-4 justify-between border-t border-line pt-6">
-          <Button href={d.instagram.url} variant="ghost" external onClick={() => track('instagram_click', { from: 'dance_story' })}><Instagram size={17} /> {d.instagram.handle}</Button>
-        </div>
-      </div>
-    </div>,
-    document.body
-  );
-}
-
 function Beyond() {
-  const [danceOpen, setDanceOpen] = useState(false);
-  const closeDance = React.useCallback(() => setDanceOpen(false), []);
-  const openDance = () => { setDanceOpen(true); track('dance_open'); };
   const cards = [
     { key: 'dance', title: bharatanatyam.title, tag: bharatanatyam.tag, text: bharatanatyam.short },
     ...beyond,
@@ -864,8 +823,9 @@ function Beyond() {
           {cards.map((b, i) => {
             const isDance = b.key === 'dance';
             const Icon = isDance ? DanceIcon : BEYOND_ICON[b.key];
+            const Tag = isDance ? 'a' : 'div';
             return (
-              <div key={b.key} {...(isDance ? { onClick: openDance } : {})}
+              <Tag key={b.key} {...(isDance ? { href: bharatanatyam.site, target: '_blank', rel: 'noopener noreferrer', onClick: () => track('dance_site_open') } : {})}
                 className={`reveal group group/dance text-left rounded-[26px] overflow-hidden bg-paper/80 backdrop-blur border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 flex flex-col ${isDance ? 'cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest' : ''}`}
                 style={{ '--d': `${i * 90}ms` }}>
                 <span className={`relative block h-44 overflow-hidden ${isDance ? 'bg-gradient-to-br from-[#F4DDB0] via-[#EDC98A] to-[#C4873A]' : b.key === 'hike' ? 'bg-gradient-to-br from-[#DCE6D6] via-[#B9CBB1] to-[#2D5A3D]' : 'bg-gradient-to-br from-[#E1EAF4] via-[#C9D7E8] to-[#2F5F99]'}`}>
@@ -878,24 +838,17 @@ function Beyond() {
                   <span className="mt-2 font-serif font-semibold text-[23px] text-ink">{b.title}</span>
                   <span className="mt-2 text-[15.5px] leading-[1.65] text-body">{b.text}</span>
                   {isDance && (
-                    <span className="mt-auto pt-5 flex items-center justify-between gap-3">
-                      <button type="button" onClick={(e) => { e.stopPropagation(); openDance(); }}
-                        className="inline-flex items-center gap-2 text-[14.5px] font-semibold text-forest-deep focus:outline-none focus-visible:ring-2 focus-visible:ring-forest rounded-full">
-                        Open my dance story
-                        <span className="w-7 h-7 rounded-full border border-forest/25 grid place-items-center transition-all duration-500 group-hover:bg-forest-deep group-hover:text-white group-hover:rotate-90"><Plus size={15} /></span>
-                      </button>
-                      <a href={bharatanatyam.instagram.url} target="_blank" rel="noopener noreferrer" aria-label={`Instagram ${bharatanatyam.instagram.handle}`}
-                        onClick={(e) => { e.stopPropagation(); track('instagram_click', { from: 'dance_card' }); }}
-                        className="w-9 h-9 rounded-full border border-line grid place-items-center text-bark hover:text-white hover:border-transparent hover:bg-gradient-to-br hover:from-[#F2A33A] hover:via-[#D9416E] hover:to-[#7B3FBF] transition-all"><Instagram size={17} /></a>
+                    <span className="mt-auto pt-5 inline-flex items-center gap-2 text-[14.5px] font-semibold text-forest-deep">
+                      Visit Routes &amp; Roots
+                      <span className="w-7 h-7 rounded-full border border-forest/25 grid place-items-center transition-all duration-500 group-hover:bg-forest-deep group-hover:text-white"><ArrowUpRight size={15} /></span>
                     </span>
                   )}
                 </span>
-              </div>
+              </Tag>
             );
           })}
         </div>
       </div>
-      <DanceModal open={danceOpen} onClose={closeDance} />
     </section>
   );
 }

@@ -36,9 +36,9 @@ body {
   filter: blur(70px);
   will-change: transform;
 }
-.blob-gold { width: 46vw; height: 46vw; background: rgba(212, 152, 30, 0.27); top: -12vw; right: -8vw; animation: drift1 13s ease-in-out infinite alternate; }
-.blob-forest { width: 40vw; height: 40vw; background: rgba(45, 90, 61, 0.19); bottom: -14vw; left: -10vw; animation: drift2 16s ease-in-out infinite alternate; }
-.blob-sky { width: 30vw; height: 30vw; background: rgba(47, 95, 153, 0.13); top: 38%; left: 34%; animation: drift3 19s ease-in-out infinite alternate; }
+.blob-gold { width: 46vw; height: 46vw; background: rgba(212, 152, 30, 0.27); top: -12vw; right: -8vw; animation: drift1 19s ease-in-out infinite alternate; }
+.blob-forest { width: 40vw; height: 40vw; background: rgba(45, 90, 61, 0.19); bottom: -14vw; left: -10vw; animation: drift2 23s ease-in-out infinite alternate; }
+.blob-sky { width: 30vw; height: 30vw; background: rgba(47, 95, 153, 0.13); top: 38%; left: 34%; animation: drift3 27s ease-in-out infinite alternate; }
 
 @keyframes drift1 { to { transform: translate(-14vw, 18vh) scale(1.15); } }
 @keyframes drift2 { to { transform: translate(18vw, -16vh) scale(1.1); } }

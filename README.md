@@ -34,9 +34,8 @@ Reports: https://analytics.google.com
   GA → Admin → Custom definitions → Create custom dimension (scope: Event):
   `project_name`, `role`, `ref`, `from`, `certificate`, `stage`.
 
-## Dance + tech tools (linked from the Bharatanatyam story)
-- `public/taal/index.html` → https://www.jinalmandalia.com/taal/
-- `public/hasta-trainer/index.html` → https://www.jinalmandalia.com/hasta-trainer/
-- `public/hasta-performer/index.html` → https://www.jinalmandalia.com/hasta-performer/
-
-To update one, replace its `index.html` with the new version (keep the file name). The list shown on the site is `tools` in `src/content.js`.
+## Routes & Roots (dance site)
+The Bharatanatyam site and its tools live in `public/dance/` → https://www.jinalmandalia.com/dance/
+(`index.html`, `taal/`, `hasta-trainer/`, `hasta-performer/`). The old `/taal/`, `/hasta-trainer/`,
+`/hasta-performer/` addresses forward there. The dance card on the main site links to `bharatanatyam.site`
+in `src/content.js`.

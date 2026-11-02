@@ -456,6 +456,8 @@ export const bharatanatyam = {
   title: 'Bharatanatyam',
   tag: '6 years of training',
   short: 'The classical dance I grew up with — six years of training as a child, and back in training since 2026.',
+  // Where the dance card links to (Routes & Roots, the dance site).
+  site: '/dance/',
   intro:
     'Bharatanatyam is the classical dance I grew up with. It taught me discipline, rhythm, and how to tell a story without words — and after a long break, I’m back in training.',
   journey: [
@@ -491,7 +493,7 @@ export const beyond = [
     key: 'hike',
     title: 'Hiking',
     tag: 'Mountain trails',
-    text: 'Trails, national parks, and long views — the photo at the top of this page was taken on one of them.',
+    text: 'Trails, national parks, and long views — the mountains are my favorite way to reset.',
   },
   {
     key: 'travel',

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HASTA — Performer</title>
+<meta name="description" content="Perform Bharatanatyam hastas in front of your camera and see each one recognised live, with its name and viniyoga. By Jinal Mandalia.">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VRVWW9YJ"></script>
+<script>(function(){var ID='G-P9VRVWW9YJ';try{if(localStorage.getItem('jm_owner')==='1')window['ga-disable-'+ID]=true;}catch(e){}window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',ID);})();</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Yatra+One&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100vw;height:100vh;overflow:hidden;background:#08050f;color:#fdf6e3;font-family:'DM Sans',sans-serif}
+
+#cam{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);opacity:0;transition:opacity 1.2s;z-index:0}
+#cam.live{opacity:1}
+#grade{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(245,166,35,0.06) 0%,transparent 20%,transparent 72%,rgba(8,5,15,0.7) 100%)}
+#cv{position:fixed;inset:0;width:100%;height:100%;z-index:10}
+
+/* ── TOP BAR ── */
+#topbar{position:fixed;top:0;left:0;right:0;z-index:40;pointer-events:none;
+  display:flex;justify-content:space-between;align-items:flex-start;padding:20px 32px 0}
+#logo{font-family:'Yatra One',cursive;font-size:1.7rem;color:#f5a623;
+  letter-spacing:.1em;text-shadow:0 0 30px rgba(245,166,35,0.4);line-height:1}
+#logoSub{font-size:.42rem;letter-spacing:.4em;color:rgba(245,166,35,0.35);text-transform:uppercase;margin-top:3px}
+#statusArea{text-align:right;font-size:.48rem;letter-spacing:.14em;color:rgba(253,246,227,0.3);line-height:2.3}
+.dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#1a0f00;margin-left:6px;vertical-align:middle;transition:all .4s}
+.dot.on{background:#f5a623;box-shadow:0 0 7px #f5a623}
+.dot.gr{background:#22c55e;box-shadow:0 0 7px #22c55e}
+.dot.tl{background:#00b4a6;box-shadow:0 0 7px #00b4a6}
+
+/* ── HASTA DISPLAY PANEL — right side ── */
+#hastaPanel{
+  position:fixed;right:0;top:0;bottom:0;width:300px;z-index:40;pointer-events:none;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:90px 28px 60px;
+  background:linear-gradient(270deg,rgba(8,5,15,0.93) 55%,transparent 100%);
+  opacity:0;transition:opacity .5s;
+}
+#hastaPanel.show{opacity:1}
+#hastaTypeLabel{font-size:.44rem;letter-spacing:.38em;text-transform:uppercase;
+  color:rgba(245,166,35,0.45);margin-bottom:10px}
+#hastaNumber{font-size:.5rem;font-weight:300;letter-spacing:.2em;
+  color:rgba(245,166,35,0.35);margin-bottom:8px}
+#hastaDev{
+  font-family:'Tiro Devanagari Sanskrit',serif;font-size:3rem;line-height:1.2;
+  color:#f5a623;text-shadow:0 0 30px rgba(245,166,35,0.55),0 0 70px rgba(245,166,35,0.2);
+  margin-bottom:6px;animation:glow 3s ease-in-out infinite;
+}
+@keyframes glow{0%,100%{text-shadow:0 0 30px rgba(245,166,35,0.55),0 0 70px rgba(245,166,35,0.2)}
+  50%{text-shadow:0 0 50px rgba(255,160,0,1),0 0 100px rgba(245,166,35,0.45)}}
+#hastaRom{font-size:.95rem;font-weight:400;letter-spacing:.1em;
+  color:rgba(253,246,227,0.75);text-transform:uppercase;margin-bottom:3px}
+#hastaLit{font-family:'Tiro Devanagari Sanskrit',serif;font-style:italic;
+  font-size:.75rem;color:rgba(245,166,35,0.55);margin-bottom:16px}
+#hastaDiv{width:36px;height:1px;
+  background:linear-gradient(90deg,transparent,#f5a623,transparent);margin-bottom:16px;opacity:.5}
+#hastaVin{font-size:.72rem;font-weight:300;color:rgba(253,246,227,0.58);line-height:1.75}
+
+/* confidence bar */
+#confBar{margin-top:14px}
+#confLabel{font-size:.44rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(245,166,35,0.35);margin-bottom:5px}
+#confTrack{height:2px;background:rgba(245,166,35,0.12);border-radius:2px;overflow:hidden}
+#confFill{height:100%;background:linear-gradient(90deg,#f5a623,#e8510a);border-radius:2px;transition:width .3s}
+#confPct{font-size:.55rem;color:rgba(245,166,35,0.5);margin-top:4px}
+
+/* ── MODE PILL ── */
+#modePill{
+  position:fixed;left:28px;bottom:28px;z-index:40;pointer-events:none;
+  font-size:.5rem;letter-spacing:.25em;text-transform:uppercase;
+  padding:6px 14px;border-radius:20px;
+  border:1px solid rgba(245,166,35,0.2);color:rgba(245,166,35,0.5);
+  transition:all .4s;
+}
+#modePill.asa{border-color:rgba(245,166,35,0.5);color:rgba(245,166,35,0.9);background:rgba(245,166,35,0.08)}
+#modePill.sam{border-color:rgba(0,180,166,0.5);color:rgba(0,200,186,0.9);background:rgba(0,180,166,0.08)}
+
+/* ── AWAIT ── */
+#await{position:fixed;inset:0;z-index:20;pointer-events:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .8s}
+#await.gone{opacity:0}
+#awaitSym{font-size:3.5rem;opacity:.2;animation:br 3s ease-in-out infinite}
+@keyframes br{0%,100%{opacity:.15;transform:scale(1)}50%{opacity:.3;transform:scale(1.06)}}
+#awaitL1{font-family:'Yatra One',cursive;font-size:1.1rem;letter-spacing:.18em;color:rgba(245,166,35,0.35)}
+#awaitL2{font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(253,246,227,0.2)}
+
+/* ── LOAD MODEL PROMPT ── */
+#loadModel{
+  position:fixed;inset:0;z-index:50;background:#08050f;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
+  transition:opacity .8s;
+}
+#loadModel.out{opacity:0;pointer-events:none}
+#lmTitle{font-family:'Yatra One',cursive;font-size:3.8rem;color:#f5a623;letter-spacing:.12em;text-shadow:0 0 60px rgba(245,166,35,0.2)}
+#lmSub{font-family:'Tiro Devanagari Sanskrit',serif;font-size:1rem;color:rgba(245,166,35,0.45)}
+#lmInfo{font-size:.5rem;letter-spacing:.3em;color:rgba(245,166,35,0.25);text-transform:uppercase}
+.lbar{width:120px;height:1px;background:rgba(245,166,35,0.1);border-radius:2px;overflow:hidden}
+.lfill{height:100%;background:rgba(245,166,35,0.5);animation:ld 2s ease-in-out infinite}
+@keyframes ld{0%{width:0%;margin-left:0}50%{width:65%}100%{width:0%;margin-left:100%}}
+
+/* Drop zone */
+#dropZone{
+  border:1.5px dashed rgba(245,166,35,0.3);border-radius:8px;
+  padding:28px 40px;text-align:center;cursor:pointer;transition:.2s;
+  background:rgba(245,166,35,0.03);
+}
+#dropZone:hover,#dropZone.drag{border-color:rgba(245,166,35,0.7);background:rgba(245,166,35,0.07)}
+#dropIcon{font-size:2rem;opacity:.4;margin-bottom:8px}
+#dropText{font-size:.68rem;color:rgba(245,166,35,0.5);letter-spacing:.15em}
+#dropSub{font-size:.5rem;color:rgba(245,166,35,0.28);margin-top:4px;letter-spacing:.1em}
+#fileInput{display:none}
+
+.or{font-size:.48rem;color:rgba(245,166,35,0.25);letter-spacing:.3em;text-transform:uppercase}
+#camBtn{
+  background:transparent;border:1px solid rgba(245,166,35,0.35);color:rgba(245,166,35,0.7);
+  font-family:'DM Sans',sans-serif;font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;
+  padding:11px 28px;border-radius:3px;cursor:pointer;transition:.2s;
+}
+#camBtn:hover{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.65)}
+#modelStats{font-size:.5rem;color:rgba(245,166,35,0.3);letter-spacing:.1em;text-align:center}
+
+/* Corners */
+.cor{position:fixed;width:20px;height:20px;border-color:rgba(245,166,35,0.18);border-style:solid;z-index:30;pointer-events:none}
+.cor.tl{top:12px;left:12px;border-width:1px 0 0 1px}
+.cor.tr{top:12px;right:12px;border-width:1px 1px 0 0}
+.cor.bl{bottom:12px;left:12px;border-width:0 0 1px 1px}
+.cor.br{bottom:12px;right:12px;border-width:0 1px 1px 0}
+#watermark{position:fixed;bottom:22px;right:24px;z-index:40;pointer-events:none;
+  font-family:'Yatra One',cursive;font-size:.65rem;letter-spacing:.12em;color:rgba(245,166,35,0.25)}
+</style>
+</head>
+<body>
+
+<!-- LOAD MODEL SCREEN -->
+<div id="loadModel">
+  <div id="lmTitle">HASTA</div>
+  <div id="lmSub">Hasta Performer</div>
+  <div id="lmInfo">Load your personal model · then perform</div>
+  <div class="lbar"><div class="lfill"></div></div>
+
+  <div id="dropZone" onclick="document.getElementById('fileInput').click()"
+    ondragover="event.preventDefault();this.classList.add('drag')"
+    ondragleave="this.classList.remove('drag')"
+    ondrop="handleDrop(event)">
+    <div id="dropIcon">📂</div>
+    <div id="dropText">Drop hasta-model.json here</div>
+    <div id="dropSub">or click to browse</div>
+  </div>
+  <input type="file" id="fileInput" accept=".json" onchange="loadFile(this)">
+
+  <div class="or">— or —</div>
+  <button id="camBtn" onclick="startWithoutModel()">Continue without model (demo mode)</button>
+  <div id="modelStats">No model loaded</div>
+  <div style="font-size:.55rem;letter-spacing:.18em;text-transform:uppercase"><a href="../hasta-trainer/" style="color:rgba(245,166,35,0.75);text-decoration:none;border-bottom:1px solid rgba(245,166,35,0.3)">No model yet? Record one in Hasta Trainer →</a></div>
+  <div style="font-size:.55rem;letter-spacing:.18em;text-transform:uppercase"><a href="../" style="color:rgba(245,166,35,0.75);text-decoration:none;border-bottom:1px solid rgba(245,166,35,0.3)">← Routes &amp; Roots</a></div>
+</div>
+
+<!-- CAMERA -->
+<video id="cam" autoplay muted playsinline></video>
+<div id="grade"></div>
+<canvas id="cv"></canvas>
+
+<div class="cor tl"></div><div class="cor tr"></div>
+<div class="cor bl"></div><div class="cor br"></div>
+
+<!-- TOP BAR -->
+<div id="topbar">
+  <div><div id="logo">HASTA</div><div id="logoSub">Hasta Performer · Routes &amp; Roots</div></div>
+  <div id="statusArea">
+    <div>CAMERA <span class="dot" id="dCam"></span></div>
+    <div>TRACKING <span class="dot" id="dTrack"></span></div>
+    <div>HANDS <span class="dot" id="dHands"></span></div>
+    <div>HASTA <span class="dot" id="dHasta"></span></div>
+  </div>
+</div>
+
+<!-- Hasta panel -->
+<div id="hastaPanel">
+  <div id="hastaTypeLabel">Asamyuta Hasta</div>
+  <div id="hastaNumber">Hasta 1 of 28</div>
+  <div id="hastaDev">पताक</div>
+  <div id="hastaRom">Pataka</div>
+  <div id="hastaLit">The Flag</div>
+  <div id="hastaDiv"></div>
+  <div id="hastaVin">Clouds, forest, river, blessing</div>
+  <div id="confBar">
+    <div id="confLabel">Confidence</div>
+    <div id="confTrack"><div id="confFill" style="width:0%"></div></div>
+    <div id="confPct">—</div>
+  </div>
+</div>
+
+<!-- Mode pill -->
+<div id="modePill">Awaiting hands…</div>
+
+<!-- Await -->
+<div id="await">
+  <div id="awaitSym">🤲</div>
+  <div id="awaitL1">Show your hands · Hasta recognition active</div>
+  <div id="awaitL2">Single hand = Asamyuta · Both hands = Samyuta</div>
+</div>
+
+<div id="watermark">@routes._.roots ✦</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════
+//  MODEL STORAGE
+// ═══════════════════════════════════════════════
+let MODEL=null;   // parsed nritya-model.json
+let hastaEntries=[];  // [{key, devanagari, roman, literal, viniyoga, hands, n, type, samples:[vec...]}]
+
+// ═══════════════════════════════════════════════
+//  NORMALISATION (must match trainer exactly)
+// ═══════════════════════════════════════════════
+function normLMs(lms){
+  const ox=lms[0].x,oy=lms[0].y;
+  let pts=lms.map(l=>({x:l.x-ox,y:l.y-oy}));
+  const scale=Math.hypot(pts[9].x,pts[9].y)||1;
+  pts=pts.map(p=>({x:p.x/scale,y:p.y/scale}));
+  const v=[];for(const p of pts){v.push(p.x);v.push(p.y);}return v;
+}
+function normTwo(lms0,lms1){
+  const [a,b]=lms0[9].x<lms1[9].x?[lms0,lms1]:[lms1,lms0];
+  return[...normLMs(a),...normLMs(b)];
+}
+
+// ═══════════════════════════════════════════════
+//  KNN RECOGNITION
+// ═══════════════════════════════════════════════
+function cosSim(a,b){
+  let dot=0,na=0,nb=0;
+  const len=Math.min(a.length,b.length);
+  for(let i=0;i<len;i++){dot+=a[i]*b[i];na+=a[i]*a[i];nb+=b[i]*b[i];}
+  return dot/(Math.sqrt(na)*Math.sqrt(nb)||1);
+}
+
+function recognise(queryVec, handsCount){
+  if(!hastaEntries.length) return null;
+  let best=null,bestScore=-Infinity;
+  for(const h of hastaEntries){
+    if(h.hands!==handsCount) continue;
+    if(!h.samples||!h.samples.length) continue;
+    // Average cosine similarity across all recorded samples
+    let totalSim=0;
+    for(const s of h.samples){
+      const slen=Math.min(queryVec.length,s.length);
+      totalSim+=cosSim(queryVec.slice(0,slen),s.slice(0,slen));
+    }
+    const score=totalSim/h.samples.length;
+    if(score>bestScore){bestScore=score;best={...h,score};}
+  }
+  return best?{...best,confidence:Math.max(0,Math.min(1,(bestScore-0.7)/0.3))}:null;
+}
+
+// ═══════════════════════════════════════════════
+//  MODEL LOADING
+// ═══════════════════════════════════════════════
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('dropZone').classList.remove('drag');
+  const file=e.dataTransfer.files[0];
+  if(file) readModelFile(file);
+}
+function loadFile(input){
+  if(input.files[0]) readModelFile(input.files[0]);
+}
+function readModelFile(file){
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      applyModel(data);
+    }catch(err){
+      document.getElementById('modelStats').textContent='⚠ Invalid JSON file';
+    }
+  };
+  r.readAsText(file);
+}
+function applyModel(data){
+  MODEL=data;
+  hastaEntries=Object.entries(data.hastas).map(([key,h])=>({key,...h}));
+  const asaCount=hastaEntries.filter(h=>h.type==='asamyuta').length;
+  const samCount=hastaEntries.filter(h=>h.type==='samyuta').length;
+  const totalSamples=hastaEntries.reduce((s,h)=>s+(h.samples||[]).length,0);
+  document.getElementById('modelStats').textContent=
+    `✓ Model loaded · ${asaCount} asamyuta + ${samCount} samyuta · ${totalSamples} total samples`;
+  startCamera();
+}
+function startWithoutModel(){
+  document.getElementById('modelStats').textContent='Demo mode — load a hasta-model.json for accurate recognition';
+  startCamera();
+}
+
+// ═══════════════════════════════════════════════
+//  CANVAS
+// ═══════════════════════════════════════════════
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d'),vid=document.getElementById('cam');
+function resize(){cv.width=window.innerWidth;cv.height=window.innerHeight;}
+window.addEventListener('resize',resize);resize();
+const W=()=>cv.width,H=()=>cv.height;
+
+// ═══════════════════════════════════════════════
+//  DRAW
+// ═══════════════════════════════════════════════
+const SKEL=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[0,9],[9,10],[10,11],[11,12],[0,13],[13,14],[14,15],[15,16],[0,17],[17,18],[18,19],[19,20],[5,9],[9,13],[13,17]];
+const TIPS=[4,8,12,16,20];
+const FCOLS=[{h:40,s:95,l:58},{h:185,s:78,l:48},{h:280,s:72,l:62},{h:15,s:92,l:55},{h:55,s:100,l:52}];
+
+let T=0;
+const particles=[];
+
+function spawnP(x,y,col){
+  if(Math.random()>0.12) return;
+  const a=Math.random()*Math.PI*2,s=0.6+Math.random()*2.5;
+  particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-1,life:1,decay:0.018+Math.random()*0.018,r:1.2+Math.random()*2,h:col.h,s:col.s,l:col.l});
+}
+function tickP(){
+  for(let i=particles.length-1;i>=0;i--){
+    const p=particles[i];
+    p.x+=p.vx;p.y+=p.vy;p.vy+=0.05;p.vx*=0.98;p.life-=p.decay;
+    if(p.life<=0){particles.splice(i,1);continue;}
+    ctx.save();ctx.globalAlpha=p.life*0.65;
+    ctx.fillStyle=`hsl(${p.h},${p.s}%,${p.l+20}%)`;
+    ctx.shadowColor=`hsl(${p.h},100%,75%)`;ctx.shadowBlur=6;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r*p.life,0,Math.PI*2);ctx.fill();ctx.restore();
+  }
+}
+
+function drawKolam(x,y,r,col,phase){
+  ctx.save();ctx.translate(x,y);
+  for(let ring=1;ring<=3;ring++){
+    const rr=r*(ring*0.42),alpha=0.28/ring;
+    ctx.strokeStyle=`hsla(${col.h},${col.s}%,${col.l}%,${alpha})`;
+    ctx.lineWidth=0.8;ctx.lineCap='round';ctx.shadowColor=`hsla(${col.h},100%,75%,0.3)`;ctx.shadowBlur=4;
+    ctx.beginPath();
+    for(let i=0;i<6;i++){
+      const a=i*Math.PI/3+phase+T*0.035*ring;
+      i===0?ctx.moveTo(Math.cos(a)*rr,Math.sin(a)*rr):ctx.lineTo(Math.cos(a)*rr,Math.sin(a)*rr);
+    }
+    ctx.closePath();ctx.stroke();
+  }
+  ctx.beginPath();ctx.arc(0,0,4,0,Math.PI*2);
+  ctx.fillStyle=`hsla(${col.h},${col.s}%,${col.l+20}%,0.9)`;
+  ctx.shadowColor=`hsla(${col.h},100%,80%,0.9)`;ctx.shadowBlur=14;
+  ctx.fill();ctx.restore();
+}
+
+function drawHand(rawLms,col){
+  const pts=rawLms.map(l=>({x:(1-l.x)*W(),y:l.y*H()}));
+  ctx.save();
+  ctx.strokeStyle=`hsla(${col.h},${col.s}%,${col.l}%,0.28)`;ctx.lineWidth=1.2;ctx.lineCap='round';
+  SKEL.forEach(([a,b])=>{ctx.beginPath();ctx.moveTo(pts[a].x,pts[a].y);ctx.lineTo(pts[b].x,pts[b].y);ctx.stroke();});
+  ctx.restore();
+  TIPS.forEach((ti,fi)=>{
+    const p=pts[ti],fc=FCOLS[fi];
+    const pulse=0.5+0.5*Math.sin(T*2.5+fi);
+    ctx.save();
+    ctx.beginPath();ctx.arc(p.x,p.y,5+pulse*3,0,Math.PI*2);
+    ctx.fillStyle=`hsla(${fc.h},${fc.s}%,${fc.l+15}%,${0.7+pulse*0.3})`;
+    ctx.shadowColor=`hsla(${fc.h},100%,78%,0.9)`;ctx.shadowBlur=10+pulse*8;
+    ctx.fill();ctx.restore();
+    drawKolam(p.x,p.y,18,fc,fi*Math.PI/5);
+    spawnP(p.x,p.y,fc);
+  });
+  // Palm aura
+  const palm=pts[9];
+  const pr=Math.hypot(pts[0].x-palm.x,pts[0].y-palm.y)*1.5;
+  ctx.save();
+  const g=ctx.createRadialGradient(palm.x,palm.y,0,palm.x,palm.y,pr);
+  g.addColorStop(0,`hsla(${col.h},${col.s}%,${col.l}%,0.1)`);g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(palm.x,palm.y,pr,0,Math.PI*2);ctx.fill();ctx.restore();
+  return pts;
+}
+
+function drawWeb(pts0,pts1,col){
+  TIPS.forEach((ti,fi)=>{
+    const a=pts0[ti],b=pts1[ti],fc=FCOLS[fi];
+    const d=Math.hypot(b.x-a.x,b.y-a.y),sag=d*0.1;
+    const mx=(a.x+b.x)/2,my=(a.y+b.y)/2+sag;
+    ctx.save();
+    ctx.strokeStyle=`hsla(${fc.h},${fc.s}%,${fc.l}%,0.8)`;ctx.lineWidth=1.8;ctx.lineCap='round';
+    ctx.shadowColor=`hsla(${fc.h},100%,78%,0.5)`;ctx.shadowBlur=7;
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(mx,my,b.x,b.y);ctx.stroke();
+    ctx.restore();
+    if(fi<4){
+      const c=pts0[TIPS[fi+1]],d2=pts1[TIPS[fi+1]];
+      const bc={h:(fc.h+FCOLS[fi+1].h)/2,s:78,l:52};
+      ctx.save();
+      ctx.strokeStyle=`hsla(${bc.h},${bc.s}%,${bc.l}%,0.3)`;ctx.lineWidth=0.7;ctx.lineCap='round';
+      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(d2.x,d2.y);ctx.stroke();
+      ctx.restore();
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════
+//  RECOGNITION STATE
+// ═══════════════════════════════════════════════
+let currentHands=[];
+let pendingKey='',pendingFrames=0;
+const CONFIRM_FRAMES=18;
+let confirmedHasta=null;
+
+const COL_ASA={h:40,s:95,l:58};
+const COL_SAM={h:185,s:78,l:48};
+
+function updateRecognition(){
+  if(!currentHands.length){
+    confirmedHasta=null;
+    pendingKey='';pendingFrames=0;
+    document.getElementById('hastaPanel').classList.remove('show');
+    document.getElementById('modePill').className='modePill';
+    document.getElementById('modePill').textContent='Awaiting hands…';
+    setDot('dHanda','');setDot('dHasta','');
+    return;
+  }
+
+  let query, handsCount;
+  if(currentHands.length>=2){
+    query=normTwo(currentHands[0],currentHands[1]);
+    handsCount=2;
+  } else {
+    query=normLMs(currentHands[0]);
+    handsCount=1;
+  }
+
+  const result=recognise(query,handsCount);
+  if(!result){
+    document.getElementById('modePill').className='modePill';
+    document.getElementById('modePill').textContent=handsCount===2?'🙌 Both hands — no model':'☝ One hand — no model';
+    return;
+  }
+
+  // Stable confirmation — hold for N frames
+  if(result.key===pendingKey){
+    pendingFrames=Math.min(pendingFrames+1,CONFIRM_FRAMES+10);
+  } else {
+    pendingKey=result.key;pendingFrames=0;
+  }
+
+  if(pendingFrames>=CONFIRM_FRAMES&&result.key!==(confirmedHasta&&confirmedHasta.key)){
+    confirmedHasta=result;
+    updatePanel(result,handsCount);
+  }
+
+  // Update confidence live
+  if(confirmedHasta){
+    const pct=Math.round(result.confidence*100);
+    document.getElementById('confFill').style.width=pct+'%';
+    document.getElementById('confPct').textContent=pct+'% match';
+    setDot('dHasta','on');
+  }
+
+  // Mode pill
+  const pill=document.getElementById('modePill');
+  if(handsCount===2){pill.className='modePill sam';pill.textContent='🙌 Samyuta';}
+  else{pill.className='modePill asa';pill.textContent='☝ Asamyuta';}
+}
+
+function updatePanel(h,handsCount){
+  document.getElementById('hastaTypeLabel').textContent=
+    handsCount===2?'Samyuta Hasta — Both Hands':'Asamyuta Hasta — Single Hand';
+  document.getElementById('hastaNumber').textContent=
+    `Hasta ${h.n} of ${handsCount===2?24:28}`;
+  document.getElementById('hastaDev').textContent=h.devanagari||h.dev||'';
+  document.getElementById('hastaRom').textContent=h.roman||h.rom||'';
+  document.getElementById('hastaLit').textContent=h.literal||h.lit||'';
+  document.getElementById('hastaVin').textContent=h.viniyoga||h.vin||'';
+  document.getElementById('hastaPanel').classList.add('show');
+}
+
+function setDot(id,st){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.className='dot'+(st==='on'?' on':st==='gr'?' gr':st==='tl'?' tl':'');
+}
+
+// ═══════════════════════════════════════════════
+//  MAIN LOOP
+// ═══════════════════════════════════════════════
+function frame(ts){
+  T=ts*0.001;
+  ctx.clearRect(0,0,W(),H());
+  const awaitEl=document.getElementById('await');
+  updateRecognition();
+
+  if(!currentHands.length){
+    awaitEl.classList.remove('gone');
+    tickP();requestAnimationFrame(frame);return;
+  }
+  awaitEl.classList.add('gone');
+
+  if(currentHands.length>=2){
+    const pts0=drawHand(currentHands[0],COL_SAM);
+    const pts1=drawHand(currentHands[1],COL_SAM);
+    drawWeb(pts0,pts1,COL_SAM);
+  } else {
+    drawHand(currentHands[0],COL_ASA);
+  }
+
+  tickP();
+  requestAnimationFrame(frame);
+}
+
+// ═══════════════════════════════════════════════
+//  MEDIAPIPE + CAMERA
+// ═══════════════════════════════════════════════
+async function startCamera(){
+  document.getElementById('loadModel').classList.add('out');
+  setTimeout(()=>document.getElementById('loadModel').style.display='none',900);
+
+  const mp=new Hands({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/hands/${f}`});
+  mp.setOptions({maxNumHands:2,modelComplexity:1,minDetectionConfidence:0.76,minTrackingConfidence:0.72});
+  mp.onResults(r=>{
+    currentHands=r.multiHandLandmarks&&r.multiHandLandmarks.length>0?r.multiHandLandmarks:[];
+    setDot('dHands',currentHands.length>0?'on':'');
+  });
+  setDot('dTrack','on');
+
+  let stream;
+  try{stream=await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1280},height:{ideal:720},facingMode:'user'},audio:false});}
+  catch(e){setDot('dCam','');return;}
+  vid.srcObject=stream;
+  await new Promise(r2=>vid.onloadedmetadata=r2);
+  vid.play();vid.classList.add('live');
+  setDot('dCam','on');
+  resize();
+
+  const cam=new Camera(vid,{onFrame:async()=>{await mp.send({image:vid});},width:1280,height:720});
+  cam.start();
+  requestAnimationFrame(frame);
+}
+</script>
+</body>
+</html>
