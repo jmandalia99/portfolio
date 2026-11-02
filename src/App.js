@@ -933,7 +933,7 @@ function Contact() {
           <div className="absolute inset-0 opacity-[0.07]" style={{ background: 'repeating-radial-gradient(circle at 85% 20%, #fff 0 1px, transparent 1px 30px)' }} />
           <div className="relative">
             <p className="text-[13px] font-semibold tracking-[0.18em] uppercase text-aspen mb-4">Contact</p>
-            <h2 className="font-serif font-bold text-[clamp(2.1rem,4.2vw,3.5rem)] leading-[1.08] max-w-2xl">Let’s build something that ships.</h2>
+            <h2 className="font-serif font-bold text-[clamp(2.1rem,4.2vw,3.5rem)] leading-[1.08] max-w-2xl">Let’s take your next product to launch.</h2>
             <p className="mt-5 text-[17px] leading-[1.7] text-white/80 max-w-xl">
               I’m looking for Technical Program Manager roles where releases, devices, and people all need to come together. I’d love to hear from you.
             </p>
