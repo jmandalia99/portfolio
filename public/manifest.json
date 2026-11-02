@@ -1,15 +1,12 @@
 {
   "short_name": "Jinal Mandalia",
-  "name": "Jinal Mandalia Portfolio",
+  "name": "Jinal Mandalia",
   "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    }
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "favicon.ico", "sizes": "64x64 32x32 24x24 16x16", "type": "image/x-icon" }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#0f172a",
-  "background_color": "#0f172a"
+  "theme_color": "#FAF6EF",
+  "background_color": "#FAF6EF"
 }
