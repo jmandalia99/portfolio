@@ -141,11 +141,17 @@
   .pname{font-family:var(--disp);font-size:36px;font-weight:600;font-style:italic;margin:20px 0 0}
 
   .track{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-top:18px}
-  .beat{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:34px}
+  .beat{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:44px}
   .beat .num{font-family:var(--mono);font-size:10px;color:var(--faint)}
   .beat .mk{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:.1s;border:2px solid transparent}
   .beat .lab{font-family:var(--mono);font-size:8.5px;color:var(--faint);text-align:center;min-height:11px;text-transform:uppercase;letter-spacing:.04em}
-  .beat .syl{font-family:var(--mono);font-size:9px;color:var(--green);text-align:center;line-height:1.3;min-height:12px;max-width:60px}
+  .beat .syl{font-family:var(--mono);font-size:9px;color:var(--green);text-align:center;line-height:1.3;min-height:12px;max-width:76px}
+  .beat .pul{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;align-items:center;max-width:76px;min-height:7px}
+  .beat .pul i{width:5px;height:5px;border-radius:50%;background:var(--line2);display:block;transition:.08s}
+  .beat .pul i.hit{background:var(--maroon);transform:scale(1.5)}
+  .beat .syl i{font-style:normal;transition:.08s}
+  .beat .syl i.hit{color:var(--maroon);font-weight:700}
+  .beat .pul .n{font-family:var(--mono);font-size:8.5px;color:var(--faint);letter-spacing:.04em}
   .beat.sam .mk{background:var(--maroon);box-shadow:0 0 0 4px var(--maroon-soft)}
   .beat.clap .mk{background:var(--ink)}
   .beat.wave .mk{background:transparent;border-color:var(--dim)}
@@ -258,6 +264,7 @@
     <div class="st"><div><div class="nm">Ata</div><div class="an">Laghu Laghu Drutam Drutam</div></div><div class="sig">I I O O</div></div>
     <div class="st"><div><div class="nm">Eka</div><div class="an">Laghu</div></div><div class="sig">I</div></div>
   </div>
+  <div class="note"><b>How a tala is recited:</b> each anga speaks its own syllables. The <b>Laghu</b> takes the jaati's sollukattu (tisra → Ta&nbsp;Ki&nbsp;Ta, chatusra → Ta&nbsp;Ka&nbsp;Dhi&nbsp;Mi …), the <b>Drutam</b> is always Ta&nbsp;Ka, the <b>Anudrutam</b> is a single Ta. So Ata tala in tisra reads <b>TaKiTa · TaKiTa · TaKa · TaKa</b> — ten beats, ten sollus.</div>
 </section>
 
 <div class="divider">◈ ◈ ◈</div>
@@ -310,7 +317,7 @@
       <p style="margin:12px 0 0;font-family:var(--mono);font-size:12px;color:var(--faint)">↑ tisra gati = 3 pulses per box</p>
     </div>
   </div>
-  <div class="note"><b>In one line:</b> Jaati sets the <i>shape</i> — how many beats. Gati sets the <i>sollukattu flavour</i> — which pattern colours the beats (Ta Ki Ta vs Ta Ka Dhi Mi …). The three speeds set the <i>density</i> — one, two, or four syllables per beat, flowing across the cycle and returning on sam.</div>
+  <div class="note"><b>In one line:</b> Jaati sets the <i>shape</i> — how many beats are in the cycle, and which sollukattu you recite through them. Gati sets the <i>pulse</i> — how many matras tick inside every single beat (3, 4, 5, 7 or 9). Speed sets the <i>flow</i> — 1, 2 or 4 sollus per beat, running on across the cycle and landing back on sam. All three dials are independent: change the jaati and the gati stays exactly where you left it.</div>
 </section>
 
 <div class="divider">◈ ◈ ◈</div>
@@ -334,16 +341,18 @@
     <div class="selrow">
       <div class="selgrp"><label>Tala</label><div class="opts" id="talaOpts"></div></div>
       <div class="selgrp"><label>Jaati — cycle length</label><div class="opts" id="jaatiOpts"></div></div>
-      <div class="selgrp gati"><label>Gati — beat subdivision</label><div class="opts" id="gatiOpts"></div></div>
+      <div class="selgrp gati"><label>Gati — pulse inside one beat · stays Chatusra unless you change it</label><div class="opts" id="gatiOpts"></div></div>
     </div>
 
     <div class="pname" id="pName">Adi Tala</div>
     <div class="info">
       <span>Anga: <b id="iAnga">I O O</b></span>
       <span>Beats: <b id="iBeats">8</b></span>
-      <span>Jaati: <b id="iJaati">Chatusra</b></span>
-      <span>Gati: <b id="iGati">Chatusra</b></span>
-      <span>Sub-beats/cycle: <b id="iTotal">32</b></span>
+      <span>Jaati: <b id="iJaati">Chatusra (4)</b></span>
+      <span>Gati: <b id="iGati">Chatusra — 4 matras/beat</b></span>
+      <span>Speed: <b id="iPer">1 sollu/beat</b></span>
+      <span>Sollus/cycle: <b id="iSol">8</b></span>
+      <span>Matras/cycle: <b id="iTotal">32</b></span>
     </div>
 
     <div class="track" id="track"></div>
@@ -359,6 +368,7 @@
       </div>
       <label class="tempo">Tempo <input type="range" id="tempo" min="40" max="150" value="66"> <span id="bpm">66</span></label>
       <label class="sndbox"><input type="checkbox" id="snd" checked> sound</label>
+      <label class="sndbox"><input type="checkbox" id="gsnd"> gati pulse</label>
     </div>
 
     <div class="readout" id="readout"></div>
@@ -371,13 +381,13 @@
 <section>
   <p class="kick">Concept · trikaala</p>
   <h2>What "three speeds" means</h2>
-  <p class="lede">Your hand keeps the same tala at the same tempo. What changes is how many syllables flow through each beat — doubling each speed. Example: chatusra gati.</p>
+  <p class="lede">Your hand keeps the same tala at the same tempo. What changes is how many sollus flow through each beat — one, then two, then four. The phrase runs on across the beats and lands back on sam. Example: chatusra jaati, Eka tala, 4 beats.</p>
   <div class="speeds">
-    <div class="sp"><div class="k">FIRST SPEED</div><div class="big">Prathama</div><p>One syllable per beat.</p><div class="ex">Ta · Ka · Dhi · Mi</div></div>
-    <div class="sp"><div class="k">SECOND SPEED</div><div class="big">Dvitiya</div><p>Two per beat, flowing on.</p><div class="ex">TaKa · DhiMi · TaKa · DhiMi</div></div>
-    <div class="sp"><div class="k">THIRD SPEED</div><div class="big">Tritiya</div><p>Four per beat — full and alive.</p><div class="ex">TaKaDhiMi · ×4</div></div>
+    <div class="sp"><div class="k">FIRST SPEED</div><div class="big">Prathama</div><p>One sollu per beat — the phrase fills the cycle once.</p><div class="ex">Ta · Ka · Dhi · Mi</div></div>
+    <div class="sp"><div class="k">SECOND SPEED</div><div class="big">Dvitiya</div><p>Two per beat — twice through.</p><div class="ex">TaKa · DhiMi · TaKa · DhiMi</div></div>
+    <div class="sp"><div class="k">THIRD SPEED</div><div class="big">Tritiya</div><p>Four per beat — four times through.</p><div class="ex">TaKaDhiMi · ×4</div></div>
   </div>
-  <div class="note"><b>Three dials, never confused:</b> the <b>jaati</b> sets how many beats, the <b>gati</b> sets the subdivision inside a beat, and the <b>speed</b> doubles how fast you fill. Adi stays 8 beats through all of them — everything else happens inside that frame.</div>
+  <div class="note"><b>It keeps flowing:</b> the cycle's sollukattu is exactly as long as the cycle, so in second speed it runs through twice and the beats cut across it. Tisra Eka: Ta&nbsp;Ki&nbsp;Ta in first speed, then <b>TaKi · TaTa · KiTa</b> in second, then <b>TaKiTaTa · KiTaTaKi · TaTaKiTa</b> in third. Same three beats, same tempo; only the flow doubles. Meanwhile the <b>gati</b> keeps its own pulse inside each beat, untouched by any of this.</div>
 </section>
 
 <div class="divider">◈ ◈ ◈</div>
@@ -424,22 +434,46 @@ const JATIS={
 };
 const JATI_ORDER=['tisra','chatusra','khanda','misra','sankeerna'];
 
-/* aksharas from tala. Laghu LENGTH comes from the jaati; the Laghu's syllables come
-   from the GATI sollukattu (so gati flavours the bols, jaati sets the count).
-   Drutam -> Ta Ka, Anudrutam -> Ta. When gati = jaati this is the classic form. */
-function genBeats(tk,jk){
-  const anga=TALAS[tk].anga,L=JATIS[jk].count,beats=[];
+/* ============================================================
+   THE COUNTING MODEL — single source of truth
+   JAATI  : Laghu length -> how many BEATS (aksharas) in the cycle.
+   SOLLUKATTU : built ANGA BY ANGA, one syllable per beat —
+            Laghu -> the jaati's sollukattu (tisra = Ta Ki Ta ...)
+            Drutam -> Ta Ka        Anudrutam -> Ta
+            e.g. Ata tala (I I O O) in tisra = TaKiTa TaKiTa TaKa TaKa.
+   SPEED  : kaala -> how many SOLLUS fill one beat: 1, 2 or 4.
+            The phrase is exactly one cycle long, so 2nd speed runs it
+            twice and 4th runs it four times, restarting on sam.
+   GATI   : a separate layer -> how many MATRAS pulse inside one beat
+            (3/4/5/7/9). It never changes the sollukattu or the beat
+            count, and never follows the jaati. Default Chatusra.
+   sollus per cycle = beats * speed
+   matras per cycle = beats * gati
+   ============================================================ */
+const DRUTAM=['Ta','Ka'],ANUDRUTAM=['Ta'];
+function genCycle(tk,jk){
+  const anga=TALAS[tk].anga,LS=JATIS[jk].sollu;
+  const beats=[],phrase=[],groups=[];
   anga.forEach(a=>{
-    if(a==='L'){beats.push({t:'clap'});for(let i=1;i<L;i++)beats.push({t:'finger'});}
-    else if(a==='D'){beats.push({t:'clap'});beats.push({t:'wave'});}
-    else{beats.push({t:'clap'});}
+    let syl;
+    if(a==='L'){syl=LS.slice();beats.push({t:'clap'});for(let i=1;i<syl.length;i++)beats.push({t:'finger'});}
+    else if(a==='D'){syl=DRUTAM.slice();beats.push({t:'clap'},{t:'wave'});}
+    else{syl=ANUDRUTAM.slice();beats.push({t:'clap'});}
+    phrase.push(...syl);groups.push(syl.join(''));
   });
   if(beats.length)beats[0].t='sam';
-  return beats;
+  return {beats,phrase,groups};
 }
-/* the GATI sollukattu flows continuously across the whole cycle, restarting on sam.
-   Each beat holds `perBeat` (= the speed: 1/2/4) consecutive syllables of the gati phrase. */
-function beatFlow(i,perBeat,gs){const gl=gs.length,out=[];for(let j=0;j<perBeat;j++)out.push(gs[(i*perBeat+j)%gl]);return out;}
+/* the sollus sitting on beat i: a continuous slice of the cycle phrase */
+function beatFlow(i,speed,phrase){
+  const out=[];for(let j=0;j<speed;j++)out.push(phrase[(i*speed+j)%phrase.length]);return out;
+}
+function gcd(a,b){return b?gcd(b,a%b):a}
+function lcm(a,b){return a/gcd(a,b)*b}
+
+/* ---- STATE ---- */
+const DEFAULT_GATI='chatusra';
+let curT='triputa',curJ='chatusra',curG=DEFAULT_GATI,curSpeed=1,beats=[];
 
 /* ---- 35 GRID ---- */
 const grid=document.getElementById('grid35');
@@ -448,98 +482,155 @@ let rows='';
 TALA_ORDER.forEach(tk=>{
   let r=`<tr><th class="rowh">${TALAS[tk].name}</th>`;
   JATI_ORDER.forEach(jk=>{
-    const n=genBeats(tk,jk).length, isAdi=(tk==='triputa'&&jk==='chatusra');
+    const n=genCycle(tk,jk).beats.length, isAdi=(tk==='triputa'&&jk==='chatusra');
     r+=`<td class="cell${isAdi?' adi':''}" data-t="${tk}" data-j="${jk}"><div class="b">${n}</div><div class="t">${isAdi?'ADI':''}</div></td>`;
   });
   rows+=r+'</tr>';
 });
 grid.innerHTML=head+rows;
-grid.querySelectorAll('.cell').forEach(c=>c.onclick=()=>{selectTala(c.dataset.t);selectJaati(c.dataset.j);markGrid();document.querySelector('.practice').scrollIntoView({behavior:'smooth',block:'center'});});
+grid.querySelectorAll('.cell').forEach(c=>c.onclick=()=>{
+  setCycle(c.dataset.t,c.dataset.j);
+  document.querySelector('.practice').scrollIntoView({behavior:'smooth',block:'center'});
+});
 
 /* ---- SELECTORS ---- */
-let curT='triputa',curJ='chatusra',curG='chatusra',curSpeed=1;
 const talaOpts=document.getElementById('talaOpts'),jaatiOpts=document.getElementById('jaatiOpts'),gatiOpts=document.getElementById('gatiOpts');
-TALA_ORDER.forEach(tk=>{const b=document.createElement('button');b.className='opt';b.textContent=TALAS[tk].name;b.dataset.t=tk;b.onclick=()=>{selectTala(tk);markGrid();};talaOpts.appendChild(b);});
-JATI_ORDER.forEach(jk=>{const b=document.createElement('button');b.className='opt';b.textContent=JATIS[jk].name;b.dataset.j=jk;b.onclick=()=>{selectJaati(jk);markGrid();};jaatiOpts.appendChild(b);});
+TALA_ORDER.forEach(tk=>{const b=document.createElement('button');b.className='opt';b.textContent=TALAS[tk].name;b.dataset.t=tk;b.onclick=()=>setCycle(tk,curJ);talaOpts.appendChild(b);});
+JATI_ORDER.forEach(jk=>{const b=document.createElement('button');b.className='opt';b.textContent=JATIS[jk].name;b.dataset.j=jk;b.onclick=()=>setCycle(curT,jk);jaatiOpts.appendChild(b);});
 JATI_ORDER.forEach(gk=>{const b=document.createElement('button');b.className='opt';b.textContent=JATIS[gk].name;b.dataset.g=gk;b.onclick=()=>selectGati(gk);gatiOpts.appendChild(b);});
 
-function selectTala(tk){curT=tk;[...talaOpts.children].forEach(b=>b.classList.toggle('on',b.dataset.t===tk));render();}
-/* Gati is its own dial: changing tala or jaati never moves it. */
-function selectJaati(jk){curJ=jk;[...jaatiOpts.children].forEach(b=>b.classList.toggle('on',b.dataset.j===jk));render();}
-function selectGati(gk){curG=gk;[...gatiOpts.children].forEach(b=>b.classList.toggle('on',b.dataset.g===gk));render();}
-function markGrid(){grid.querySelectorAll('.cell').forEach(c=>c.classList.toggle('sel',c.dataset.t===curT&&c.dataset.j===curJ));}
+function paint(){
+  [...talaOpts.children].forEach(b=>b.classList.toggle('on',b.dataset.t===curT));
+  [...jaatiOpts.children].forEach(b=>b.classList.toggle('on',b.dataset.j===curJ));
+  [...gatiOpts.children].forEach(b=>b.classList.toggle('on',b.dataset.g===curG));
+  grid.querySelectorAll('.cell').forEach(c=>c.classList.toggle('sel',c.dataset.t===curT&&c.dataset.j===curJ));
+}
+/* tala / jaati change the CYCLE only — gati is never touched here */
+function setCycle(tk,jk){curT=tk;curJ=jk;paint();render();}
+function selectGati(gk){curG=gk;paint();render();}
 
 const speedSel=document.getElementById('speedSel');
-speedSel.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{curSpeed=+b.dataset.s;[...speedSel.children].forEach(x=>x.classList.toggle('on',x===b));render();if(playing){stop(true);play();}});
+speedSel.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+  curSpeed=+b.dataset.s;
+  [...speedSel.children].forEach(x=>x.classList.toggle('on',x===b));
+  render();
+});
 
 /* ---- RENDER ---- */
 const track=document.getElementById('track'),pName=document.getElementById('pName'),readout=document.getElementById('readout');
-let beats=[];
 function render(){
+  const wasPlaying=playing;
   stop();
-  beats=genBeats(curT,curJ);
+  const cyc=genCycle(curT,curJ);
+  beats=cyc.beats;
+  const J=JATIS[curJ],G=JATIS[curG];
+  const sollusPerCycle=beats.length*curSpeed, matrasPerCycle=beats.length*G.count;
   const isAdi=(curT==='triputa'&&curJ==='chatusra');
   pName.textContent=TALAS[curT].name+(isAdi?' (Adi)':'')+' Tala';
   document.getElementById('iAnga').textContent=TALAS[curT].sym;
   document.getElementById('iBeats').textContent=beats.length;
-  document.getElementById('iJaati').textContent=JATIS[curJ].name;
-  document.getElementById('iGati').textContent=JATIS[curG].name;
-  const gs=JATIS[curG].sollu,m=curSpeed,perBeat=m,total=beats.length*perBeat;
-  document.getElementById('iTotal').textContent=total;
+  document.getElementById('iJaati').textContent=J.name+' ('+J.count+')';
+  document.getElementById('iGati').textContent=G.name+' — '+G.count+' matras/beat';
+  document.getElementById('iPer').textContent=curSpeed+' sollu'+(curSpeed>1?'s':'')+'/beat';
+  document.getElementById('iSol').textContent=sollusPerCycle;
+  document.getElementById('iTotal').textContent=matrasPerCycle;
+
   track.innerHTML='';
   beats.forEach((b,i)=>{
     const el=document.createElement('div');
     el.className='beat '+b.t;
     const lab=b.t==='sam'?'sam':b.t==='clap'?'clap':b.t==='wave'?'wave':'·';
-    const cell=beatFlow(i,perBeat,gs);
-    const syl=perBeat<=6?cell.join(' '):`${cell.slice(0,3).join(' ')}… ×${perBeat}`;
-    el.innerHTML=`<span class="num">${i+1}</span><span class="mk"></span><span class="lab">${lab}</span><span class="syl">${syl}</span>`;
+    const syl=beatFlow(i,curSpeed,cyc.phrase).map(x=>`<i>${x}</i>`).join(' ');
+    let dots='';
+    if(G.count<=12){for(let k=0;k<G.count;k++)dots+='<i></i>';}
+    else dots=`<span class="n">${G.count}</span>`;
+    el.innerHTML=`<span class="num">${i+1}</span><span class="mk"></span><span class="lab">${lab}</span><span class="pul">${dots}</span><span class="syl">${syl}</span>`;
     track.appendChild(el);
   });
-  const line=beats.map((b,i)=>beatFlow(i,perBeat,gs).join('')).join(' · ');
+
+  const perBeatLine=beats.map((b,i)=>beatFlow(i,curSpeed,cyc.phrase).join('')).join(' · ');
   const spName=curSpeed===1?'1st':curSpeed===2?'2nd':'3rd';
-  const body=total<=56?`<b style="color:var(--maroon)">${line}</b>`:`<span style="color:var(--dim)">${perBeat} syllables per beat, flowing across the cycle</span>`;
-  readout.innerHTML=`<span style="color:var(--dim)">${JATIS[curG].name} gati · ${spName} speed · sollukattu flows across all ${beats.length} beats:</span><br>${body}<br><span style="color:var(--dim)">${beats.length} beats × ${perBeat} = <b style="color:var(--green)">${total}</b> sub-beats per cycle</span>`;
+  const body=sollusPerCycle<=64
+    ? `<b style="color:var(--maroon)">${perBeatLine}</b>`
+    : `<span style="color:var(--dim)">the cycle phrase, ${curSpeed} sollus to a beat</span>`;
+  readout.innerHTML=
+    `<span style="color:var(--dim)">Cycle sollukattu (${TALAS[curT].sym}):</span> <b style="color:var(--green)">${cyc.groups.join(' · ')}</b><br>`+
+    `<span style="color:var(--dim)">${spName} speed · ${curSpeed} sollu${curSpeed>1?'s':''} per beat:</span><br>${body}<br>`+
+    `<span style="color:var(--dim)">${beats.length} beats × ${curSpeed} = <b style="color:var(--green)">${sollusPerCycle}</b> sollus`+
+    ` &nbsp;·&nbsp; ${G.name} gati pulse: ${beats.length} × ${G.count} = <b style="color:var(--green)">${matrasPerCycle}</b> matras</span>`;
+
+  if(wasPlaying)play();
 }
 
 /* ---- AUDIO ---- */
 let ac=null;
 function tick(kind){
-  if(!document.getElementById('snd').checked)return;
+  if(kind==='gati'){if(!document.getElementById('gsnd').checked)return;}
+  else if(!document.getElementById('snd').checked)return;
   try{
     ac=ac||new(window.AudioContext||window.webkitAudioContext)();
     const o=ac.createOscillator(),g=ac.createGain();
-    let f=kind==='sam'?660:kind==='clap'?440:kind==='wave'?300:kind==='sub'?780:500;
-    o.type=kind==='wave'?'sine':'triangle';o.frequency.value=f;
-    const vol=kind==='sam'?0.3:kind==='sub'?0.07:0.16;
+    let f=kind==='sam'?660:kind==='clap'?440:kind==='wave'?300:kind==='sub'?780:kind==='gati'?990:500;
+    o.type=kind==='wave'?'sine':kind==='gati'?'sine':'triangle';o.frequency.value=f;
+    const vol=kind==='sam'?0.3:kind==='sub'?0.09:kind==='gati'?0.045:0.16;
     g.gain.setValueAtTime(vol,ac.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+0.1);
-    o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+0.11);
+    g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+0.09);
+    o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+0.1);
   }catch(e){}
 }
 
-/* ---- PLAY ---- */
+/* ---- PLAY ----
+   One timer tick = the finest grid needed: lcm(gati, speed) per beat.
+   Sollus land every tpb/speed ticks, gati matras every tpb/gati ticks,
+   and both meet on the beat itself. */
 const playBtn=document.getElementById('playBtn'),tempo=document.getElementById('tempo'),bpm=document.getElementById('bpm');
 let playing=false,timer=null,tickIdx=0;
 tempo.oninput=()=>{bpm.textContent=tempo.value;if(playing){stop(true);play();}};
-function play(){
-  playing=true;playBtn.textContent='◼ Stop';
-  const subs=curSpeed; // syllables per beat = speed (1st=1, 2nd=2, 3rd=4)
-  const perBeat=60000/tempo.value;
-  const interval=perBeat/subs;
-  timer=setInterval(()=>{
-    const beatIdx=Math.floor(tickIdx/subs),subIdx=tickIdx%subs;
-    [...track.children].forEach(e=>e.classList.remove('active'));
-    const el=track.children[beatIdx];if(el)el.classList.add('active');
-    if(subIdx===0)tick(beats[beatIdx].t);else tick('sub');
-    tickIdx=(tickIdx+1)%(beats.length*subs);
-  },interval);
+
+function clearMarks(){
+  [...track.children].forEach(e=>{
+    e.classList.remove('active');
+    e.querySelectorAll('.pul i, .syl i').forEach(d=>d.classList.remove('hit'));
+  });
 }
-function stop(keep){playing=false;clearInterval(timer);playBtn.textContent='▶ Play';if(!keep)tickIdx=0;[...track.children].forEach(e=>e.classList.remove('active'));}
+function play(){
+  if(!beats.length)return;
+  playing=true;playBtn.textContent='◼ Stop';
+  const g=JATIS[curG].count,sp=curSpeed;
+  const tpb=lcm(g,sp),total=beats.length*tpb;
+  const beatMs=60000/tempo.value,interval=beatMs/tpb;
+  const gStep=tpb/g,sStep=tpb/sp;
+  const gAudible=beatMs/g>=45,sAudible=beatMs/sp>=45;
+  if(tickIdx>=total)tickIdx=0;
+  const t0=performance.now();let n=0;
+  (function step(){
+    if(!playing)return;
+    const bi=Math.floor(tickIdx/tpb),pos=tickIdx%tpb;
+    const onSollu=pos%sStep===0,onGati=pos%gStep===0;
+    /* each layer keeps its highlight until that same layer moves on */
+    const el=track.children[bi];
+    if(pos===0){[...track.children].forEach(e=>e.classList.remove('active'));if(el)el.classList.add('active');}
+    if(onGati){track.querySelectorAll('.pul i.hit').forEach(d=>d.classList.remove('hit'));const ds=el&&el.querySelectorAll('.pul i'),k=pos/gStep;if(ds&&ds[k])ds[k].classList.add('hit');}
+    if(onSollu){track.querySelectorAll('.syl i.hit').forEach(d=>d.classList.remove('hit'));const ss=el&&el.querySelectorAll('.syl i'),k=pos/sStep;if(ss&&ss[k])ss[k].classList.add('hit');}
+    if(pos===0)tick(beats[bi].t);
+    else{
+      if(onSollu&&sAudible)tick('sub');
+      else if(onGati&&gAudible)tick('gati');
+    }
+    tickIdx=(tickIdx+1)%total;
+    n++;
+    timer=setTimeout(step,Math.max(0,t0+n*interval-performance.now()));
+  })();
+}
+function stop(keep){
+  playing=false;clearTimeout(timer);playBtn.textContent='▶ Play';
+  if(!keep)tickIdx=0;
+  clearMarks();
+}
 playBtn.onclick=()=>{if(playing)stop();else{if(ac&&ac.resume)ac.resume();play();}};
 
-/* init */
-selectTala('triputa');selectJaati('chatusra');selectGati('chatusra');markGrid();
+/* init — gati always starts at Chatusra */
+curG=DEFAULT_GATI;setCycle('triputa','chatusra');
 </script>
 </body>
 </html>
