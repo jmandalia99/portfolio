@@ -258,7 +258,7 @@ function Hero() {
           <div ref={cardRef} className="relative transition-transform duration-500 ease-out will-change-transform">
             <div className="absolute -inset-4 md:-inset-5 rounded-[36px] bg-gradient-to-br from-[#EFE2CB] via-[#E7E2D2] to-[#CFD8C8] shadow-lift" />
             <div className="relative rounded-[26px] overflow-hidden aspect-[3/4] bg-[#cfd8c8]">
-              <img ref={imgRef} src={site.photo} alt="Jinal Mandalia in front of the Golden Gate Bridge"
+              <img ref={imgRef} src={site.photo} alt="Jinal Mandalia among golden aspens on a mountain trail"
                 className="w-full h-full object-cover object-[50%_45%] will-change-transform" style={{ transform: 'scale(1.02)' }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
             </div>

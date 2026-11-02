@@ -12,7 +12,7 @@ export const site = {
   github: 'https://github.com/jmandalia99',
   // Put a new resume at public/resume.pdf (same name) to update it.
   resume: '/resume.pdf',
-  photo: '/images/jinal-golden-gate.jpg',
+  photo: '/images/jinal-portrait.jpg',
 };
 
 export const hero = {
@@ -487,7 +487,7 @@ export const beyond = [
     key: 'hike',
     title: 'Hiking',
     tag: 'Mountain trails',
-    text: 'Trails, national parks, and long views — the mountains are my favorite way to reset.',
+    text: 'Trails, national parks, and long views — the photo at the top of this page was taken on one of them.',
   },
   {
     key: 'travel',
