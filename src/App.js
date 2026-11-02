@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import {
   ArrowDown, ArrowUpRight, Mail, Linkedin, Github, FileText, Menu, X, ChevronDown,
   MapPin, Award, Trophy, GraduationCap, Mountain, Compass, Image as ImageIcon, Film,
-  Video, Sparkles, Shield, Target, Microscope, Car, Cloud, Cpu, Plus, Copy, Check,
+  Video, Sparkles, Shield, Target, Microscope, Car, Cloud, Cpu, Plus, Copy, Check, Instagram,
 } from 'lucide-react';
 import {
   site, hero, numbers, about, journey, research, projects, skills, education,
@@ -822,9 +822,12 @@ function DanceModal({ open, onClose }) {
         </div>
         <div className="px-6 sm:px-9 pb-8 flex flex-wrap items-center gap-4 justify-between border-t border-line pt-6">
           <p className="text-[15px] italic font-serif text-bark">{d.closing}</p>
+          <div className="flex flex-wrap gap-3">
+          <Button href={d.instagram.url} variant="ghost" external onClick={() => track('instagram_click', { from: 'dance_story' })}><Instagram size={17} /> {d.instagram.handle}</Button>
           {d.tool && (
             <Button href={d.tool} external onClick={() => track('taal_tool_open')}>Try my taal practice tool <ArrowUpRight size={17} /></Button>
           )}
+          </div>
         </div>
       </div>
     </div>,
@@ -848,9 +851,8 @@ function Beyond() {
           {cards.map((b, i) => {
             const isDance = b.key === 'dance';
             const Icon = isDance ? DanceIcon : BEYOND_ICON[b.key];
-            const Tag = isDance ? 'button' : 'div';
             return (
-              <Tag key={b.key} {...(isDance ? { onClick: openDance, type: 'button' } : {})}
+              <div key={b.key} {...(isDance ? { onClick: openDance } : {})}
                 className={`reveal group group/dance text-left rounded-[26px] overflow-hidden bg-paper/80 backdrop-blur border border-line/80 shadow-card hover:shadow-lift hover:-translate-y-1.5 transition-all duration-500 flex flex-col ${isDance ? 'cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest' : ''}`}
                 style={{ '--d': `${i * 90}ms` }}>
                 <span className={`relative block h-44 overflow-hidden ${isDance ? 'bg-gradient-to-br from-[#F4DDB0] via-[#EDC98A] to-[#C4873A]' : b.key === 'hike' ? 'bg-gradient-to-br from-[#DCE6D6] via-[#B9CBB1] to-[#2D5A3D]' : 'bg-gradient-to-br from-[#E1EAF4] via-[#C9D7E8] to-[#2F5F99]'}`}>
@@ -863,13 +865,19 @@ function Beyond() {
                   <span className="mt-2 font-serif font-semibold text-[23px] text-ink">{b.title}</span>
                   <span className="mt-2 text-[15.5px] leading-[1.65] text-body">{b.text}</span>
                   {isDance && (
-                    <span className="mt-auto pt-5 inline-flex items-center gap-2 text-[14.5px] font-semibold text-forest-deep">
-                      Open my dance story
-                      <span className="w-7 h-7 rounded-full border border-forest/25 grid place-items-center transition-all duration-500 group-hover:bg-forest-deep group-hover:text-white group-hover:rotate-90"><Plus size={15} /></span>
+                    <span className="mt-auto pt-5 flex items-center justify-between gap-3">
+                      <button type="button" onClick={(e) => { e.stopPropagation(); openDance(); }}
+                        className="inline-flex items-center gap-2 text-[14.5px] font-semibold text-forest-deep focus:outline-none focus-visible:ring-2 focus-visible:ring-forest rounded-full">
+                        Open my dance story
+                        <span className="w-7 h-7 rounded-full border border-forest/25 grid place-items-center transition-all duration-500 group-hover:bg-forest-deep group-hover:text-white group-hover:rotate-90"><Plus size={15} /></span>
+                      </button>
+                      <a href={bharatanatyam.instagram.url} target="_blank" rel="noopener noreferrer" aria-label={`Instagram ${bharatanatyam.instagram.handle}`}
+                        onClick={(e) => { e.stopPropagation(); track('instagram_click', { from: 'dance_card' }); }}
+                        className="w-9 h-9 rounded-full border border-line grid place-items-center text-bark hover:text-white hover:border-transparent hover:bg-gradient-to-br hover:from-[#F2A33A] hover:via-[#D9416E] hover:to-[#7B3FBF] transition-all"><Instagram size={17} /></a>
                     </span>
                   )}
                 </span>
-              </Tag>
+              </div>
             );
           })}
         </div>

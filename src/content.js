@@ -479,6 +479,7 @@ export const bharatanatyam = {
     ['Choreography', 'setting my own short pieces, mixing abhinaya and pure dance'],
   ],
   closing: 'I’m also curious about where dance and technology meet.',
+  instagram: { handle: '@routes._.roots', url: 'https://www.instagram.com/routes._.roots/' },
   // Set this to the page path once the taal practice tool is added, e.g. '/taal/'.
   tool: null,
 };
